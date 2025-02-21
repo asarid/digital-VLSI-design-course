@@ -1,0 +1,651 @@
+#######################################################
+#                                                     
+#  Innovus Command Logging File                     
+#  Created on Wed Feb  5 13:15:52 2025                
+#                                                     
+#######################################################
+
+#@(#)CDS: Innovus v21.15-s110_1 (64bit) 09/23/2022 13:08 (Linux 3.10.0-693.el7.x86_64)
+#@(#)CDS: NanoRoute 21.15-s110_1 NR220912-2004/21_15-UB (database version 18.20.592) {superthreading v2.17}
+#@(#)CDS: AAE 21.15-s039 (64bit) 09/23/2022 (Linux 3.10.0-693.el7.x86_64)
+#@(#)CDS: CTE 21.15-s038_1 () Sep 20 2022 11:42:13 ( )
+#@(#)CDS: SYNTECH 21.15-s012_1 () Sep  5 2022 10:25:51 ( )
+#@(#)CDS: CPE v21.15-s076
+#@(#)CDS: IQuantus/TQuantus 21.1.1-s867 (64bit) Sun Jun 26 22:12:54 PDT 2022 (Linux 3.10.0-693.el7.x86_64)
+
+set design(TOPLEVEL) "lp_riscv_top"
+set runtype "pnr"
+set debug_file "debug.txt"
+source ../scripts/procedures.tcl -quiet
+enics_start_stage "start"
+source ../inputs/$design(TOPLEVEL).defines -quiet
+source $design(libraries_dir)/libraries.$TECHNOLOGY.tcl -quiet
+source $design(libraries_dir)/libraries.$SC_TECHNOLOGY.tcl -quiet
+source $design(libraries_dir)/libraries.$SRAM_TECHNOLOGY.tcl -quiet
+if {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
+    source $design(libraries_dir)/libraries.$IO_TECHNOLOGY.tcl -quiet
+}
+set_library_unit -time 1ns -cap 1pf
+set var_list {runtype}
+set dic_list {paths tech tech_files design}
+enics_print_debug_data w $debug_file "after everything was loaded" $var_list $dic_list
+enable_metrics -on
+enics_start_stage "init_design"
+set_db init_ground_nets $design(all_ground_nets)
+set_db init_power_nets $design(all_power_nets)
+enics_message "Suppressing the following messages that are reported due to the LIB definitions:" 
+enics_message "$tech(LIB_SUPPRESS_MESSAGES_INNOVUS)"
+set_message -suppress -id $tech(LIB_SUPPRESS_MESSAGES_INNOVUS) 
+enics_message "Reading MMMC File" medium
+read_mmmc $design(mmmc_view_file) 
+#@ Begin verbose source (pre): 
+create_constraint_mode \
+	-name functional_mode \
+	-sdc_files $design(functional_sdc)
+if {$runtype=="synthesis"} {...
+} else {
+set_message -suppress -id ENCEXT-6202 ;
+}
+create_rc_corner \
+	-name bc_rc_corner \
+	-temperature $tech(TEMPERATURE_BC) \
+    -qrc_tech $tech_files(QRCTECH_FILE_BC)
+create_rc_corner \
+	-name tc_rc_corner \
+	-temperature $tech(TEMPERATURE_TC) \
+	-qrc_tech $tech_files(QRCTECH_FILE_TC)
+create_rc_corner \
+	-name wc_rc_corner \
+	-temperature $tech(TEMPERATURE_WC) \
+    -qrc_tech $tech_files(QRCTECH_FILE_WC)
+create_library_set \
+	-name bc_libset \
+	-timing $tech_files(ALL_BC_LIBS)  
+create_library_set \
+	-name tc_libset \
+	-timing $tech_files(ALL_TC_LIBS)  
+create_library_set \
+	-name wc_libset \
+	-timing $tech_files(ALL_WC_LIBS)  
+create_timing_condition \
+   -name         bc_timing_condition \
+   -library_sets bc_libset
+create_timing_condition \
+   -name         tc_timing_condition \
+   -library_sets tc_libset
+create_timing_condition \
+   -name         wc_timing_condition \
+   -library_sets wc_libset
+create_delay_corner \
+	-name bc_dly_corner \
+	-timing_condition bc_timing_condition \
+	-rc_corner bc_rc_corner
+create_delay_corner \
+	-name tc_dly_corner \
+	-timing_condition tc_timing_condition \
+	-rc_corner tc_rc_corner
+create_delay_corner \
+	-name wc_dly_corner \
+	-timing_condition wc_timing_condition \
+	-rc_corner wc_rc_corner
+create_analysis_view \
+	-name bc_analysis_view \
+	-constraint_mode functional_mode \
+	-delay_corner bc_dly_corner
+create_analysis_view \
+    -name tc_analysis_view \
+	-constraint_mode functional_mode \
+	-delay_corner tc_dly_corner
+create_analysis_view \
+	-name wc_analysis_view \
+	-constraint_mode functional_mode \
+	-delay_corner wc_dly_corner
+set_analysis_view \
+	-setup $design(selected_setup_analysis_views) \
+	-hold  $design(selected_hold_analysis_views)
+#@ End verbose source: /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../inputs/lp_riscv_top.mmmc
+enics_message "Suppressing the following messages that are reported due to the LEF definitions:" 
+enics_message "$tech(LEF_SUPPRESS_MESSAGES_INNOVUS)"
+set_message -suppress -id $tech(LEF_SUPPRESS_MESSAGES_INNOVUS) 
+enics_message "Reading LEF abstracts"
+read_physical -lef $tech_files(ALL_LEFS)
+enics_message "Reading the Post Synthesis netlist at $design(postsyn_netlist)" medium
+read_netlist $design(postsyn_netlist)
+enics_message "Running init_design command" medium
+init_design
+source ../scripts/settings.tcl -quiet
+enics_default_cost_groups
+enics_message "Connecting Global Nets" medium
+connect_global_net $design(digital_gnd) -pin $tech(STANDARD_CELL_GND) -all -verbose
+connect_global_net $design(digital_vdd) -pin $tech(STANDARD_CELL_VDD) -all -verbose
+connect_global_net $design(digital_vdd) -type tiehi -all -verbose 
+connect_global_net $design(digital_gnd) -type tielo -all -verbose 
+connect_global_net $design(digital_vdd) -pin $tech(SRAM_VDDCORE_PIN)      -all -verbose 
+connect_global_net $design(digital_vdd) -pin $tech(SRAM_VDDPERIPHERY_PIN) -all -verbose 
+connect_global_net $design(digital_gnd) -pin $tech(SRAM_GND_PIN)          -all -verbose 
+if {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
+    # Connect pads to IO and CORE voltages
+    #    -netlist_override is needed, since GENUS connects these pins to UNCONNECTED during synthesis
+    connect_global_net $design(io_vdd)      -pin $tech(IO_VDDIO)   -hinst i_${design(IO_MODULE)} -netlist_override -verbose
+    connect_global_net $design(io_gnd)      -pin $tech(IO_GNDIO)   -hinst i_${design(IO_MODULE)} -netlist_override -verbose
+    connect_global_net $design(digital_vdd) -pin $tech(IO_VDDCORE) -hinst i_${design(IO_MODULE)} -netlist_override -verbose
+    connect_global_net $design(digital_gnd) -pin $tech(IO_GNDCORE) -hinst i_${design(IO_MODULE)} -netlist_override -verbose
+}
+enics_create_stage_reports -save_db no -report_timing no -pop_snapshot yes
+enics_start_stage "floorplan"
+source ../inputs/$design(TOPLEVEL).floorplan.defines -quiet
+gui_select -point {0.03050 0.03100}
+create_floorplan \
+    -core_size [list 2000.0 1250.0 150.0 150.0 150.0 150.0] \
+    -core_margins_by die \
+    -flip s \
+    -match_to_site
+gui_fit
+gui_select -point {86.23450 74.25400}
+update_floorplan_obj -obj 0x7fdb02146150 -rects {2.9755 1422.3215 122.9755 1542.3215}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb021460e0 -rects {2184.0665 1434.223 2304.0665 1554.223}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02146070 -rects {0.0 1431.248 120.0 1551.248}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02146000 -rects {2184.066 1431.2475 2304.066 1551.2475}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb021460e0 -rects {2188.9265 -1.2475 2308.9265 118.7525}
+update_floorplan_obj -obj 0x7fdb021460e0 -rects {2177.024 4.703 2297.024 124.703}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02146150 -rects {2.9755 4.7035 122.9755 124.7035}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02146690 -rects {1719.7425 1424.0485 1769.7425 1544.0485}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02146620 -rects {1647.461 1427.0245 1697.461 1547.0245}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02146380 -rects {353.8305 1430.0 403.8305 1550.0}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb021463f0 -rects {435.0395 1424.049 485.0395 1544.049}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02146460 -rects {516.248 1427.0245 566.248 1547.0245}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb021464d0 -rects {621.261 1427.0245 671.261 1547.0245}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02146540 -rects {708.4205 1427.0245 758.4205 1547.0245}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb021465b0 -rects {1557.325 1427.0245 1607.325 1547.0245}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb021462a0 -rects {1027.548 1424.0485 1077.548 1544.0485}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02146310 -rects {1144.463 1418.0975 1194.463 1538.0975}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02146c40 -rects {211.2655 1495.2095 331.2655 1545.2095}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02146bd0 -rects {246.972 1456.837 366.972 1506.837}
+update_floorplan_obj -obj 0x7fdb02146bd0 -rects {276.726 1430.0 326.726 1550.0}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02146c40 -rects {190.436 1430.0 240.436 1550.0}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02146bd0 -rects {267.798 1430.0 317.798 1550.0}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02147030 -rects {270.702 0.0 320.702 120.0}
+update_floorplan_obj -obj 0x7fdb02147030 -rects {267.7245 0.0 317.7245 120.0}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb021470a0 -rects {341.297 0.0 391.297 120.0}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02147110 -rects {420.8145 -2.9755 470.8145 117.0245}
+update_floorplan_obj -obj 0x7fdb02147110 -rects {420.8145 -5.951 470.8145 114.049}
+update_floorplan_obj -obj 0x7fdb02147110 -rects {420.8145 -2.976 470.8145 117.024}
+update_floorplan_obj -obj 0x7fdb02147110 -rects {423.79 2.9755 473.79 122.9755}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02147180 -rects {509.258 2.9755 559.258 122.9755}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb021471f0 -rects {612.5795 5.951 662.5795 125.951}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb021475e0 -rects {1926.3225 0.0 1976.3225 120.0}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02147570 -rects {1846.8055 2.9755 1896.8055 122.9755}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02147500 -rects {1764.313 0.0 1814.313 120.0}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02147490 -rects {1675.869 0.0 1725.869 120.0}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02147420 -rects {1242.2595 1431.248 1292.2595 1551.248}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02146b60 -rects {693.307 28.875 813.307 78.875}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02147260 -rects {793.266 5.9515 843.266 125.9515}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb021472d0 -rects {890.637 -2.9755 940.637 117.0245}
+update_floorplan_obj -obj 0x7fdb021472d0 -rects {866.832 11.902 916.832 131.902}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb021473b0 -rects {1588.2485 8.9265 1638.2485 128.9265}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02147340 -rects {1166.541 0.0 1216.541 120.0}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02147a40 -rects {1233.7695 43.405 1353.7695 93.405}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02147b90 -rects {1037.382 32.683 1157.382 82.683}
+update_floorplan_obj -obj 0x7fdb02147b90 -rects {1079.038 0.0 1129.038 120.0}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02147a40 -rects {1260.55 -2.9755 1310.55 117.0245}
+update_floorplan_obj -obj 0x7fdb02147a40 -rects {1281.379 0.0 1331.379 120.0}
+update_floorplan_obj -obj 0x7fdb02147a40 -rects {1254.5995 5.951 1304.5995 125.951}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02147490 -rects {1345.582 5.9515 1395.582 125.9515}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02146cb0 -rects {770.672 1474.071 890.672 1524.071}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02147c00 -rects {4.8605 855.325 124.8605 905.325}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb021479d0 -rects {16.7625 776.9855 136.7625 826.9855}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02147500 -rects {35.5105 657.6005 85.5105 777.6005}
+update_floorplan_obj -obj 0x7fdb02147500 -rects {8.9265 696.2825 128.9265 746.2825}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02147960 -rects {1328.9875 1471.8825 1448.9875 1521.8825}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02147c70 -rects {912.408 1478.6035 1032.408 1528.6035}
+update_floorplan_obj -obj 0x7fdb02147c70 -rects {945.141 1421.0735 995.141 1541.0735}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb021462a0 -rects {1042.428 1430.0 1092.428 1550.0}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02147570 -rects {2206.8485 601.0645 2256.8485 721.0645}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb021476c0 -rects {1838.3945 2.9755 1888.3945 122.9755}
+gui_select -point {1112.80550 35.57150}
+gui_select -point {1291.33950 62.35150}
+gui_select -point {1389.53300 59.37600}
+write_io_file -locations ../inputs/ioring.io
+gui_select -point {660.51900 1056.19100}
+if {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
+enics_message "Defining IO Ring" medium
+# Reload the IO file after resizing the floorplan
+read_io_file $design(io_file)
+# Add IO Fillers
+add_io_fillers -cells $tech(IO_FILLERS) -prefix IOFILLER
+# Connect Pad Rings
+#route_special -connect {pad_ring} \
+#-nets "$design(digital_gnd) $design(digital_vdd) $design(io_gnd) $design(io_vdd)"
+} elseif {$design(FULLCHIP_OR_MACRO)=="MACRO"} {
+enics_message "Spreading Pins around Macro" medium
+    # Spread pins
+set pins_to_spread  [get_db ports .name] ;#[get_object_name [get_ports]]
+#edit_pin -fix_overlap 1 -spread_direction clockwise -side Bottom -layer 4 -spread_type side 
+edit_pin -spread_type start -start {0 0} -spread_direction clockwise -layer {3 4}  \
+        -pin $pins_to_spread -fix_overlap 1 -spacing 6
+
+}
+gui_redraw
+check_legacy_design -all -out_dir $design(reports_dir)/$this_run(stage)
+check_drc
+gui_select -point {2886.24350 109.96050}
+update_floorplan_obj -obj 0x7fdb02159ef0 -rects {520.611 246.972 1730.441 562.337}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02159e80 -rects {623.53 708.185 1833.36 1023.55}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02159e10 -rects {809.7645 624.8695 2019.5945 1233.4795}
+gui_deselect -all
+flip_or_rotate_obj -rotate R90
+update_floorplan_obj -obj 0x7fdb02159e80 -rects {257.535 163.6565 572.9 1373.4865}
+flip_or_rotate_obj -rotate R90
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02159ef0 -rects {907.4335 987.8865 2117.2635 1303.2515}
+gui_deselect -all
+flip_or_rotate_obj -rotate R270
+flip_or_rotate_obj -rotate R180
+update_floorplan_obj -obj 0x7fdb02159e10 -rects {217.627 181.5105 826.237 1391.3405}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02159e80 -rects {909.184 401.7005 2119.014 717.0655}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02159e10 -rects {205.723 169.6075 814.333 1379.4375}
+gui_deselect -all
+flip_or_rotate_obj -rotate R90
+flip_or_rotate_obj -rotate R180
+update_floorplan_obj -obj 0x7fdb02159ef0 -rects {1764.3985 163.6525 2079.7635 1373.4825}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02159e80 -rects {230.7555 946.229 1440.5855 1261.594}
+gui_deselect -all
+flip_or_rotate_obj -rotate R270
+flip_or_rotate_obj -rotate R180
+update_floorplan_obj -obj 0x7fdb02159e10 -rects {268.2115 232.092 1478.0415 840.702}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02159e80 -rects {195.0485 1017.644 1404.8785 1333.009}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02159e10 -rects {202.7475 208.2855 1412.5775 816.8955}
+update_floorplan_obj -obj 0x7fdb02159e10 -rects {193.8185 211.2605 1403.6485 819.8705}
+gui_select -point {1621.62700 856.82800}
+gui_select -point {678.37250 1193.06700}
+gui_select -point {648.61700 603.90500}
+gui_select -point {2047.13350 1047.26450}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fdb02159e80 -rects {192.0745 978.9625 1401.9045 1294.3275}
+update_floorplan_obj -obj 0x7fdb02159e80 -rects {192.075 1008.7155 1401.905 1324.0805}
+gui_deselect -all
+gui_select -point {1565.09150 696.14750}
+enics_message "Placing Hard Macros" medium
+delete_relative_floorplan -all
+set imem0_name [get_db [get_db insts $design(imem0)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem0_name \
+    -horizontal_edge_separate {0  25  0} \
+    -vertical_edge_separate {1  25  1} -orient MX
+set imem1_name [get_db [get_db insts $design(imem1)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem1_name \
+         -horizontal_edge_separate { 1 -25 1 } \
+         -vertical_edge_separate { 1 25 1 } -orient R0
+gui_select -point {999.73350 1201.99400}
+set imem0_name [get_db [get_db insts $design(imem0)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem0_name \
+    -horizontal_edge_separate {0  25  0} \
+    -vertical_edge_separate {1  25  1} -orient MX
+set imem1_name [get_db [get_db insts $design(imem1)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem1_name \
+         -horizontal_edge_separate { 1 -25 1 } \
+         -vertical_edge_separate { 1 25 1 } -orient R0
+set dmem0_name [get_db [get_db insts $design(dmem0)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $dmem0_name \
+    -horizontal_edge_separate {0  25  0} \
+    -vertical_edge_separate {2  -25  2} -orient MX
+gui_select -point {672.42150 886.58400}
+set imem0_name [get_db [get_db insts $design(imem0)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem0_name \
+    -horizontal_edge_separate {0  25  0} \
+    -vertical_edge_separate {1  25  1} -orient MX
+set imem1_name [get_db [get_db insts $design(imem1)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem1_name \
+         -horizontal_edge_separate { 1 -25 1 } \
+         -vertical_edge_separate { 1 25 1 } -orient R0
+set dmem0_name [get_db [get_db insts $design(dmem0)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $dmem0_name \
+    -horizontal_edge_separate {0  25  0} \
+    -vertical_edge_separate {2  -25  2} -orient MX
+gui_select -point {589.10550 892.53500}
+gui_select -point {2026.30450 892.53500}
+set imem0_name [get_db [get_db insts $design(imem0)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem0_name \
+    -horizontal_edge_separate {0  25  0} \
+    -vertical_edge_separate {1  25  1} -orient MX
+gui_select -point {422.47350 1023.46000}
+gui_select -point {764.66400 1121.65350}
+gui_select -point {470.08250 1270.43200}
+gui_select -point {639.69000 1196.04300}
+gui_select -point {755.73700 1231.74950}
+man create_relative_floorplan
+set imem0_name [get_db [get_db insts $design(imem0)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem0_name \
+    -horizontal_edge_separate {0  25  0} \
+    -vertical_edge_separate {1  25  1} -orient MX
+set imem1_name [get_db [get_db insts $design(imem1)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem1_name \
+         -horizontal_edge_separate { 1 -25 1 } \
+         -vertical_edge_separate { 1 25 1 } -orient R0
+gui_select -point {470.08250 996.68000}
+gui_select -point {470.08250 996.68000}
+gui_select -point {589.10550 1190.09150}
+gui_select -point {678.37250 380.73750}
+set imem0_name [get_db [get_db insts $design(imem0)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem0_name \
+    -horizontal_edge_separate {0  100  0} \
+    -vertical_edge_separate {1  25  1} -orient MX
+set imem1_name [get_db [get_db insts $design(imem1)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem1_name \
+         -horizontal_edge_separate { 1 -25 1 } \
+         -vertical_edge_separate { 1 25 1 } -orient R0
+gui_select -point {467.10700 934.19300}
+gui_select -point {1865.62400 791.36550}
+gui_select -point {1865.62400 800.29250}
+gui_select -rect {1865.62400 800.29250 1865.62400 827.07250}
+gui_select -point {1865.62400 827.07250}
+gui_select -point {556.37400 559.27150}
+gui_select -point {532.56950 1154.38500}
+set imem0_name [get_db [get_db insts $design(imem0)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem0_name \
+    -horizontal_edge_separate {1  25  0} \
+    -vertical_edge_separate {1  25  1} -orient MX
+set imem1_name [get_db [get_db insts $design(imem1)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem1_name \
+         -horizontal_edge_separate { 1 -25 1 } \
+         -vertical_edge_separate { 1 25 1 } -orient R0
+gui_select -point {407.59600 937.16850}
+gui_select -point {595.05650 987.75300}
+update_floorplan_obj -obj 0x7fdb02159e80 -rects {189.0995 1014.6665 1398.9295 1330.0315}
+update_floorplan_obj -obj 0x7fdb02159e80 -rects {189.1 996.8115 1398.93 1312.1765}
+set imem0_name [get_db [get_db insts $design(imem0)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem0_name \
+    -horizontal_edge_separate {1  25  0} \
+    -vertical_edge_separate {1  25  1} -orient MX
+set imem1_name [get_db [get_db insts $design(imem1)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem1_name \
+         -horizontal_edge_separate { 1 -25 1 } \
+         -vertical_edge_separate { 1 25 1 } -orient R0
+set imem0_name [get_db [get_db insts $design(imem0)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem0_name \
+    -horizontal_edge_separate {1  25  0} \
+    -vertical_edge_separate {1  25  1} -orient MX
+set imem1_name [get_db [get_db insts $design(imem1)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem1_name \
+         -horizontal_edge_separate { 1 -25 1 } \
+         -vertical_edge_separate { 1 25 1 } -orient R0
+set imem0_name [get_db [get_db insts $design(imem0)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem0_name \
+    -horizontal_edge_separate {0  25  0} \
+    -vertical_edge_separate {1  25  1} -orient MX
+set imem1_name [get_db [get_db insts $design(imem1)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem1_name \
+         -horizontal_edge_separate { 1 -25 1 } \
+         -vertical_edge_separate { 1 25 1 } -orient R0
+update_floorplan_obj -obj 0x7fdb02159e80 -rects {126.613 618.913 1336.443 934.278}
+gui_select -point {1520.45800 1035.36200}
+man create_relative_floorplan 
+write_floorplan_script -sections relative_fplan rel_flrpln
+set imem0_name [get_db [get_db insts $design(imem0)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem0_name \
+    -horizontal_edge_separate {0  25  0} \
+    -vertical_edge_separate {1  25  1} -orient MX
+set imem1_name [get_db [get_db insts $design(imem1)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem1_name \
+         -horizontal_edge_separate { 1 -25 1 } \
+         -vertical_edge_separate { 1 25 1 } -orient R0
+gui_select -point {731.93250 645.56300}
+gui_select -point {-651.70600 1267.45650}
+gui_select -point {3293.89600 916.33950}
+gui_select -point {705.15250 1112.72700}
+gui_select -point {2960.63250 1201.99400}
+set imem0_name [get_db [get_db insts $design(imem0)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem0_name \
+    -horizontal_edge_separate {0  25  0} \
+    -vertical_edge_separate {1  25  1} -orient MX
+gui_select -point {788.46850 990.72850}
+gui_select -point {544.47200 1193.06700}
+gui_select -point {2600.58900 818.14550}
+set imem0_name [get_db [get_db insts $design(imem0)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem0_name \
+    -horizontal_edge_separate {1  -25  0} \
+    -vertical_edge_separate {1  25  1} -orient MX
+set imem0_name [get_db [get_db insts $design(imem0)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem0_name \
+    -horizontal_edge_separate {1  -25  0} \
+    -vertical_edge_separate {1  25  1} -orient MX
+set imem0_name [get_db [get_db insts $design(imem0)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem0_name \
+    -horizontal_edge_separate {0  -25  0} \
+    -vertical_edge_separate {1  25  1} -orient MX
+gui_select -point {541.49650 1118.67800}
+set imem0_name [get_db [get_db insts $design(imem0)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem0_name \
+    -horizontal_edge_separate {0  100  0} \
+    -vertical_edge_separate {1  25  1} -orient MX
+gui_select -point {437.35150 446.20000}
+set imem0_name [get_db [get_db insts $design(imem0)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem0_name \
+    -horizontal_edge_separate {1  100  1} \
+    -vertical_edge_separate {1  25  1} -orient MX
+gui_select -point {615.88550 943.11950}
+set imem0_name [get_db [get_db insts $design(imem0)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem0_name \
+    -horizontal_edge_separate {1  25  1} \
+    -vertical_edge_separate {1  25  1} -orient MX
+gui_select -point {389.74250 1059.16650}
+set imem0_name [get_db [get_db insts $design(imem0)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem0_name \
+    -horizontal_edge_separate {1  -40  1} \
+    -vertical_edge_separate {1  30  1} -orient MX
+gui_select -point {470.08250 940.14400}
+gui_select -point {470.08250 940.14400}
+gui_select -point {452.22950 957.99750}
+set imem0_name [get_db [get_db insts $design(imem0)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem0_name \
+    -horizontal_edge_separate {1  -50  1} \
+    -vertical_edge_separate {1  30  1} -orient MX
+set imem0_name [get_db [get_db insts $design(imem0)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem0_name \
+    -horizontal_edge_separate {1  -50  1} \
+    -vertical_edge_separate {1  40  1} -orient MX
+gui_select -point {675.39700 981.80200}
+gui_select -point {449.25400 1124.62900}
+gui_select -point {2570.83300 955.02200}
+set imem1_name [get_db [get_db insts $design(imem1)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem1_name \
+         -horizontal_edge_separate { 1 -25 1 } \
+         -vertical_edge_separate { 1 25 1 } -orient R90
+gui_select -point {684.32350 922.29050}
+gui_select -rect {684.32350 922.29050 -577.31700 -241.15600}
+gui_select -point {794.41950 797.31700}
+gui_select -point {2677.95350 919.31500}
+set imem1_name [get_db [get_db insts $design(imem1)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem1_name \
+         -horizontal_edge_separate { 1 -25 1 } \
+         -vertical_edge_separate { 0 25 0 } -orient R90
+gui_select -point {806.32200 571.17350}
+set imem1_name [get_db [get_db insts $design(imem1)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem1_name \
+         -horizontal_edge_separate { 0 -25 0 } \
+         -vertical_edge_separate { 1 25 1 } -orient R90
+gui_select -point {770.61500 556.29600}
+set imem1_name [get_db [get_db insts $design(imem1)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem1_name \
+         -horizontal_edge_separate { 1 -25 1 } \
+         -vertical_edge_separate { 1 25 0 } -orient R90
+gui_select -point {773.59050 589.02700}
+set imem1_name [get_db [get_db insts $design(imem1)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem1_name \
+         -horizontal_edge_separate { 1 -25 1 } \
+         -vertical_edge_separate { 1 25 0 } -orient R90
+set imem1_name [get_db [get_db insts $design(imem1)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem1_name \
+         -horizontal_edge_separate { 1 -25 1 } \
+         -vertical_edge_separate { 0 25 0 } -orient R90
+gui_select -point {1743.62550 943.11950}
+gui_select -point {1996.54850 603.90500}
+set imem1_name [get_db [get_db insts $design(imem1)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem1_name \
+         -horizontal_edge_separate { 1 -25 1 } \
+         -vertical_edge_separate { 2 25 2 } -orient R90
+gui_select -point {1585.92050 883.60800}
+set imem1_name [get_db [get_db insts $design(imem1)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem1_name \
+         -horizontal_edge_separate { 1 -25 1 } \
+         -vertical_edge_separate { 2 -25 2 } -orient R90
+set imem1_name [get_db [get_db insts $design(imem1)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem1_name \
+         -horizontal_edge_separate { 1 -25 1 } \
+         -vertical_edge_separate { 2 -40 2 } -orient R90
+gui_select -point {1514.50700 1029.41100}
+set imem1_name [get_db [get_db insts $design(imem1)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem1_name \
+         -horizontal_edge_separate { 1 -25 1 } \
+         -vertical_edge_separate { 2 -50 2 } -orient R90
+gui_select -point {1621.62700 910.38850}
+gui_select -point {1621.62700 910.38850}
+gui_select -point {1389.53300 901.46150}
+set dmem0_name [get_db [get_db insts $design(dmem0)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $dmem0_name \
+    -horizontal_edge_separate {0  25  0} \
+    -vertical_edge_separate {2  -25  2} -orient MX
+gui_select -point {669.44550 862.77900}
+set dmem0_name [get_db [get_db insts $design(dmem0)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $dmem0_name \
+    -horizontal_edge_separate {0  25  0} \
+    -vertical_edge_separate {1  40  1} -orient MX
+set dmem0_name [get_db [get_db insts $design(dmem0)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $dmem0_name \
+    -horizontal_edge_separate {0  50  0} \
+    -vertical_edge_separate {1  40  1} -orient MX
+gui_select -point {800.37050 966.92400}
+enics_message "Placing Hard Macros" medium
+delete_relative_floorplan -all
+set imem0_name [get_db [get_db insts $design(imem0)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem0_name \
+    -horizontal_edge_separate {1  -50  1} \
+    -vertical_edge_separate {1  40  1} -orient MX
+set imem1_name [get_db [get_db insts $design(imem1)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem1_name \
+         -horizontal_edge_separate { 1 -25 1 } \
+         -vertical_edge_separate { 2 -60 2 } -orient R90
+gui_select -point {1990.59750 752.68300}
+gui_select -point {856.90650 1115.70250}
+gui_select -point {1791.23450 1023.46000}
+set dmem0_name [get_db [get_db insts $design(dmem0)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $dmem0_name \
+    -horizontal_edge_separate {0  50  0} \
+    -vertical_edge_separate {1  40  1} -orient MX
+gui_select -point {1597.82250 571.17350}
+enics_message "Adding Rings Around Hard Macros and creating Halos"
+deselect_obj -all
+select_obj $imem0_name
+add_rings -around selected -type block_rings -nets "$design(digital_gnd) $design(digital_vdd)" \
+-layer {bottom M1 top M1 right M2 left M2} -width 3 -spacing 0.5
+create_place_halo -halo_deltas {10 10 10 10} -insts $imem0_name -snap_to_site
+deselect_obj -all
+select_obj $imem1_name
+add_rings -around selected -type block_rings -nets "$design(digital_gnd) $design(digital_vdd)" \
+-layer {bottom M1 top M1 right M2 left M2} -width 3 -spacing 0.5
+create_place_halo -halo_deltas {10 10 10 10} -insts $imem1_name -snap_to_site
+deselect_obj -all
+select_obj $dmem0_name
+add_rings -around selected -type block_rings -nets "$design(digital_gnd) $design(digital_vdd)" \
+-layer {bottom M1 top M1 right M2 left M2} -width 3 -spacing 0.5
+create_place_halo -halo_deltas {10 10 10 10} -insts $dmem0_name -snap_to_site
+enics_message "Connecting Block Pins of hard macros to Power/Ground"
+route_special -connect {block_pin} -nets "$design(digital_gnd) $design(digital_vdd)" \
+    -block_pin_layer_range {1 4} \
+    -block_pin on_boundary \
+    -detailed_log
+enics_message "Creating Core Rings" medium
+add_rings -type core_rings -nets $design(core_ring_nets) -center 1 -follow core \
+-layer $design(core_ring_layers) -width $design(core_ring_width) -spacing $design(core_ring_spacing) 
+gui_select -point {1582.94500 1422.18600}
+gui_select -point {1550.21350 1228.77400}
+enics_message "Routing Follow Pins" medium
+route_special -connect { core_pin } -nets  "$design(digital_gnd) $design(digital_vdd)" -detailed_log
+check_drc
+gui_select -point {2279.22750 1570.96400}
+if {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
+    # Connect pads to the rings
+    enics_message "Connecting PG Pads to Core Ring" medium
+    route_special -connect {pad_pin} -nets $design(core_ring_nets) -pad_pin_port_connect all_geom -detailed_log
+}
+check_drc
+if {$tech(LIBRARY_HAS_ENDCAPS)=="YES"} {
+    # get_db -category add_endcaps *
+    enics_message "Adding End Caps" medium
+    add_endcaps  
+}
+enics_message "Adding Well Taps" medium
+add_well_taps -cell $tech(WELLTAP)  -checker_board -prefix $design(well_tap_prefix) \
+    -cell_interval [expr 2 * $tech(WELLTAP_RULE)] 
+check_well_taps -max_distance $tech(WELLTAP_RULE)
+gui_select -point {1270.24750 921.25600}
+gui_select -point {2275.99300 1400.79500}
+gui_select -point {2534.87150 1353.18550}
+gui_select -point {2181.01300 1413.62450}
+gui_select -point {2176.09050 1414.32250}
+gui_select -point {2177.00850 1414.02900}
+gui_select -point {2177.74350 1403.19150}
+gui_select -point {2177.44950 1412.66950}
+gui_select -point {2177.04550 1421.85350}
+gui_select -point {2185.42150 1417.22500}
+enics_message "Creating Power Grid" high
+add_stripes -layer [lindex [get_db layers .name] 1] -direction vertical -nets $design(M2_stripe_nets) \
+    -width $design(M2_stripes_width) -spacing $design(M2_stripes_spacing) \
+    -start_from left -start_offset $design(M2_stripes_from_left) \
+    -set_to_set_distance $design(M2_stripes_interval) -create_pins true \
+    -max_same_layer_jog_length 10.0
+enics_create_stage_reports -pop_snapshot yes 
+write_def -floorplan -no_std_cells "$design(floorplan_def)"

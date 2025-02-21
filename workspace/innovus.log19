@@ -1,0 +1,2324 @@
+
+Cadence Innovus(TM) Implementation System.
+Copyright 2021 Cadence Design Systems, Inc. All rights reserved worldwide.
+
+Version:	v21.15-s110_1, built Fri Sep 23 13:08:12 PDT 2022
+Options:	-stylus 
+Date:		Tue Feb 11 18:31:50 2025
+Host:		ip-10-70-166-58.il-central-1.compute.internal (x86_64 w/Linux 4.14.355-275.570.amzn2.x86_64) (1core*2cpus*Intel(R) Xeon(R) Platinum 8375C CPU @ 2.90GHz 55296KB)
+OS:		CentOS Linux release 7.9.2009 (Core)
+
+License:
+		[18:31:50.019857] Configured Lic search path (21.01-s002): 5280@ip-10-70-133-150.il-central-1.compute.internal
+
+		invs	Innovus Implementation System	21.1	checkout succeeded
+		8 CPU jobs allowed with the current license(s). Use set_multi_cpu_usage to set your required CPU count.
+
+
+Create and set the environment variable TMPDIR to /tmp/innovus_temp_2167_ip-10-70-166-58.il-central-1.compute.internal_saridav_HFy4JL.
+
+The soft stacksize limit is either up to the hard limit or larger than 0.2% of RAM. No change is needed.
+[INFO] Loading PVS 23.11 fill procedures
+
+**INFO:  MMMC transition support version v31-84 
+
+@innovus 1> set design(TOPLEVEL) "lp_riscv_top"
+lp_riscv_top
+@innovus 2> set runtype "pnr"
+set runtype "pnr"
+pnr
+@innovus 3> set debug_file "debug.txt"
+set debug_file "debug.txt"
+debug.txt
+@innovus 4> 
+
+@innovus 4> # Load general procedures
+# Load general procedures
+@innovus 5> source ../scripts/procedures.tclsource ../scripts/procedures.tcl -quiet
+ -quiet
+@innovus 6> 
+
+@innovus 6> ###############################################
+###############################################
+@innovus 7> # Starting Stage - Load defines and technology
+# Starting Stage - Load defines and technology
+@innovus 8> ###############################################
+###############################################
+@innovus 9> enics_start_stage "start"
+enics_start_stage "start"
+*****************************************
+*****************************************
+**   ENICSINFO: Starting stage start   **
+*****************************************
+*****************************************
+ENICSINFO: Current time is: 11/02/2025 18:32
+ENICSINFO: This session is running on Hostname : ip-10-70-166-58.il-central-1.compute.internal
+
+ENICSINFO: The log file is innovus.log19 and the command file is innovus.cmd19
+ENICSINFO: ----------------------------------
+@innovus 10> 
+@innovus 10> 
+
+@innovus 10> # Load the specific definitions for this project
+# Load the specific definitions for this project
+@innovus 11> source ../inputs/$design(TOPLEVEL).defines -quiet
+source ../inputs/$design(TOPLEVEL).defines -quiet
+@innovus 12> 
+
+@innovus 12> 
+
+@innovus 12> 
+
+@innovus 12> # Load the library paths and definitions for this technology
+# Load the library paths and definitions for this technology
+@innovus 13> source $design(libraries_dir)/libraries.$TECHNOLOGY.tcl -quiet
+source $design(libraries_dir)/libraries.$TECHNOLOGY.tcl -quiet
+##  Process: 65            (User Set)               
+##     Node: (not set)                           
+
+##  Check design process and node:  
+##  Design tech node is not set.
+
+Applying the recommended capacitance filtering threshold values for 65nm process node: total_c_th=0, relative_c_th=1 and coupling_c_th=0.1.
+	These values will be used by all post-route extraction engines, including TQuantus, IQuantus and Quantus QRC extraction.
+	Capacitance filtering mode(extract_rc_cap_filter_mode option of the set_db) is 'relative_and_coupling' for all engines.
+	The accuracy mode for post_route extract_rc_effort_level low extraction will be set to 'high'.
+	Default value for EffortLevel(extract_rc_effort_level option of the set_db) in post_route extraction mode will be 'medium' if Quantus QRC technology file is specified else 'low'.
+@innovus 14> source $design(libraries_dir)/libraries.$SC_TECHNOLOGY.tcl -quiet
+source $design(libraries_dir)/libraries.$SC_TECHNOLOGY.tcl -quiet
+@innovus 15> source $design(libraries_dir)/libraries.$SRAM_TECHNOLOGY.tcl -quiet
+source $design(libraries_dir)/libraries.$SRAM_TECHNOLOGY.tcl -quiet
+@iif {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
+    source $design(libraries_dir)/libraries.$IO_TECHNOLOGY.tcl -quiet
+}
+nnovus 16> if {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
++     source $design(libraries_dir)/libraries.$IO_TECHNOLOGY.tcl -quiet
++ }
+@innovus 17> set_library_unit -time 1ns -cap 1pf
+set_library_unit -time 1ns -cap 1pf
+@innovus 18> 
+
+@innovus 18> #############################################
+#############################################
+@innovus 19> #       Print values to debug file
+#       Print values to debug file
+@innovus 20> #############################################
+#############################################
+@innovus 21> set var_list {runtype}
+set var_list {runtype}
+runtype
+@innovus 22> set dic_list {paths tech tech_files design}
+set dic_list {paths tech tech_files design}
+paths tech tech_files design
+@innovus 23> enics_print_debug_data w $debug_file "after everything was loaded" $var_list $dic_list
+enics_print_debug_data w $debug_file "after everything was loaded" $var_list $dic_list
+@innovus 24> 
+
+@innovus 24> 
+
+@innovus 24> ############################################
+############################################
+@innovus 25> # Init Design
+# Init Design
+@innovus 26> ############################################
+############################################
+@innovus 27> enable_metrics -on
+enable_metrics -on
+@innovus 28> enics_start_stage "init_design"
+enics_start_stage "init_design"
+***********************************************
+***********************************************
+**   ENICSINFO: Starting stage init_design   **
+***********************************************
+***********************************************
+ENICSINFO: Current time is: 11/02/2025 18:32
+ENICSINFO: ----------------------------------
+@innovus 29> 
+
+@innovus 29> # Global Nets
+# Global Nets
+@innovus 30> set_db init_ground_nets $design(all_ground_nets)
+set_db init_ground_nets $design(all_ground_nets)
+1 gnd
+@innovus 31> set_db init_poweset_db init_power_nets $design(all_power_nets)
+r_nets $design(all_power_nets)
+1 {vdd vddio}
+@innovus 32> 
+
+@innovus 32> # MMMC
+# MMMC
+@innovus 33> enics_message "Suppressing the following messages that are reported due to the LIB definitions:" 
+enics_message "Suppressing the following messages that are reported due to the LIB definitions:" 
+ENICSINFO: Suppressing the following messages that are reported due to the LIB definitions:
+@innovus 34> enics_message "$tech(LIB_SUPPRESS_MESSAGES_INNOVUS)"
+enics_message "$tech(LIB_SUPPRESS_MESSAGES_INNOVUS)"
+ENICSINFO: TECHLIB-436 TECHLIB-1318 TECHLIB-302 IMPCTE-337 IMPTS-282
+@innovus 35> set_message -suppress -id $tech(LIB_SUPPRESS_MESSAGES_INNOVUS) 
+set_message -suppress -id $tech(LIB_SUPPRESS_MESSAGES_INNOVUS) 
+@innovus 36> enics_message "Reading MMMC File" medium
+enics_message "Reading MMMC File" medium
+
+ENICSINFO: Reading MMMC File
+----------------------------
+@innovus 37> read_mmmc $design(mmmc_view_file) 
+read_mmmc $design(mmmc_view_file) 
+#@ Begin verbose source (pre): 
+@file 1: #  Version:1.0 MMMC View Definition File
+@file 2: # Do Not Remove Above Line
+@file 3:
+@file 4: ############# MMMC Hierarchy ########################################################################################
+@file 5: #                                                                                                                   #
+@file 6: #   Setup Analysis View |                   |--> Constraint Corner --> SDC File                                     #
+@file 7: #                       |--> Analysis View  |                                                                       #
+@file 8: #    Hold Analysis View |                   |                 |--> Timing Condition --> Library Set --> LIB File    #
+@file 9: #                                           |--> Delay Corner |                                                     #
+@file 10: #                                                             |--> RC Corner --> QRCTech File                       #
+@file 11: #####################################################################################################################
+@file 12:
+@file 13: # Constraint Modes #
+@file 14: # ---------------- #
+@@file 15: create_constraint_mode \
+	-name functional_mode \
+	-sdc_files $design(functional_sdc)
+@file 18:
+@file 19: # RC Corners #
+@file 20: # ---------- #
+@file 21: if {$runtype=="synthesis"} {...
+@file 24: } else {
+@@file 25: set_message -suppress -id ENCEXT-6202 ;
+@file 25: # In addition to the technology file, capacitance table file is specified for all RC corners.
+@file 26: }
+@file 27:
+@@file 28: create_rc_corner \
+	-name bc_rc_corner \
+	-temperature $tech(TEMPERATURE_BC) \
+    -qrc_tech $tech_files(QRCTECH_FILE_BC)
+@file 32: #	-cap_table $tech_files(CAPTABLE_BC) \
+@file 33:
+@@file 34: create_rc_corner \
+	-name tc_rc_corner \
+	-temperature $tech(TEMPERATURE_TC) \
+	-qrc_tech $tech_files(QRCTECH_FILE_TC)
+@file 38: #	-cap_table $tech_files(CAPTABLE_TC) \
+@file 39:
+@@file 40: create_rc_corner \
+	-name wc_rc_corner \
+	-temperature $tech(TEMPERATURE_WC) \
+    -qrc_tech $tech_files(QRCTECH_FILE_WC)
+@file 44: #	-cap_table $tech_files(CAPTABLE_WC) \
+@file 45:
+@file 46: # Library Sets #
+@file 47: # ------------ #
+@@file 48: create_library_set \
+	-name bc_libset \
+	-timing $tech_files(ALL_BC_LIBS)  
+@file 51: # -aocv $tech_files(ALL_BC_AOCV_LIBS)
+@file 52:
+@@file 53: create_library_set \
+	-name tc_libset \
+	-timing $tech_files(ALL_TC_LIBS)  
+@file 56: # -aocv $tech_files(ALL_TC_AOCV_LIBS)
+@file 57:     
+@@file 58: create_library_set \
+	-name wc_libset \
+	-timing $tech_files(ALL_WC_LIBS)  
+@file 61: # -aocv $tech_files(ALL_WC_AOCV_LIBS)
+@file 62:
+@file 63: # Timing Conditions #
+@file 64: # ----------------- #
+@@file 65: create_timing_condition \
+   -name         bc_timing_condition \
+   -library_sets bc_libset
+@file 68:
+@@file 69: create_timing_condition \
+   -name         tc_timing_condition \
+   -library_sets tc_libset
+@file 72:
+@@file 73: create_timing_condition \
+   -name         wc_timing_condition \
+   -library_sets wc_libset
+@file 76:
+@file 77: # Delay Corners #
+@file 78: # ------------- #
+@@file 79: create_delay_corner \
+	-name bc_dly_corner \
+	-timing_condition bc_timing_condition \
+	-rc_corner bc_rc_corner
+@file 83:
+@@file 84: create_delay_corner \
+	-name tc_dly_corner \
+	-timing_condition tc_timing_condition \
+	-rc_corner tc_rc_corner
+@file 88:
+@@file 89: create_delay_corner \
+	-name wc_dly_corner \
+	-timing_condition wc_timing_condition \
+	-rc_corner wc_rc_corner
+@file 93:
+@file 94: # Analysis Views #
+@file 95: # -------------- #
+@@file 96: create_analysis_view \
+	-name bc_analysis_view \
+	-constraint_mode functional_mode \
+	-delay_corner bc_dly_corner
+@file 100:
+@@file 101: create_analysis_view \
+    -name tc_analysis_view \
+	-constraint_mode functional_mode \
+	-delay_corner tc_dly_corner
+@file 105:
+@@file 106: create_analysis_view \
+	-name wc_analysis_view \
+	-constraint_mode functional_mode \
+	-delay_corner wc_dly_corner
+@file 110:
+@file 111: # Selected Analysis Views #
+@file 112: # ----------------------- #
+@@file 113: set_analysis_view \
+	-setup $design(selected_setup_analysis_views) \
+	-hold  $design(selected_hold_analysis_views)
+@file 116: # -leakage $design(selected_leakage_analysis_views)
+@file 117:     # -dynamic $design(selected_dynamic_power_analysis_views)
+@file 118:
+@file 119:
+#@ End verbose source: /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../inputs/lp_riscv_top.mmmc
+Reading wc_libset timing library '/tech/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp/sc9_base_rvt/r0p0/lib/sc9_cln65lp_base_rvt_ss_typical_max_0p90v_125c.lib' ...
+Read 949 cells in library 'sc9_cln65lp_base_rvt_ss_typical_max_0p90v_125c' 
+Reading wc_libset timing library '/tech/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp/sc9_base_lvt/r0p0/lib/sc9_cln65lp_base_lvt_ss_typical_max_0p90v_125c.lib' ...
+Read 949 cells in library 'sc9_cln65lp_base_lvt_ss_typical_max_0p90v_125c' 
+Reading wc_libset timing library '/tech/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp/sc9_base_hvt/r0p0/lib/sc9_cln65lp_base_hvt_ss_typical_max_0p90v_125c.lib' ...
+Read 949 cells in library 'sc9_cln65lp_base_hvt_ss_typical_max_0p90v_125c' 
+Reading wc_libset timing library '/project/tsmc65/users/saridav/ws/DVD25/hw7/mem_gen/SP_32768X32/M32/sp_hde_32768_m32_ss_1p08v_1p08v_125c.lib' ...
+Read 1 cells in library 'USERLIB_ss_1p08v_1p08v_125c' 
+Reading wc_libset timing library '/project/tsmc65/users/saridav/ws/DVD25/hw7/mem_gen/SP_16384X32/M32/sp_hde_16384_m32_ss_1p08v_1p08v_125c.lib' ...
+**WARN: (TECHLIB-459):	Appending library 'USERLIB_ss_1p08v_1p08v_125c' to the previously read library of the same name and nominal PVT. Cell definitions from the previously read library will not be overridden. (File /project/tsmc65/users/saridav/ws/DVD25/hw7/mem_gen/SP_16384X32/M32/sp_hde_16384_m32_ss_1p08v_1p08v_125c.lib)
+Read 1 cells in library 'USERLIB_ss_1p08v_1p08v_125c' 
+Reading wc_libset timing library '/tech/tsmc/65LP/dig_libs/ARM_FEONLY/TSMCHOME_fe/digital/Front_End/timing_power_noise/NLDM/tpdn65lpnv2od3_200a/tpdn65lpnv2od3wc.lib' ...
+Read 47 cells in library 'tpdn65lpnv2od3wc' 
+Reading bc_libset timing library '/tech/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp/sc9_base_rvt/r0p0/lib/sc9_cln65lp_base_rvt_ff_typical_min_1p32v_m40c.lib' ...
+Read 949 cells in library 'sc9_cln65lp_base_rvt_ff_typical_min_1p32v_m40c' 
+Reading bc_libset timing library '/tech/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp/sc9_base_lvt/r0p0/lib/sc9_cln65lp_base_lvt_ff_typical_min_1p32v_m40c.lib' ...
+Read 949 cells in library 'sc9_cln65lp_base_lvt_ff_typical_min_1p32v_m40c' 
+Reading bc_libset timing library '/tech/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp/sc9_base_hvt/r0p0/lib/sc9_cln65lp_base_hvt_ff_typical_min_1p32v_m40c.lib' ...
+Read 949 cells in library 'sc9_cln65lp_base_hvt_ff_typical_min_1p32v_m40c' 
+Reading bc_libset timing library '/project/tsmc65/users/saridav/ws/DVD25/hw7/mem_gen/SP_32768X32/M32/sp_hde_32768_m32_ff_1p32v_1p32v_m40c.lib' ...
+Read 1 cells in library 'USERLIB_ff_1p32v_1p32v_m40c' 
+Reading bc_libset timing library '/project/tsmc65/users/saridav/ws/DVD25/hw7/mem_gen/SP_16384X32/M32/sp_hde_16384_m32_ff_1p32v_1p32v_m40c.lib' ...
+**WARN: (TECHLIB-459):	Appending library 'USERLIB_ff_1p32v_1p32v_m40c' to the previously read library of the same name and nominal PVT. Cell definitions from the previously read library will not be overridden. (File /project/tsmc65/users/saridav/ws/DVD25/hw7/mem_gen/SP_16384X32/M32/sp_hde_16384_m32_ff_1p32v_1p32v_m40c.lib)
+Read 1 cells in library 'USERLIB_ff_1p32v_1p32v_m40c' 
+Reading bc_libset timing library '/tech/tsmc/65LP/dig_libs/ARM_FEONLY/TSMCHOME_fe/digital/Front_End/timing_power_noise/NLDM/tpdn65lpnv2od3_200a/tpdn65lpnv2od3bc.lib' ...
+Read 47 cells in library 'tpdn65lpnv2od3bc' 
+timing_initialized
+@innovus 38> 
+
+@innovus 38> # LEFs
+# LEFs
+@innovus 39> enics_message "Suppressing the following messages that are reported due to the LEF definitions:" 
+enics_message "Suppressing the following messages that are reported due to the LEF definitions:" 
+ENICSINFO: Suppressing the following messages that are reported due to the LEF definitions:
+@innovus 40> enics_message "$tech(LEF_SUPPRESS_MESSAGES_INNOVUS)"
+enics_message "$tech(LEF_SUPPRESS_MESSAGES_INNOVUS)"
+ENICSINFO: ENCEXT-6202 IMPLF-200 LEFPARS-2001 LEFPARS-2065 LEFPARS-2076 IMPLF-58 IMPFP-3961 IMPSR-4302
+set_message -suppress -id $tech(LEF_SUPPRESS_MESSAGES_INNOVUS) 
+@innovus 41> set_message -suppress -id $tech(LEF_SUPPRESS_MESSAGES_INNOVUS) 
+@innovus 42> enics_message "Reading LEF abstracts"
+enics_message "Reading LEF abstracts"
+ENICSINFO: Reading LEF abstracts
+@innovus 43> read_physical -lef $tech_files(ALL_LEFS)
+read_physical -lef $tech_files(ALL_LEFS)
+
+Loading LEF file /data/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp//arm_tech/r2p0/lef/1p9m_6x2z/sc9_tech.lef ...
+
+Loading LEF file /data/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp//sc9_base_rvt/r0p0/lef/sc9_cln65lp_base_rvt.lef ...
+Set DBUPerIGU to M2 pitch 400.
+
+Loading LEF file /data/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp//sc9_base_lvt/r0p0/lef/sc9_cln65lp_base_lvt.lef ...
+
+Loading LEF file /data/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp//sc9_base_hvt/r0p0/lef/sc9_cln65lp_base_hvt.lef ...
+
+Loading LEF file ../mem_gen/SP_32768X32/M32/sp_hde_32768_m32.lef ...
+
+Loading LEF file ../mem_gen/SP_16384X32/M32/sp_hde_16384_m32.lef ...
+
+Loading LEF file /data/project/tsmc65/shared/modified_libraries/tpdn65lpnv2od3_9lm.lef ...
+WARNING (LEFPARS-2502): Message (LEFPARS-2065) has been suppressed from output. See file /data/project/tsmc65/shared/modified_libraries/tpdn65lpnv2od3_9lm.lef at line 12683.
+WARNING (LEFPARS-2502): Message (LEFPARS-2076) has been suppressed from output. See file /data/project/tsmc65/shared/modified_libraries/tpdn65lpnv2od3_9lm.lef at line 12686.
+WARNING (LEFPARS-2502): Message (LEFPARS-2001) has been suppressed from output. See file /data/project/tsmc65/shared/modified_libraries/tpdn65lpnv2od3_9lm.lef at line 13714.
+
+Loading LEF file /data/tsmc/65LP/dig_libs/ARM_FEONLY/TSMCHOME_fe/digital/Back_End/lef/tpdn65lpnv2od3_140b/mt/9lm/lef//antenna_9lm.lef ...
+**WARN: (IMPLF-61):	43 duplicated MACRO definitions have been found in the LEF file(s). Their content except DENSITY and PIN ANTENNA* data, and certain properties, have been ignored.
+Review the LEF files specified in the init_lef_files variable and remove redundant definitions.
+Type 'man IMPLF-61' for more detail.
+
+
+##  Check design process and node:  
+##  Design tech node is not set.
+
+0
+@innovus 44> 
+@innovus 44> # Post Synthesis Netlist
+# Post Synthesis Netlist
+@innovus 45> enics_message "Reading the Post Synthesis netlist at $design(postsyn_netlist)" medium
+enics_message "Reading the Post Synthesis netlist at $design(postsyn_netlist)" medium
+
+ENICSINFO: Reading the Post Synthesis netlist at /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../export/lp_riscv_top.postsyn.v
+-------------------------------------------------------------------------------------------------------------------------------------------
+@innovus 46> read_netlist $design(postsyn_netlist)
+read_netlist $design(postsyn_netlist)
+#% Begin Load netlist data ... (date=02/11 18:32:50, mem=1020.7M)
+*** Begin netlist parsing (mem=1204.4M) ***
+Pin 'VSS' of cell 'PVSS3CDG' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+Pin 'VSSPST' of cell 'PVSS2CDG' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+Pin 'AVSS' of cell 'PVSS2ANA' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+Pin 'VSS' of cell 'PVSS1CDG' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+Pin 'AVSS' of cell 'PVSS1ANA' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+Pin 'VDDPST' of cell 'PVDD2POC' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+Pin 'VDDPST' of cell 'PVDD2CDG' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+Pin 'AVDD' of cell 'PVDD2ANA' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+Pin 'VDD' of cell 'PVDD1CDG' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+Pin 'AVDD' of cell 'PVDD1ANA' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+Created 2896 new cells from 10 timing libraries.
+Reading netlist ...
+Backslashed names will retain backslash and a trailing blank character.
+Reading verilog netlist '/data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../export/lp_riscv_top.postsyn.v'
+
+*** Memory Usage v#1 (Current mem = 1209.438M, initial mem = 474.215M) ***
+*** End netlist parsing (cpu=0:00:00.3, real=0:00:01.0, mem=1209.4M) ***
+#% End Load netlist data ... (date=02/11 18:32:51, total cpu=0:00:00.3, real=0:00:01.0, peak res=1171.7M, current mem=1171.7M)
+Top level cell is lp_riscv_top.
+Hooked 5792 DB cells to tlib cells.
+Starting recursive module instantiation check.
+No recursion found.
+Building hierarchical netlist for Cell lp_riscv_top ...
+*** Netlist is unique.
+** info: there are 5914 modules.
+** info: there are 22494 stdCell insts.
+** info: there are 68 Pad insts.
+** info: there are 3 macros.
+
+*** Memory Usage v#1 (Current mem = 1325.852M, initial mem = 474.215M) ***
+0
+
+@innovus 47> 
+@innovus 47> # Import and initialize design
+# Import and initialize design
+@enics_message "Running init_design command" medium
+innovus 48> enics_message "Running init_design command" medium
+
+ENICSINFO: Running init_design command
+--------------------------------------
+@innovus 49> init_design
+init_design
+Pre-connect netlist-defined P/G connections...
+  Updated 24 instances.
+Initializing I/O assignment ...
+Start create_tracks
+Extraction setup Started 
+Initializing multi-corner RC extraction with 2 active RC Corners ...
+Captable file(s) not specified in multi-corner setup. PreRoute extraction will use technology file. For post_route extraction, default value for effort level would be 'medium' and effort level 'low' would not be allowed.
+Generating auto layer map file.
+Importing multi-corner technology file(s) for preRoute extraction...
+/data/tsmc/65LP/QRC/1.3a//rcworst/qrcTechFile
+Generating auto layer map file.
+/data/tsmc/65LP/QRC/1.3a//rcbest/qrcTechFile
+Generating auto layer map file.
+Completed (cpu: 0:00:04.4 real: 0:00:05.0)
+Set Shrink Factor to 1.00000
+Summary of Active RC-Corners : 
+ 
+ Analysis View: wc_analysis_view
+    RC-Corner Name        : wc_rc_corner
+    RC-Corner Index       : 0
+    RC-Corner Temperature : 125 Celsius
+    RC-Corner Cap Table   : ''
+    RC-Corner PreRoute Res Factor         : 1
+    RC-Corner PreRoute Cap Factor         : 1
+    RC-Corner PostRoute Res Factor        : 1 {1 1 1}
+    RC-Corner PostRoute Cap Factor        : 1 {1 1 1}
+    RC-Corner PostRoute XCap Factor       : 1 {1 1 1}
+    RC-Corner PreRoute Clock Res Factor   : 1	[Derived from postRoute_res (effortLevel low)]
+    RC-Corner PreRoute Clock Cap Factor   : 1	[Derived from postRoute_cap (effortLevel low)]
+    RC-Corner PostRoute Clock Cap Factor  : 1 {1 1 1} 	[Derived from postRoute_cap (effortLevel low)]
+    RC-Corner PostRoute Clock Res Factor  : 1 {1 1 1} 	[Derived from postRoute_res (effortLevel low)]
+    RC-Corner PostRoute Clock coupling capacitance Factor : 1 {1 1 1} 
+    RC-Corner Technology file: '/data/tsmc/65LP/QRC/1.3a//rcworst/qrcTechFile'
+ 
+ Analysis View: bc_analysis_view
+    RC-Corner Name        : bc_rc_corner
+    RC-Corner Index       : 1
+    RC-Corner Temperature : -40 Celsius
+    RC-Corner Cap Table   : ''
+    RC-Corner PreRoute Res Factor         : 1
+    RC-Corner PreRoute Cap Factor         : 1
+    RC-Corner PostRoute Res Factor        : 1 {1 1 1}
+    RC-Corner PostRoute Cap Factor        : 1 {1 1 1}
+    RC-Corner PostRoute XCap Factor       : 1 {1 1 1}
+    RC-Corner PreRoute Clock Res Factor   : 1	[Derived from postRoute_res (effortLevel low)]
+    RC-Corner PreRoute Clock Cap Factor   : 1	[Derived from postRoute_cap (effortLevel low)]
+    RC-Corner PostRoute Clock Cap Factor  : 1 {1 1 1} 	[Derived from postRoute_cap (effortLevel low)]
+    RC-Corner PostRoute Clock Res Factor  : 1 {1 1 1} 	[Derived from postRoute_res (effortLevel low)]
+    RC-Corner PostRoute Clock coupling capacitance Factor : 1 {1 1 1} 
+    RC-Corner Technology file: '/data/tsmc/65LP/QRC/1.3a//rcbest/qrcTechFile'
+Updating RC grid for preRoute extraction ...
+Initializing multi-corner resistance tables ...
+Default value for post_route extraction mode's extract_rc_effort_level (extract_rc_effort_level option of set_db) changed to 'medium'.
+*Info: initialize multi-corner CTS.
+Reading timing constraints file '/data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../inputs/lp_riscv_top.sdc' ...
+Current (total cpu=0:00:41.2, real=0:01:08, peak res=1695.4M, current mem=1695.4M)
+INFO (CTE): Constraints read successfully.
+Ending "Constraint file reading stats" (total cpu=0:00:00.1, real=0:00:00.0, peak res=1738.6M, current mem=1738.6M)
+Current (total cpu=0:00:41.3, real=0:01:08, peak res=1738.6M, current mem=1738.6M)
+Total number of combinational cells: 2058
+Total number of sequential cells: 762
+Total number of tristate cells: 27
+Total number of level shifter cells: 0
+Total number of power gating cells: 0
+Total number of isolation cells: 0
+Total number of power switch cells: 0
+Total number of pulse generator cells: 0
+Total number of always on buffers: 0
+Total number of retention cells: 0
+List of usable buffers: BUFH_X11M_A9TH BUFH_X13M_A9TH BUFH_X16M_A9TH BUFH_X2M_A9TH BUFH_X1P7M_A9TH BUFH_X4M_A9TH BUFH_X5M_A9TH BUFH_X6M_A9TH BUFH_X7P5M_A9TH BUFH_X9M_A9TH BUFH_X0P8M_A9TL BUFH_X0P7M_A9TL BUFH_X11M_A9TL BUFH_X13M_A9TL BUFH_X16M_A9TL BUFH_X1M_A9TL BUFH_X1P4M_A9TL BUFH_X1P2M_A9TL BUFH_X2M_A9TL BUFH_X1P7M_A9TL BUFH_X3M_A9TL BUFH_X2P5M_A9TL BUFH_X4M_A9TL BUFH_X3P5M_A9TL BUFH_X5M_A9TL BUFH_X6M_A9TL BUFH_X7P5M_A9TL BUFH_X9M_A9TL BUF_X0P7B_A9TL BUF_X0P7M_A9TL BUF_X0P8M_A9TL BUF_X0P8B_A9TL BUF_X11M_A9TL BUF_X11B_A9TL BUF_X13M_A9TL BUF_X13B_A9TL BUF_X16B_A9TL BUF_X16M_A9TL BUF_X1M_A9TL BUF_X1B_A9TL BUF_X1P2B_A9TL BUF_X1P2M_A9TL BUF_X1P4B_A9TL BUF_X1P4M_A9TL BUF_X1P7B_A9TL BUF_X1P7M_A9TL BUF_X2M_A9TL BUF_X2B_A9TL BUF_X2P5B_A9TL BUF_X2P5M_A9TL BUF_X3M_A9TL BUF_X3B_A9TL BUF_X3P5M_A9TL BUF_X3P5B_A9TL BUF_X4M_A9TL BUF_X4B_A9TL BUF_X5M_A9TL BUF_X5B_A9TL BUF_X6M_A9TL BUF_X6B_A9TL BUF_X7P5M_A9TL BUF_X7P5B_A9TL BUF_X9B_A9TL BUF_X9M_A9TL DLY2_X0P5M_A9TL DLY2_X1M_A9TL DLY2_X2M_A9TL DLY2_X4M_A9TL BUFH_X0P8M_A9TR BUFH_X0P7M_A9TR BUFH_X11M_A9TR BUFH_X13M_A9TR BUFH_X16M_A9TR BUFH_X1M_A9TR BUFH_X1P4M_A9TR BUFH_X1P2M_A9TR BUFH_X2M_A9TR BUFH_X1P7M_A9TR BUFH_X3M_A9TR BUFH_X2P5M_A9TR BUFH_X4M_A9TR BUFH_X3P5M_A9TR BUFH_X5M_A9TR BUFH_X6M_A9TR BUFH_X7P5M_A9TR BUFH_X9M_A9TR BUF_X0P7B_A9TR BUF_X0P7M_A9TR BUF_X0P8M_A9TR BUF_X0P8B_A9TR BUF_X11M_A9TR BUF_X11B_A9TR BUF_X13M_A9TR BUF_X13B_A9TR BUF_X16B_A9TR BUF_X16M_A9TR BUF_X1M_A9TR BUF_X1B_A9TR BUF_X1P2B_A9TR BUF_X1P2M_A9TR BUF_X1P4B_A9TR BUF_X1P4M_A9TR BUF_X1P7B_A9TR BUF_X1P7M_A9TR BUF_X2M_A9TR BUF_X2B_A9TR BUF_X2P5B_A9TR BUF_X2P5M_A9TR BUF_X3M_A9TR BUF_X3B_A9TR BUF_X3P5M_A9TR BUF_X3P5B_A9TR BUF_X4M_A9TR BUF_X4B_A9TR BUF_X5M_A9TR BUF_X5B_A9TR BUF_X6M_A9TR BUF_X6B_A9TR BUF_X7P5M_A9TR BUF_X7P5B_A9TR BUF_X9B_A9TR BUF_X9M_A9TR
+Total number of usable buffers: 122
+List of unusable buffers: FRICG_X0P5B_A9TL FRICG_X0P6B_A9TL FRICG_X0P8B_A9TL FRICG_X0P7B_A9TL FRICG_X11B_A9TL FRICG_X13B_A9TL FRICG_X16B_A9TL FRICG_X1B_A9TL FRICG_X1P2B_A9TL FRICG_X1P4B_A9TL FRICG_X2B_A9TL FRICG_X1P7B_A9TL FRICG_X3B_A9TL FRICG_X2P5B_A9TL FRICG_X4B_A9TL FRICG_X3P5B_A9TL FRICG_X5B_A9TL FRICG_X6B_A9TL FRICG_X7P5B_A9TL FRICG_X9B_A9TL FRICG_X0P5B_A9TR FRICG_X0P6B_A9TR FRICG_X0P8B_A9TR FRICG_X0P7B_A9TR FRICG_X11B_A9TR FRICG_X13B_A9TR FRICG_X16B_A9TR FRICG_X1B_A9TR FRICG_X1P2B_A9TR FRICG_X1P4B_A9TR FRICG_X2B_A9TR FRICG_X1P7B_A9TR FRICG_X3B_A9TR FRICG_X2P5B_A9TR FRICG_X4B_A9TR FRICG_X3P5B_A9TR FRICG_X5B_A9TR FRICG_X6B_A9TR FRICG_X7P5B_A9TR FRICG_X9B_A9TR
+Total number of unusable buffers: 40
+List of usable inverters: INV_X0P5B_A9TH INV_X0P5M_A9TH INV_X0P6B_A9TH INV_X0P6M_A9TH INV_X0P7B_A9TH INV_X0P7M_A9TH INV_X0P8M_A9TH INV_X0P8B_A9TH INV_X11M_A9TH INV_X11B_A9TH INV_X13M_A9TH INV_X13B_A9TH INV_X16B_A9TH INV_X16M_A9TH INV_X1M_A9TH INV_X1B_A9TH INV_X1P2B_A9TH INV_X1P2M_A9TH INV_X1P4B_A9TH INV_X1P4M_A9TH INV_X1P7B_A9TH INV_X1P7M_A9TH INV_X2M_A9TH INV_X2B_A9TH INV_X2P5B_A9TH INV_X2P5M_A9TH INV_X3M_A9TH INV_X3B_A9TH INV_X3P5B_A9TH INV_X3P5M_A9TH INV_X4M_A9TH INV_X4B_A9TH INV_X5M_A9TH INV_X5B_A9TH INV_X6M_A9TH INV_X6B_A9TH INV_X7P5M_A9TH INV_X7P5B_A9TH INV_X9B_A9TH INV_X9M_A9TH INV_X0P5B_A9TL INV_X0P5M_A9TL INV_X0P6B_A9TL INV_X0P6M_A9TL INV_X0P7B_A9TL INV_X0P7M_A9TL INV_X0P8M_A9TL INV_X0P8B_A9TL INV_X11M_A9TL INV_X11B_A9TL INV_X13M_A9TL INV_X13B_A9TL INV_X16B_A9TL INV_X16M_A9TL INV_X1M_A9TL INV_X1B_A9TL INV_X1P2B_A9TL INV_X1P2M_A9TL INV_X1P4B_A9TL INV_X1P4M_A9TL INV_X1P7B_A9TL INV_X1P7M_A9TL INV_X2M_A9TL INV_X2B_A9TL INV_X2P5B_A9TL INV_X2P5M_A9TL INV_X3M_A9TL INV_X3B_A9TL INV_X3P5B_A9TL INV_X3P5M_A9TL INV_X4M_A9TL INV_X4B_A9TL INV_X5M_A9TL INV_X5B_A9TL INV_X6M_A9TL INV_X6B_A9TL INV_X7P5M_A9TL INV_X7P5B_A9TL INV_X9B_A9TL INV_X9M_A9TL INV_X0P5B_A9TR INV_X0P5M_A9TR INV_X0P6B_A9TR INV_X0P6M_A9TR INV_X0P7B_A9TR INV_X0P7M_A9TR INV_X0P8M_A9TR INV_X0P8B_A9TR INV_X11M_A9TR INV_X11B_A9TR INV_X13M_A9TR INV_X13B_A9TR INV_X16B_A9TR INV_X16M_A9TR INV_X1M_A9TR INV_X1B_A9TR INV_X1P2B_A9TR INV_X1P2M_A9TR INV_X1P4B_A9TR INV_X1P4M_A9TR INV_X1P7B_A9TR INV_X1P7M_A9TR INV_X2M_A9TR INV_X2B_A9TR INV_X2P5B_A9TR INV_X2P5M_A9TR INV_X3M_A9TR INV_X3B_A9TR INV_X3P5B_A9TR INV_X3P5M_A9TR INV_X4M_A9TR INV_X4B_A9TR INV_X5M_A9TR INV_X5B_A9TR INV_X6M_A9TR INV_X6B_A9TR INV_X7P5M_A9TR INV_X7P5B_A9TR INV_X9M_A9TR INV_X9B_A9TR
+Total number of usable inverters: 120
+List of unusable inverters:
+Total number of unusable inverters: 0
+List of identified usable delay cells: BUFH_X0P8M_A9TH BUFH_X0P7M_A9TH BUFH_X1M_A9TH BUFH_X1P4M_A9TH BUFH_X1P2M_A9TH BUFH_X3M_A9TH BUFH_X2P5M_A9TH BUFH_X3P5M_A9TH BUF_X0P7B_A9TH BUF_X0P7M_A9TH BUF_X0P8M_A9TH BUF_X0P8B_A9TH BUF_X11M_A9TH BUF_X11B_A9TH BUF_X13M_A9TH BUF_X13B_A9TH BUF_X16B_A9TH BUF_X16M_A9TH BUF_X1M_A9TH BUF_X1B_A9TH BUF_X1P2B_A9TH BUF_X1P2M_A9TH BUF_X1P4B_A9TH BUF_X1P4M_A9TH BUF_X1P7B_A9TH BUF_X1P7M_A9TH BUF_X2M_A9TH BUF_X2B_A9TH BUF_X2P5B_A9TH BUF_X2P5M_A9TH BUF_X3M_A9TH BUF_X3B_A9TH BUF_X3P5M_A9TH BUF_X3P5B_A9TH BUF_X4M_A9TH BUF_X4B_A9TH BUF_X5M_A9TH BUF_X5B_A9TH BUF_X6M_A9TH BUF_X6B_A9TH BUF_X7P5M_A9TH BUF_X7P5B_A9TH BUF_X9B_A9TH BUF_X9M_A9TH DLY2_X0P5M_A9TH DLY2_X1M_A9TH DLY2_X2M_A9TH DLY2_X4M_A9TH DLY4_X1M_A9TH DLY4_X0P5M_A9TH DLY4_X2M_A9TH DLY4_X4M_A9TH DLY4_X1M_A9TL DLY4_X0P5M_A9TL DLY4_X2M_A9TL DLY4_X4M_A9TL DLY2_X0P5M_A9TR DLY2_X1M_A9TR DLY2_X2M_A9TR DLY2_X4M_A9TR DLY4_X1M_A9TR DLY4_X0P5M_A9TR DLY4_X2M_A9TR DLY4_X4M_A9TR
+Total number of identified usable delay cells: 64
+List of identified unusable delay cells: FRICG_X0P5B_A9TH FRICG_X0P6B_A9TH FRICG_X0P8B_A9TH FRICG_X0P7B_A9TH FRICG_X11B_A9TH FRICG_X13B_A9TH FRICG_X16B_A9TH FRICG_X1B_A9TH FRICG_X1P2B_A9TH FRICG_X1P4B_A9TH FRICG_X2B_A9TH FRICG_X1P7B_A9TH FRICG_X3B_A9TH FRICG_X2P5B_A9TH FRICG_X4B_A9TH FRICG_X3P5B_A9TH FRICG_X5B_A9TH FRICG_X6B_A9TH FRICG_X7P5B_A9TH FRICG_X9B_A9TH
+Total number of identified unusable delay cells: 20
+@innovus 50> gui_select -point {0.03000 0.03450}
+@innovus 51> 
+# Load general settings
+source ../scripts/settings.tcl -quiet
+
+@innovus 51> # Load general settings
+@innovus 52> source ../scripts/settings.tcl -quiet
+AAE_INFO: switching -siAware from false to true ...
+AAE_INFO: The setting is changed from false to true in setDelayCalMode -SIAware
+1 true
+@innovus 53> 
+
+@innovus 53> # Create cost groups
+# Create cost groups
+@innovus 54> enics_default_cost_groups
+enics_default_cost_groups
+Created reg2reg path group
+Effort level <high> specified for reg2reg path_group
+Created reg2cgate path group
+Effort level <high> specified for reg2cgate path_group
+@innovus 55> 
+
+@innovus 55> # Connect Global Nets
+# Connect Global Nets
+@innovus 56> enics_message "Connecting Global Nets" medium
+enics_message "Connecting Global Nets" medium
+
+ENICSINFO: Connecting Global Nets
+---------------------------------
+@innovus 57> # Connect standard cells to VDD and GND
+# Connect standard cells to VDD and GND
+@innovus 58> connect_global_net $design(digital_gnd) -pin $tech(STANDARD_CELL_GND) -all -verbose
+connect_global_net $design(digital_gnd) -pin $tech(STANDARD_CELL_GND) -all -verbose
+22494 new gnd-pin connections were made to global net 'gnd'.
+@innovus 59> connect_global_net $design(digital_vdd) -pin $tech(STANDARD_CELL_VDD) -all -verbose
+connect_global_net $design(digital_vdd) -pin $tech(STANDARD_CELL_VDD) -all -verbose
+22494 new pwr-pin connections were made to global net 'vdd'.
+@innovus 60> # Connect tie cells
+# Connect tie cells
+@innovus 61> connect_global_net $design(digital_vdd) -type tiehi -all -verbose 
+connect_global_net $design(digital_vdd) -type tiehi -all -verbose 
+@innovus 62> connect_global_net $design(digital_gnd) -type tielo -all -verbose 
+connect_global_net $design(digital_gnd) -type tielo -all -verbose 
+@innovus 63> # connect_global_net $design(digital_vdd) -type tiehi -pin $tech(STANDARD_CELL_VDD) -all -verbose 
+# connect_global_net $design(digital_vdd) -type tiehi -pin $tech(STANDARD_CELL_VDD) -all -verbose 
+@innovus 64> # connect_global_net $design(digital_gnd) -type tielo -pin $tech(STANDARD_CELL_GND) -all -verbose 
+# connect_global_net $design(digital_gnd) -type tielo -pin $tech(STANDARD_CELL_GND) -all -verbose 
+@innovus 65> 
+
+@innovus 65> # Connect SRAM PG Pins
+# Connect SRAM PG Pins
+@innovus 66> connect_global_net $design(digital_vdd) -pin $tech(SRAM_VDDCORE_PIN)      -all -verbose 
+connect_global_net $design(digital_vdd) -pin $tech(SRAM_VDDCORE_PIN)      -all -verbose 
+3 new pwr-pin connections were made to global net 'vdd'.
+@innovus 67> connect_global_net $design(digital_vdd) -pin $tech(SRAM_VDDPERIPHERY_PIN) -all -verbose 
+connect_global_net $design(digital_vdd) -pin $tech(SRAM_VDDPERIPHERY_PIN) -all -verbose 
+3 new pwr-pin connections were made to global net 'vdd'.
+@innovus 68> connect_global_net $design(digital_gnd) -pin $tech(SRAM_GND_PIN)          -all -verbose 
+connect_global_net $design(digital_gnd) -pin $tech(SRAM_GND_PIN)          -all -verbose 
+3 new gnd-pin connections were made to global net 'gnd'.
+@innovus 69> 
+@innovus 69> if {$design(FULLCHIPif {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
+    # Connect pads to IO and CORE voltages
+    #    -netlist_override is needed, since GENUS connects these pins to UNCONNECTED during synthesis
+    connect_global_net $design(io_vdd)      -pin $tech(IO_VDDIO)   -hinst i_${design(IO_MODULE)} -netlist_override -verbose
+    connect_global_net $design(io_gnd)      -pin $tech(IO_GNDIO)   -hinst i_${design(IO_MODULE)} -netlist_override -verbose
+    connect_global_net $design(digital_vdd) -pin $tech(IO_VDDCORE) -hinst i_${design(IO_MODULE)} -netlist_override -verbose
+    connect_global_net $design(digital_gnd) -pin $tech(IO_GNDCORE) -hinst i_${design(IO_MODULE)} -netlist_override -verbose
+}
+_OR_MACRO)=="FULLCHIP"} {
++     # Connect pads to IO and CORE voltages
++     #    -netlist_override is needed, since GENUS connects these pins to UNCONNECTED during synthesis
++     connect_global_net $design(io_vdd)      -pin $tech(IO_VDDIO)   -hinst i_${design(IO_MODULE)} -netlist_override -verbose
++     connect_global_net $design(io_gnd)      -pin $tech(IO_GNDIO)   -hinst i_${design(IO_MODULE)} -netlist_override -verbose
++     connect_global_net $design(digital_vdd) -pin $tech(IO_VDDCORE) -hinst i_${design(IO_MODULE)} -netlist_override -verbose
++     connect_global_net $design(digital_gnd) -pin $tech(IO_GNDCORE) -hinst i_${design(IO_MODULE)} -netlist_override -verbose
++ }
+Override Verilog-defined PG connection...  Connect pwr pin VDDPST of i_ioring/i_VDDIO_4 to global net vddio.
+Override Verilog-defined PG connection...  Connect pwr pin VDDPST of i_ioring/i_VDDIO_12 to global net vddio.
+Override Verilog-defined PG connection...  Connect pwr pin VDDPST of i_ioring/i_VDDIO_20 to global net vddio.
+Override Verilog-defined PG connection...  Connect pwr pin VDDPST of i_ioring/i_VDDIO_28 to global net vddio.
+Override Verilog-defined PG connection...  Connect pwr pin VDDPST of i_ioring/i_VDDIO_36 to global net vddio.
+Override Verilog-defined PG connection...  Connect pwr pin VDDPST of i_ioring/i_VDDIO_44 to global net vddio.
+Override Verilog-defined PG connection...  Connect pwr pin VDDPST of i_ioring/i_VDDIO_52 to global net vddio.
+Override Verilog-defined PG connection...  Connect pwr pin VDDPST of i_ioring/i_VDDIO_60 to global net vddio.
+8 new pwr-pin connections were made to global net 'vddio'.
+Override Verilog-defined PG connection...  Connect gnd pin VSS of i_ioring/i_VSSIO_3 to global net gnd.
+Override Verilog-defined PG connection...  Connect gnd pin VSS of i_ioring/i_VSSIO_13 to global net gnd.
+Override Verilog-defined PG connection...  Connect gnd pin VSS of i_ioring/i_VSSIO_19 to global net gnd.
+Override Verilog-defined PG connection...  Connect gnd pin VSS of i_ioring/i_VSSIO_27 to global net gnd.
+Override Verilog-defined PG connection...  Connect gnd pin VSS of i_ioring/i_VSSIO_35 to global net gnd.
+Override Verilog-defined PG connection...  Connect gnd pin VSS of i_ioring/i_VSSIO_43 to global net gnd.
+Override Verilog-defined PG connection...  Connect gnd pin VSS of i_ioring/i_VSSIO_51 to global net gnd.
+Override Verilog-defined PG connection...  Connect gnd pin VSS of i_ioring/i_VSSIO_59 to global net gnd.
+8 new gnd-pin connections were made to global net 'gnd'.
+Override Verilog-defined PG connection...  Connect pwr pin VDD of i_ioring/i_VDDCORE_5 to global net vdd.
+Override Verilog-defined PG connection...  Connect pwr pin VDD of i_ioring/i_VDDCORE_11 to global net vdd.
+Override Verilog-defined PG connection...  Connect pwr pin VDD of i_ioring/i_VDDCORE_21 to global net vdd.
+Override Verilog-defined PG connection...  Connect pwr pin VDD of i_ioring/i_VDDCORE_29 to global net vdd.
+Override Verilog-defined PG connection...  Connect pwr pin VDD of i_ioring/i_VDDCORE_37 to global net vdd.
+Override Verilog-defined PG connection...  Connect pwr pin VDD of i_ioring/i_VDDCORE_45 to global net vdd.
+Override Verilog-defined PG connection...  Connect pwr pin VDD of i_ioring/i_VDDCORE_53 to global net vdd.
+Override Verilog-defined PG connection...  Connect pwr pin VDD of i_ioring/i_VDDCORE_61 to global net vdd.
+8 new pwr-pin connections were made to global net 'vdd'.
+0 new gnd-pin connection was made to global net 'gnd'.
+@innovus 70> 
+
+@innovus 70> # Power Intent
+# Power Intent
+@innovus 71> # read_power_intent -1801 $design(UPF_file)
+# read_power_intent -1801 $design(UPF_file)
+@innovus 72> # read_power_intent $design(CPF_file)
+# read_power_intent $design(CPF_file)
+# commit_power_intent -verbose
+
+@innovus 73> # commit_power_intent -verbose
+@innovus 74> 
+@innovus 74> # Don't Use and Size Only files
+# Don't Use and Size Only files
+@innovus 75> #    If Don't Use file exists
+#    If Don't Use file exists
+@innovus 76> # source $design(dont_use_file)
+# source $design(dont_use_file)
+@innovus 77> #    If Size Only file exists
+#    If Size Only file exists
+# source $design(size_only_file)
+
+@innovus 78> # source $design(size_only_file)
+@innovus 79> 
+@innovus 79> enics_create_stage_reports -save_db no -report_timing no -pop_snapshot yes
+enics_create_stage_reports -save_db no -report_timing no -pop_snapshot yes
+
+ENICSINFO: Starting to create reports for stage: init_design
+------------------------------------------------------------
+ENICSINFO: Reports directory is: /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../reports/init_design/ 
+ENICSINFO: Export directory is: /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../export/init_design/ 
+ENICSINFO: Export directory is: /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../export/init_design/ 
+ENICSINFO: Reporting Timing
+AAE_INFO: opIsDesignInPostRouteState() is 0
+AAE_WARNING: Waveform propagation feature is not supported in pre-route stage, it is turned off.
+**WARN: (IMPESI-3478):	Simulation based Equivalent Waveform Model without waveform propagation setting is not properly supported, using moment based EWM instead.
+AAE DB initialization (MEM=1825.64 CPU=0:00:00.0 REAL=0:00:00.0) 
+#################################################################################
+# Design Stage: PreRoute
+# Design Name: lp_riscv_top
+# Design Mode: 65nm
+# Analysis Mode: MMMC OCV 
+# Parasitics Mode: No SPEF/RCDB 
+# Signoff Settings: SI On (EWM)
+#################################################################################
+Start delay calculation (fullDC) (1 T). (MEM=1900.67)
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[7], driver i_ioring/i_IRAM_PROG_BYTE_7/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/g120781/A0 (cell AO22_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[7], driver i_ioring/i_IRAM_PROG_BYTE_7/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[3][7]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[7], driver i_ioring/i_IRAM_PROG_BYTE_7/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[2][7]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[7], driver i_ioring/i_IRAM_PROG_BYTE_7/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[1][7]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[7], driver i_ioring/i_IRAM_PROG_BYTE_7/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[0][7]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[7], driver i_ioring/i_IRAM_PROG_BYTE_7/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_addr_reg[1][7]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[6], driver i_ioring/i_IRAM_PROG_BYTE_6/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/g120785/A0 (cell AO22_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[6], driver i_ioring/i_IRAM_PROG_BYTE_6/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[3][6]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[6], driver i_ioring/i_IRAM_PROG_BYTE_6/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[2][6]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[6], driver i_ioring/i_IRAM_PROG_BYTE_6/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[1][6]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[6], driver i_ioring/i_IRAM_PROG_BYTE_6/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[0][6]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[6], driver i_ioring/i_IRAM_PROG_BYTE_6/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_addr_reg[1][6]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[5], driver i_ioring/i_IRAM_PROG_BYTE_5/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/g120783/A0 (cell AO22_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[5], driver i_ioring/i_IRAM_PROG_BYTE_5/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[3][5]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[5], driver i_ioring/i_IRAM_PROG_BYTE_5/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[2][5]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[5], driver i_ioring/i_IRAM_PROG_BYTE_5/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[1][5]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[5], driver i_ioring/i_IRAM_PROG_BYTE_5/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[0][5]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[5], driver i_ioring/i_IRAM_PROG_BYTE_5/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_addr_reg[1][5]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[4], driver i_ioring/i_IRAM_PROG_BYTE_4/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/g120784/A0 (cell AO22_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[4], driver i_ioring/i_IRAM_PROG_BYTE_4/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[3][4]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (EMS-27):	Message (IMPMSMV-1810) has exceeded the current message display limit of 20.
+To increase the message display limit, refer to the product command reference manual.
+Total number of fetched objects 23386
+AAE_INFO: Total number of nets for which stage creation was skipped for all views 0
+End delay calculation. (MEM=2164.44 CPU=0:00:04.3 REAL=0:00:05.0)
+End delay calculation (fullDC). (MEM=2164.44 CPU=0:00:05.0 REAL=0:00:05.0)
+ENICSINFO: Writing out Database
+wc_timing_condition bc_timing_condition tc_timing_condition
+#% Begin save design ... (date=02/11 18:34:24, mem=1941.5M)
+% Begin Save ccopt configuration ... (date=02/11 18:34:24, mem=1941.5M)
+% End Save ccopt configuration ... (date=02/11 18:34:24, total cpu=0:00:00.0, real=0:00:00.0, peak res=1942.7M, current mem=1942.7M)
+% Begin Save netlist data ... (date=02/11 18:34:24, mem=1942.7M)
+Writing Binary DB to /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../dbs/init_design.tmp/lp_riscv_top.v.bin in single-threaded mode...
+% End Save netlist data ... (date=02/11 18:34:24, total cpu=0:00:00.1, real=0:00:00.0, peak res=1943.3M, current mem=1943.3M)
+Writing Netlist "/data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../dbs/init_design.tmp/lp_riscv_top.v.gz" ...
+Saving symbol-table file ...
+Saving congestion map file /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../dbs/init_design.tmp/lp_riscv_top.route.congmap.gz ...
+% Begin Save AAE data ... (date=02/11 18:34:25, mem=1944.2M)
+Saving AAE Data ...
+% End Save AAE data ... (date=02/11 18:34:25, total cpu=0:00:00.0, real=0:00:00.0, peak res=1944.2M, current mem=1944.2M)
+Saving preference file /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../dbs/init_design.tmp/gui.pref.tcl ...
+Saving mode setting ...
+Saving root attributes to be loaded post write_db ...
+Saving global file ...
+Saving root attributes to be loaded previous write_db ...
+% Begin Save floorplan data ... (date=02/11 18:34:26, mem=1946.1M)
+Saving floorplan file ...
+% End Save floorplan data ... (date=02/11 18:34:26, total cpu=0:00:00.0, real=0:00:00.0, peak res=1948.2M, current mem=1948.2M)
+Saving PG file /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../dbs/init_design.tmp/lp_riscv_top.pg.gz, version#2, (Created by Innovus v21.15-s110_1 on Tue Feb 11 18:34:26 2025)
+*** Completed savePGFile (cpu=0:00:00.0 real=0:00:00.0 mem=2123.0M) ***
+Saving Drc markers ...
+... No Drc file written since there is no markers found.
+% Begin Save placement data ... (date=02/11 18:34:26, mem=1948.4M)
+** Saving stdCellPlacement_binary (version# 2) ...
+Save Adaptive View Pruning View Names to Binary file
+% End Save placement data ... (date=02/11 18:34:26, total cpu=0:00:00.0, real=0:00:00.0, peak res=1948.7M, current mem=1948.7M)
+% Begin Save routing data ... (date=02/11 18:34:26, mem=1948.7M)
+Saving route file ...
+*** Completed saveRoute (cpu=0:00:00.0 real=0:00:00.0 mem=2123.0M) ***
+% End Save routing data ... (date=02/11 18:34:26, total cpu=0:00:00.1, real=0:00:00.0, peak res=1948.8M, current mem=1948.8M)
+Saving property file /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../dbs/init_design.tmp/lp_riscv_top.prop
+*** Completed saveProperty (cpu=0:00:00.0 real=0:00:00.0 mem=2126.0M) ***
+Saving preRoute extracted patterns in file '/data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../dbs/init_design.tmp/lp_riscv_top.techData.gz' ...
+Saving preRoute extraction data in directory '/data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../dbs/init_design.tmp/extraction/' ...
+% Begin Save power constraints data ... (date=02/11 18:34:27, mem=1952.8M)
+% End Save power constraints data ... (date=02/11 18:34:27, total cpu=0:00:00.0, real=0:00:00.0, peak res=1952.8M, current mem=1952.8M)
+tc_rc_corner bc_rc_corner wc_rc_corner
+tc_rc_corner bc_rc_corner wc_rc_corner
+tc_rc_corner bc_rc_corner wc_rc_corner
+tc_rc_corner bc_rc_corner wc_rc_corner
+tc_rc_corner bc_rc_corner wc_rc_corner
+tc_rc_corner bc_rc_corner wc_rc_corner
+tc_rc_corner bc_rc_corner wc_rc_corner
+Generated self-contained design init_design.tmp
+#% End save design ... (date=02/11 18:34:28, total cpu=0:00:01.7, real=0:00:04.0, peak res=1954.6M, current mem=1954.6M)
+*** Message Summary: 0 warning(s), 0 error(s)
+
+@innovus 80> enics_start_stage "floorplan"
+*********************************************
+*********************************************
+**   ENICSINFO: Starting stage floorplan   **
+*********************************************
+*********************************************
+ENICSINFO: Current time is: 11/02/2025 18:34
+ENICSINFO: ----------------------------------
+@innovus 81> source ../inputs/$design(TOPLEVEL).floorplan.defines -quiet
+source ../inputs/$design(TOPLEVEL).floorplan.defines -quiet
+gnd vdd
+@innovus 82> 
+
+@innovus 82> # If Floorplan DEF is available:
+# If Floorplan DEF is available:
+@innovus 83> # read_def $design(floorplan_def)
+# read_def $design(floorplan_def)
+@innovus 84> 
+
+@innovus 84> # If SCAN DEF is available
+# If SCAN DEF is available
+@innovus 85> # read_def $design(scan_def)
+# read_def $design(scan_def)
+@innovus 86>
+ 
+
+@innovus 86> 
+@innovus 86> # Specify Floor# Specify Floorpan
+pan
+@innovus 87> create_floorplan \
++     -core_size [list 2300.0 1700.0 150.0 150.0 150.0 150.0] \
++     -core_margins_by die \
++     -flip s \
++     -match_to_site
+create_floorplan \
+    -core_size [list 2300.0 1700.0 150.0 150.0 150.0 150.0] \
+    -core_margins_by die \
+    -flip s \
+    -match_to_site
+Start create_tracks
+**WARN: (IMPFP-325):	Floorplan of the design is resized. All current create_floorplan objects are automatically derived based on specified new create_floorplan. This may change blocks, fixed standard cells, existing routes and blockages.
+@innovus 88> 
+
+@innovus 88> # create_floorplan -site $tech(STANDARD_CELL_SITE) -match_to_site \
++ #     -core_density_size $design(floorplan_ratio) $design(floorplan_utilization) {*}$design(floorplan_space_to_core)
+# create_floorplan -site $tech(STANDARD_CELL_SITE) -match_to_site \
+#     -core_density_size $design(floorplan_ratio) $design(floorplan_utilization) {*}$design(floorplan_space_to_core)
+@innovus 89> gui_fit
+gui_fit
+@innovus 90> 
+@innovus 90> # Set up pads (for fullchip) or pins (for macro)
+# Set up pads (for fullchip) or pins (for macro)
+
+.                                            CompStatus_RegisterPct                    Debug_RegisterChkStop                       Debug_UnregisterChkStop
+_close.pre_expect                            _report_partition_info                    _tixDeleteFlags                             _tixRecordFlags
+add_area_io_fillers                          add_area_io_rows                          add_clock_tree_exclusion_drivers            add_clock_tree_source_group_roots
+add_connection_to_neighbor_partition         add_decap_cell_candidates                 add_decaps                                  add_decomp_filler
+add_dummy_boundary_wires                     add_endcaps                               add_fences                                  add_filler_gaps
+add_fillers                                  add_gate_array_filler                     add_io_buffers                              add_io_fillers
+add_io_insts                                 add_io_row_fillers                        add_line_end_track                          add_metal_fill
+add_metal_fill_signoff                       add_mim_cap                               add_notch_fill                              add_obj_on_bump
+add_partition_feedthrus                      add_power_mesh_colors                     add_power_switches                          add_reinforce_pg
+add_repeater_by_rule                         add_rings                                 add_route_via_defs                          add_sai_boundary_flops
+add_sdp_rows_blockages                       add_spare_insts                           add_split_power_vias                        add_stripes
+add_tap_walls                                add_target_pg                             add_tieoffs                                 add_to_collection
+add_tracks                                   add_tsv                                   add_via_fill                                add_well_taps
+add_what_if_shapes                           after                                     alias                                       align_partition_clones
+align_pins                                   align_selected                            all_clocks                                  all_connected
+all_fanin                                    all_fanout                                all_inputs                                  all_instances
+all_outputs                                  all_registers                             analyze_paths_by_bottleneck                 analyze_paths_by_clock_domain
+analyze_paths_by_critical_false_path         analyze_paths_by_default_path_group       analyze_paths_by_drv                        analyze_paths_by_hier_port
+analyze_paths_by_hierarchy                   analyze_paths_by_view                     append                                      append_to_collection
+apply                                        array                                     assemble_design                             assemble_proto_model
+assign_bumps                                 assign_clock_tree_source_groups           assign_io_pins                              assign_partition_pins
+assign_pg_bumps                              assign_signal_to_bump                     assign_tsv                                  auto_execok
+auto_import                                  auto_load                                 auto_load_index                             auto_mkindex
+auto_mkindex_old                             auto_qualify                              auto_reset                                  bell
+binary                                       bind                                      bindtags                                    break
+button                                       calculate_glitch_peak                     canvas                                      case
+catch                                        ccopt_design                              cd                                          chan
+check_ac_limits                              check_antenna                             check_bond_pad_spacing                      check_bumps
+check_ccr                                    check_clock_tree_convergence              check_connectivity                          check_cts_config
+check_cut_density                            check_design                              check_drc                                   check_endcaps
+check_filler                                 check_flip_chip_constraints               check_floorplan                             check_floorplan_space
+check_flow                                   check_footprint                           check_hier_route                            check_io_inst_overlap
+check_io_to_bump_connectivity                check_isolated_cuts                       check_ldb_version                           check_library
+check_macro_lower_left_on_track              check_macro_place_constraint              check_metal_density                         check_module_model
+check_multi_cpu_usage                        check_netlist                             check_noise                                 check_partition_sdc
+check_pg_library                             check_pg_shorts                           check_pgv                                   check_pin_assignment
+check_place                                  check_power_domains                       check_power_switches                        check_power_vias
+check_process_antenna                        check_sdps                                check_stacked_die                           check_syntax
+check_tieoffs                                check_timing                              check_timing_library                        check_timing_library_consistency
+check_timing_model                           check_tquantus_model_file                 check_tracks                                check_ufc
+check_unique                                 check_well_antenna                        check_well_taps                             check_wire_gaps
+checkbutton                                  clear_active_logic_view                   clear_all_rulers                            clipboard
+clock                                        clock_design                              clock_post_route_repair                     clone_msv_gate[145D[42A[145C[42B
+
+README                        debug.txt            fv/                        genus.cmd                  genus.cmd1                 genus.cmd2                 genus.log             genus.log1
+genus.log2                    innovus.cmd          innovus.cmd1               innovus.cmd10              innovus.cmd11              innovus.cmd12              innovus.cmd14         innovus.cmd15
+innovus.cmd16                 innovus.cmd17        innovus.cmd18              innovus.cmd19              innovus.cmd2               innovus.cmd3               innovus.cmd4          innovus.cmd5
+innovus.cmd6                  innovus.cmd7         innovus.cmd8               innovus.cmd9               innovus.log                innovus.log1               innovus.log10         innovus.log11
+innovus.log12                 innovus.log13        innovus.log14              innovus.log15              innovus.log16              innovus.log17              innovus.log18         innovus.log19
+innovus.log2                  innovus.log3         innovus.log4               innovus.log5               innovus.log6               innovus.log7               innovus.log8          innovus.log9
+innovus.logv                  innovus.logv1        innovus.logv10             innovus.logv11             innovus.logv12             innovus.logv13             innovus.logv14        innovus.logv15
+innovus.logv16                innovus.logv17       innovus.logv18             innovus.logv19             innovus.logv2              innovus.logv3              innovus.logv4         innovus.logv5
+innovus.logv6                 innovus.logv7        innovus.logv8              innovus.logv9              lp_riscv_top.conn.rpt      lp_riscv_top.conn.rpt.old  lp_riscv_top.def      lp_riscv_top.drc.rpt
+lp_riscv_top.drc.rpt.old      lp_riscv_top.fp      lp_riscv_top.fp.relFPlan   lp_riscv_top.fp.spr        lp_riscv_top.geom.rpt      lp_riscv_top.geom.rpt.old  lp_riscv_top.save.io  lp_riscv_top.welltap.rpt
+lp_riscv_top.welltap.rpt.old  pvsUI_ipvs.log       scheduling_file.cts.11050  scheduling_file.cts.14490  scheduling_file.cts.25165  scheduling_file.cts.30446  sroute.log            sroute.log1
+sroute.log2                   sroute.log3          sroute.log4                sroute.log5                sroute.log6                sroute.log7                sroute.log8           sroute.log9
+timingReports/                trace_core_00_0.log  waves.shm/                 xcelium.d/                 xrun.history               xrun.log[140D[12A[140C[12B
+
+README                        debug.txt            fv/                        genus.cmd                  genus.cmd1                 genus.cmd2                 genus.log             genus.log1
+genus.log2                    innovus.cmd          innovus.cmd1               innovus.cmd10              innovus.cmd11              innovus.cmd12              innovus.cmd14         innovus.cmd15
+innovus.cmd16                 innovus.cmd17        innovus.cmd18              innovus.cmd19              innovus.cmd2               innovus.cmd3               innovus.cmd4          innovus.cmd5
+innovus.cmd6                  innovus.cmd7         innovus.cmd8               innovus.cmd9               innovus.log                innovus.log1               innovus.log10         innovus.log11
+innovus.log12                 innovus.log13        innovus.log14              innovus.log15              innovus.log16              innovus.log17              innovus.log18         innovus.log19
+innovus.log2                  innovus.log3         innovus.log4               innovus.log5               innovus.log6               innovus.log7               innovus.log8          innovus.log9
+innovus.logv                  innovus.logv1        innovus.logv10             innovus.logv11             innovus.logv12             innovus.logv13             innovus.logv14        innovus.logv15
+innovus.logv16                innovus.logv17       innovus.logv18             innovus.logv19             innovus.logv2              innovus.logv3              innovus.logv4         innovus.logv5
+innovus.logv6                 innovus.logv7        innovus.logv8              innovus.logv9              lp_riscv_top.conn.rpt      lp_riscv_top.conn.rpt.old  lp_riscv_top.def      lp_riscv_top.drc.rpt
+lp_riscv_top.drc.rpt.old      lp_riscv_top.fp      lp_riscv_top.fp.relFPlan   lp_riscv_top.fp.spr        lp_riscv_top.geom.rpt      lp_riscv_top.geom.rpt.old  lp_riscv_top.save.io  lp_riscv_top.welltap.rpt
+lp_riscv_top.welltap.rpt.old  pvsUI_ipvs.log       scheduling_file.cts.11050  scheduling_file.cts.14490  scheduling_file.cts.25165  scheduling_file.cts.30446  sroute.log            sroute.log1
+sroute.log2                   sroute.log3          sroute.log4                sroute.log5                sroute.log6                sroute.log7                sroute.log8           sroute.log9
+timingReports/                trace_core_00_0.log  waves.shm/                 xcelium.d/                 xrun.history               xrun.log[140D[12A[140C[12B
+
+README                        debug.txt            fv/                        genus.cmd                  genus.cmd1                 genus.cmd2                 genus.log             genus.log1
+genus.log2                    innovus.cmd          innovus.cmd1               innovus.cmd10              innovus.cmd11              innovus.cmd12              innovus.cmd14         innovus.cmd15
+innovus.cmd16                 innovus.cmd17        innovus.cmd18              innovus.cmd19              innovus.cmd2               innovus.cmd3               innovus.cmd4          innovus.cmd5
+innovus.cmd6                  innovus.cmd7         innovus.cmd8               innovus.cmd9               innovus.log                innovus.log1               innovus.log10         innovus.log11
+innovus.log12                 innovus.log13        innovus.log14              innovus.log15              innovus.log16              innovus.log17              innovus.log18         innovus.log19
+innovus.log2                  innovus.log3         innovus.log4               innovus.log5               innovus.log6               innovus.log7               innovus.log8          innovus.log9
+innovus.logv                  innovus.logv1        innovus.logv10             innovus.logv11             innovus.logv12             innovus.logv13             innovus.logv14        innovus.logv15
+innovus.logv16                innovus.logv17       innovus.logv18             innovus.logv19             innovus.logv2              innovus.logv3              innovus.logv4         innovus.logv5
+innovus.logv6                 innovus.logv7        innovus.logv8              innovus.logv9              lp_riscv_top.conn.rpt      lp_riscv_top.conn.rpt.old  lp_riscv_top.def      lp_riscv_top.drc.rpt
+lp_riscv_top.drc.rpt.old      lp_riscv_top.fp      lp_riscv_top.fp.relFPlan   lp_riscv_top.fp.spr        lp_riscv_top.geom.rpt      lp_riscv_top.geom.rpt.old  lp_riscv_top.save.io  lp_riscv_top.welltap.rpt
+lp_riscv_top.welltap.rpt.old  pvsUI_ipvs.log       scheduling_file.cts.11050  scheduling_file.cts.14490  scheduling_file.cts.25165  scheduling_file.cts.30446  sroute.log            sroute.log1
+sroute.log2                   sroute.log3          sroute.log4                sroute.log5                sroute.log6                sroute.log7                sroute.log8           sroute.log9
+timingReports/                trace_core_00_0.log  waves.shm/                 xcelium.d/                 xrun.history               xrun.log[140D[12A[140C[12B
+
+.                                            CompStatus_RegisterPct                    Debug_RegisterChkStop                       Debug_UnregisterChkStop
+_close.pre_expect                            _report_partition_info                    _tixDeleteFlags                             _tixRecordFlags
+add_area_io_fillers                          add_area_io_rows                          add_clock_tree_exclusion_drivers            add_clock_tree_source_group_roots
+add_connection_to_neighbor_partition         add_decap_cell_candidates                 add_decaps                                  add_decomp_filler
+add_dummy_boundary_wires                     add_endcaps                               add_fences                                  add_filler_gaps
+add_fillers                                  add_gate_array_filler                     add_io_buffers                              add_io_fillers
+add_io_insts                                 add_io_row_fillers                        add_line_end_track                          add_metal_fill
+add_metal_fill_signoff                       add_mim_cap                               add_notch_fill                              add_obj_on_bump
+add_partition_feedthrus                      add_power_mesh_colors                     add_power_switches                          add_reinforce_pg
+add_repeater_by_rule                         add_rings                                 add_route_via_defs                          add_sai_boundary_flops
+add_sdp_rows_blockages                       add_spare_insts                           add_split_power_vias                        add_stripes
+add_tap_walls                                add_target_pg                             add_tieoffs                                 add_to_collection
+add_tracks                                   add_tsv                                   add_via_fill                                add_well_taps
+add_what_if_shapes                           after                                     alias                                       align_partition_clones
+align_pins                                   align_selected                            all_clocks                                  all_connected
+all_fanin                                    all_fanout                                all_inputs                                  all_instances
+all_outputs                                  all_registers                             analyze_paths_by_bottleneck                 analyze_paths_by_clock_domain
+analyze_paths_by_critical_false_path         analyze_paths_by_default_path_group       analyze_paths_by_drv                        analyze_paths_by_hier_port
+analyze_paths_by_hierarchy                   analyze_paths_by_view                     append                                      append_to_collection
+apply                                        array                                     assemble_design                             assemble_proto_model
+assign_bumps                                 assign_clock_tree_source_groups           assign_io_pins                              assign_partition_pins
+assign_pg_bumps                              assign_signal_to_bump                     assign_tsv                                  auto_execok
+auto_import                                  auto_load                                 auto_load_index                             auto_mkindex
+auto_mkindex_old                             auto_qualify                              auto_reset                                  bell
+binary                                       bind                                      bindtags                                    break
+button                                       calculate_glitch_peak                     canvas                                      case
+catch                                        ccopt_design                              cd                                          chan
+check_ac_limits                              check_antenna                             check_bond_pad_spacing                      check_bumps
+check_ccr                                    check_clock_tree_convergence              check_connectivity                          check_cts_config
+check_cut_density                            check_design                              check_drc                                   check_endcaps
+check_filler                                 check_flip_chip_constraints               check_floorplan                             check_floorplan_space
+check_flow                                   check_footprint                           check_hier_route                            check_io_inst_overlap
+check_io_to_bump_connectivity                check_isolated_cuts                       check_ldb_version                           check_library
+check_macro_lower_left_on_track              check_macro_place_constraint              check_metal_density                         check_module_model
+check_multi_cpu_usage                        check_netlist                             check_noise                                 check_partition_sdc
+check_pg_library                             check_pg_shorts                           check_pgv                                   check_pin_assignment
+check_place                                  check_power_domains                       check_power_switches                        check_power_vias
+check_process_antenna                        check_sdps                                check_stacked_die                           check_syntax
+check_tieoffs                                check_timing                              check_timing_library                        check_timing_library_consistency
+check_timing_model                           check_tquantus_model_file                 check_tracks                                check_ufc
+check_unique                                 check_well_antenna                        check_well_taps                             check_wire_gaps
+checkbutton                                  clear_active_logic_view                   clear_all_rulers                            clipboard
+clock                                        clock_design                              clock_post_route_repair                     clone_msv_gate[145D[42A[145C[42B
+
+README                        debug.txt            fv/                        genus.cmd                  genus.cmd1                 genus.cmd2                 genus.log             genus.log1
+genus.log2                    innovus.cmd          innovus.cmd1               innovus.cmd10              innovus.cmd11              innovus.cmd12              innovus.cmd14         innovus.cmd15
+innovus.cmd16                 innovus.cmd17        innovus.cmd18              innovus.cmd19              innovus.cmd2               innovus.cmd3               innovus.cmd4          innovus.cmd5
+innovus.cmd6                  innovus.cmd7         innovus.cmd8               innovus.cmd9               innovus.log                innovus.log1               innovus.log10         innovus.log11
+innovus.log12                 innovus.log13        innovus.log14              innovus.log15              innovus.log16              innovus.log17              innovus.log18         innovus.log19
+innovus.log2                  innovus.log3         innovus.log4               innovus.log5               innovus.log6               innovus.log7               innovus.log8          innovus.log9
+innovus.logv                  innovus.logv1        innovus.logv10             innovus.logv11             innovus.logv12             innovus.logv13             innovus.logv14        innovus.logv15
+innovus.logv16                innovus.logv17       innovus.logv18             innovus.logv19             innovus.logv2              innovus.logv3              innovus.logv4         innovus.logv5
+innovus.logv6                 innovus.logv7        innovus.logv8              innovus.logv9              lp_riscv_top.conn.rpt      lp_riscv_top.conn.rpt.old  lp_riscv_top.def      lp_riscv_top.drc.rpt
+lp_riscv_top.drc.rpt.old      lp_riscv_top.fp      lp_riscv_top.fp.relFPlan   lp_riscv_top.fp.spr        lp_riscv_top.geom.rpt      lp_riscv_top.geom.rpt.old  lp_riscv_top.save.io  lp_riscv_top.welltap.rpt
+lp_riscv_top.welltap.rpt.old  pvsUI_ipvs.log       scheduling_file.cts.11050  scheduling_file.cts.14490  scheduling_file.cts.25165  scheduling_file.cts.30446  sroute.log            sroute.log1
+sroute.log2                   sroute.log3          sroute.log4                sroute.log5                sroute.log6                sroute.log7                sroute.log8           sroute.log9
+timingReports/                trace_core_00_0.log  waves.shm/                 xcelium.d/                 xrun.history               xrun.log[140D[12A[140C[12B
+@innovus 91> if {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
++ enics_message "Defining IO Ring" medium
++ # Reload the IO file after resizing the floorplan
++ read_io_file $design(io_file)
++ # Add IO Fillers
++ add_io_fillers -cells $tech(IO_FILLERS) -prefix IOFILLER
++ # Connect Pad Rings
++ #route_special -connect {pad_ring} \
++ #-nets "$design(digital_gnd) $design(digital_vdd) $design(io_gnd) $design(io_vdd)"
++ } elseif {$design(FULLCHIP_OR_MACRO)=="MACRO"} {
++ enics_message "Spreading Pins around Macro" medium
++     # Spread pins
++ set pins_to_spread  [get_db ports .name] ;#[get_object_name [get_ports]]
++ #edit_pin -fix_overlap 1 -spread_direction clockwise -side Bottom -layer 4 -spread_type side 
++ edit_pin -spread_type start -start {0 0} -spread_direction clockwise -layer {3 4}  \
++         -pin $pins_to_spread -fix_overlap 1 -spacing 6
++ 
++ }
+if {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
+enics_message "Defining IO Ring" medium
+# Reload the IO file after resizing the floorplan
+read_io_file $design(io_file)
+# Add IO Fillers
+add_io_fillers -cells $tech(IO_FILLERS) -prefix IOFILLER
+# Connect Pad Rings
+#route_special -connect {pad_ring} \
+#-nets "$design(digital_gnd) $design(digital_vdd) $design(io_gnd) $design(io_vdd)"
+} elseif {$design(FULLCHIP_OR_MACRO)=="MACRO"} {
+enics_message "Spreading Pins around Macro" medium
+    # Spread pins
+set pins_to_spread  [get_db ports .name] ;#[get_object_name [get_ports]]
+#edit_pin -fix_overlap 1 -spread_direction clockwise -side Bottom -layer 4 -spread_type side 
+edit_pin -spread_type start -start {0 0} -spread_direction clockwise -layer {3 4}  \
+        -pin $pins_to_spread -fix_overlap 1 -spacing 6
+
+}
+
+ENICSINFO: Defining IO Ring
+---------------------------
+Reading IO assignment file "/data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../inputs/ioring.io" ...
+Added 65 of filler cell 'PFILLER20' on top side.
+Added 12 of filler cell 'PFILLER10' on top side.
+Added 10 of filler cell 'PFILLER5' on top side.
+Added 31 of filler cell 'PFILLER1' on top side.
+Added 12 of filler cell 'PFILLER05' on top side.
+Added 600 of filler cell 'PFILLER0005' on top side.
+Added 36 of filler cell 'PFILLER20' on left side.
+Added 12 of filler cell 'PFILLER10' on left side.
+Added 3 of filler cell 'PFILLER5' on left side.
+Added 45 of filler cell 'PFILLER1' on left side.
+Added 15 of filler cell 'PFILLER05' on left side.
+Added 500 of filler cell 'PFILLER0005' on left side.
+Added 66 of filler cell 'PFILLER20' on bottom side.
+Added 12 of filler cell 'PFILLER10' on bottom side.
+Added 5 of filler cell 'PFILLER5' on bottom side.
+Added 37 of filler cell 'PFILLER1' on bottom side.
+Added 7 of filler cell 'PFILLER05' on bottom side.
+Added 900 of filler cell 'PFILLER0005' on bottom side.
+Added 46 of filler cell 'PFILLER20' on right side.
+Added 11 of filler cell 'PFILLER10' on right side.
+Added 10 of filler cell 'PFILLER5' on right side.
+Added 20 of filler cell 'PFILLER1' on right side.
+Added 11 of filler cell 'PFILLER05' on right side.
+Added 900 of filler cell 'PFILLER0005' on right side.
+@innovus 92> gui_redraw
+gui_redraw
+@innovus 93> set design(TOPLEVEL) "lp_riscv_top"
+lp_riscv_top
+@innovus 94> set runtype "pnset runtype "pnr"
+r"
+pnr
+@innovus 95> set debug_file "debug.txt"
+set debug_file "debug.txt"
+
+# Load general procedures
+source ../scripts/procedures.tcl -quiet
+debug.txt
+@innovus 96> 
+@innovus 96> # Load general procedures
+@innovus 97> source ../scripts/procedures.tcl -quiet
+@innovus 98> 
+
+@innovus 98> ###############################################
+###############################################
+@innovus 99> # Starting Stage - Load defines and technology
+# Starting Stage - Load defines and technology
+###############################################
+enics_start_stage "start"
+@innovus 100> ###############################################
+@innovus 101> enics_start_stage "start"
+
+
+*****************************************
+*****************************************
+**   ENICSINFO: Starting stage start   **
+*****************************************
+*****************************************
+ENICSINFO: Current time is: 11/02/2025 18:35
+ENICSINFO: This session is running on Hostname : ip-10-70-166-58.il-central-1.compute.internal
+ENICSINFO: The log file is innovus.log19 and the command file is innovus.cmd19
+ENICSINFO: ----------------------------------
+@innovus 102> 
+@innovus 102> 
+@innovus 102> # Load the specific definitions for this project
+# Load the specific definitions for this project
+@innovus 103> source ../inputs/$design(TOPLEVEL).defines -quiet
+source ../inputs/$design(TOPLEVEL).defines -quiet
+@innovus 104> 
+
+@innovus 104> 
+
+@innovus 104> 
+
+@innovus 104> # Load the library paths and definitions for this technology
+# Load the library paths and definitions for this technology
+@innovus 105> source $design(libraries_dir)/libraries.$TECHNOLOGY.tcl -quiet
+source $design(libraries_dir)/libraries.$TECHNOLOGY.tcl -quiet
+##  Process: 65            (User Set)               
+##     Node: (not set)                           
+
+##  Check design process and node:  
+##  Design tech node is not set.
+
+Applying the recommended capacitance filtering threshold values for 65nm process node: total_c_th=0, relative_c_th=1 and coupling_c_th=0.1.
+	These values will be used by all post-route extraction engines, including TQuantus, IQuantus and Quantus QRC extraction.
+	Capacitance filtering mode(extract_rc_cap_filter_mode option of the set_db) is 'relative_and_coupling' for all engines.
+	The accuracy mode for post_route extract_rc_effort_level low extraction will be set to 'high'.
+	Default value for EffortLevel(extract_rc_effort_level option of the set_db) in post_route extraction mode is 'medium'.
+@innovus 106> source $design(libraries_dir)/libraries.$SC_TECHNOLOGY.tcl -quiet
+source $design(libraries_dir)/libraries.$SC_TECHNOLOGY.tcl -quiet
+@innovus 107> source $design(libraries_dir)/libraries.$SRAM_TECHNOLOGY.tcl -quiet
+source $design(libraries_dir)/libraries.$SRAM_TECHNOLOGY.tcl -quiet
+@innovus 108> if {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
++     source $design(libraries_dir)/libraries.$IO_TECHNOLOGY.tcl -quiet
++ }
+if {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
+    source $design(libraries_dir)/libraries.$IO_TECHNOLOGY.tcl -quiet
+}
+@innovus 109> set_library_unit -time 1ns -cap 1pf
+set_library_unit -time 1ns -cap 1pf
+**ERROR: (IMPTS-432):	You must set the setLibraryUnit command before the design is read and constraints are loaded.
+
+
+@innovus 110> 
+
+@innovus 110> #############################################
+#############################################
+@innovus 111> #       Print values to debug file
+#       Print values to debug file
+@innovus 112> #############################################
+#############################################
+@innovus 113> set var_list {runtype}
+set var_list {runtype}
+runtype
+@innovus 114> set dic_list {paths tech tech_files design}
+set dic_list {paths tech tech_files design}
+enics_print_debug_data w $debug_file "after everything was loaded" $var_list $dic_list
+paths tech tech_files design
+@innovus 115> enics_print_debug_data w $debug_file "after everything was loaded" $var_list $dic_list
+@innovus 116> 
+
+@innovus 116> 
+
+@innovus 116> ############################################
+############################################
+@innovus 117> # Init Design
+# Init Design
+@innovus 118> ############################################
+############################################
+@innovus 119> enable_metrics -on
+enable_metrics -on
+@innovus 120> enics_start_stage "init_design"
+enics_start_stage "init_design"
+***********************************************
+***********************************************
+**   ENICSINFO: Starting stage init_design   **
+***********************************************
+***********************************************
+ENICSINFO: Current time is: 11/02/2025 18:35
+ENICSINFO: ----------------------------------
+@innovus 121> 
+
+@innovus 121> # Global Nets
+# Global Nets
+@innovus 122> set_db init_ground_nets $design(all_ground_nets)
+set_db init_ground_nets $design(all_ground_nets)
+1 gnd
+@innovus 123> set_db init_power_nets $design(all_power_nets)
+set_db init_power_nets $design(all_power_nets)
+1 {vdd vddio}
+@innovus 124> 
+
+@innovus 124> # MMMC
+# MMMC
+@innovus 125> enics_message "Suppressing the following messages that are reported due to the LIB definitions:" 
+enics_message "Suppressing the following messages that are reported due to the LIB definitions:" 
+ENICSINFO: Suppressing the following messages that are reported due to the LIB definitions:
+@innovus 126> enics_message "$tech(LIB_SUPPRESS_MESSAGES_INNOVUS)"
+enics_message "$tech(LIB_SUPPRESS_MESSAGES_INNOVUS)"
+ENICSINFO: TECHLIB-436 TECHLIB-1318 TECHLIB-302 IMPCTE-337 IMPTS-282
+@innovus 127> set_message -suppress -id $tech(LIB_SUPPRESS_MESSAGES_INNOVUS) 
+set_message -suppress -id $tech(LIB_SUPPRESS_MESSAGES_INNOVUS) 
+@innovus 128> enics_message "Reading MMMC File" medium
+enics_message "Reading MMMC File" medium
+read_mmmc $design(mmmc_view_file) 
+
+ENICSINFO: Reading MMMC File
+----------------------------
+@innovus 129> read_mmmc $design(mmmc_view_file) 
+**WARN: (TCLCMD-1306):	read_mmmc command should be called once before init_design.
+1
+
+# LEFs
+1
+@innovus 130> 
+@innovus 130> # LEFs
+@innovus 131> enics_message "Suppressing the following messages that are reported due to the LEF definitions:" 
+enics_message "Suppressing the following messages that are reported due to the LEF definitions:" 
+enics_message "$tech(LEF_SUPPRESS_MESSAGES_INNOVUS)"
+ENICSINFO: Suppressing the following messages that are reported due to the LEF definitions:
+@innovus 132> enics_message "$tech(LEF_SUPPRESS_MESSAGES_INNOVUS)"
+ENICSINFO: ENCEXT-6202 IMPLF-200 LEFPARS-2001 LEFPARS-2065 LEFPARS-2076 IMPLF-58 IMPFP-3961 IMPSR-4302
+set_message -suppress -id $tech(LEF_SUPPRESS_MESSAGES_INNOVUS) 
+@innovus 133> set_message -suppress -id $tech(LEF_SUPPRESS_MESSAGES_INNOVUS) 
+@innovus 134> enics_message "Reading LEF abstracts"
+enics_message "Reading LEF abstracts"
+ENICSINFO: Reading LEF abstracts
+@innovus 135> read_physical -lef $tech_files(ALL_LEFS)
+read_physical -lef $tech_files(ALL_LEFS)
+**ERROR: (IMPIMEX-7030):	LEF files are not allowed to be read in after the design is in memory. If you want to modify the current list of LEF files, please refer to read_physical -add_lefs
+
+
+@innovus 136> 
+@innovus 136> # Post Synthesis Netlist
+# Post Synthesis Netlist
+enics_message "Reading the Post Synthesis netlist at $design(postsyn_netlist)" medium
+@innovus 137> enics_message "Reading the Post Synthesis netlist at $design(postsyn_netlist)" medium
+
+ENICSINFO: Reading the Post Synthesis netlist at /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../export/lp_riscv_top.postsyn.v
+-------------------------------------------------------------------------------------------------------------------------------------------
+read_netlist $design(postsyn_netlist)
+@innovus 138> read_netlist $design(postsyn_netlist)
+**ERROR: (IMPIMEX-7041):	Netlist files are not allowed to be read in after the design is in memory.
+
+
+# Import and initialize design
+enics_message "Running init_design command" medium
+init_design
+**ERROR: (IMPIMEX-7041):	Netlist files are not allowed to be read in after the design is in memory.
+
+@innovus 139> 
+@innovus 139> # Import and initialize design
+@innovus 140> enics_message "Running init_design command" medium
+
+ENICSINFO: Running init_design command
+--------------------------------------
+@innovus 141> init_design
+**ERROR: (IMPIMEX-12):	'init_design' failed. You are missing one or more of the required commands before running init_design.
+The MMMC init sequence looks like this: 
+read_mmmc top.mmmc 
+read_physical -lef {tech.lef stdcell.lef}   #optional in Tempus, required for Innovus 
+read_netlist top.v 
+read_power_intent -1801 top.1801	    #only for MSV designs 
+init_design 
+
+Tempus also supports a single-mode timing init sequence with no MMMC file like this: 
+read_libs all.lib 
+read_netlist top.v 
+read_sdc top.sdc 
+init_design 
+
+See the 'Stylus Common UI Initialization' section in the 'Design Import and Export Capabilities' chapter of the Innovus Stylus 
+Common UI User Guide for more details.
+
+
+# Load general settings
+source ../scripts/settings.tcl -quiet
+
+@innovus 142> 
+@innovus 142> # Load general settings
+@innovus 143> source ../scripts/settings.tcl -quiet
+AAE_INFO: switching -siAware from true to false ...
+AAE_INFO: The setting is changed from true to false in setDelayCalMode -SIAware
+AAE_INFO: switching -siAware from false to true ...
+AAE_INFO: The setting is changed from false to true in setDelayCalMode -SIAware
+1 true
+@innovus 144> 
+
+@innovus 144> # Create cost groups
+# Create cost groups
+@innovus 145> enics_default_cost_groups
+enics_default_cost_groups
+**WARN: (IMPOPT-3666):	Path group in2reg already exists. Skipping the creation of this path group.
+**WARN: (IMPOPT-3666):	Path group in2out already exists. Skipping the creation of this path group.
+**WARN: (IMPOPT-3666):	Path group reg2out already exists. Skipping the creation of this path group.
+**WARN: (IMPOPT-3666):	Path group reg2reg already exists. Skipping the creation of this path group.
+**WARN: (IMPOPT-3666):	Path group reg2cgate already exists. Skipping the creation of this path group.
+@innovus 146> 
+
+@innovus 146> # Connect Global Nets
+# Connect Global Nets
+@innovus 147> enics_message "Connecting Global Nets" medium
+enics_message "Connecting Global Nets" medium
+
+ENICSINFO: Connecting Global Nets
+---------------------------------
+@innovus 148> # Connect standard cells to VDD and GND
+# Connect standard cells to VDD and GND
+@innovus 149> connect_global_net $design(digital_gnd) -pin $tech(STANDARD_CELL_GND) -all -verbose
+connect_global_net $design(digital_gnd) -pin $tech(STANDARD_CELL_GND) -all -verbose
+0 new gnd-pin connection was made to global net 'gnd'.
+@innovus 150> connect_global_net $design(digital_vdd) -pin $tech(STANDARD_CELL_VDD) -all -verbose
+connect_global_net $design(digital_vdd) -pin $tech(STANDARD_CELL_VDD) -all -verbose
+0 new pwr-pin connection was made to global net 'vdd'.
+@innovus 151> # Connect tie cells
+# Connect tie cells
+@innovus 152> connect_global_net $design(digital_vdd) -type tiehi -all -verbose 
+connect_global_net $design(digital_vdd) -type tiehi -all -verbose 
+@innovus 153> connect_global_net $design(digital_gnd) -type tielo -all -verbose 
+connect_global_net $design(digital_gnd) -type tielo -all -verbose 
+@innovus 154> # connect_global_net $design(digital_vdd) -type tiehi -pin $tech(STANDARD_CELL_VDD) -all -verbose 
+# connect_global_net $design(digital_vdd) -type tiehi -pin $tech(STANDARD_CELL_VDD) -all -verbose 
+@innovus 155> # connect_global_net $design(digital_gnd) -type tielo -pin $tech(STANDARD_CELL_GND) -all -verbose 
+# connect_global_net $design(digital_gnd) -type tielo -pin $tech(STANDARD_CELL_GND) -all -verbose 
+@innovus 156> 
+
+@innovus 156> # Connect SRAM PG Pins
+# Connect SRAM PG Pins
+@innovus 157> connect_global_net $design(digital_vdd) -pin $tech(SRAM_VDDCORE_PIN)      -all -verbose 
+connect_global_net $design(digital_vdd) -pin $tech(SRAM_VDDCORE_PIN)      -all -verbose 
+0 new pwr-pin connection was made to global net 'vdd'.
+@innovus 158> connect_global_net $design(digital_vdd) -pin $tech(SRAM_VDDPERIPHERY_PIN) -all -verbose 
+connect_global_net $design(digital_vdd) -pin $tech(SRAM_VDDPERIPHERY_PIN) -all -verbose 
+0 new pwr-pin connection was made to global net 'vdd'.
+@innovus 159> connect_global_net $design(digital_gnd) -pin $tech(SRAM_GND_PIN)          -all -verbose 
+connect_global_net $design(digital_gnd) -pin $tech(SRAM_GND_PIN)          -all -verbose 
+0 new gnd-pin connection was made to global net 'gnd'.
+@innovus 160> 
+
+@innovus 160> if {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
++     # Connect pads to IO and CORE voltages
++     #    -netlist_override is needed, since GENUS connects these pins to UNCONNECTED during synthesis
++     connect_global_net $design(io_vdd)      -pin $tech(IO_VDDIO)   -hinst i_${design(IO_MODULE)} -netlist_override -verbose
++     connect_global_net $design(io_gnd)      -pin $tech(IO_GNDIO)   -hinst i_${design(IO_MODULE)} -netlist_override -verbose
++     connect_global_net $design(digital_vdd) -pin $tech(IO_VDDCORE) -hinst i_${design(IO_MODULE)} -netlist_override -verbose
++     connect_global_net $design(digital_gnd) -pin $tech(IO_GNDCORE) -hinst i_${design(IO_MODULE)} -netlist_override -verbose
++ }
+if {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
+    # Connect pads to IO and CORE voltages
+    #    -netlist_override is needed, since GENUS connects these pins to UNCONNECTED during synthesis
+    connect_global_net $design(io_vdd)      -pin $tech(IO_VDDIO)   -hinst i_${design(IO_MODULE)} -netlist_override -verbose
+    connect_global_net $design(io_gnd)      -pin $tech(IO_GNDIO)   -hinst i_${design(IO_MODULE)} -netlist_override -verbose
+    connect_global_net $design(digital_vdd) -pin $tech(IO_VDDCORE) -hinst i_${design(IO_MODULE)} -netlist_override -verbose
+    connect_global_net $design(digital_gnd) -pin $tech(IO_GNDCORE) -hinst i_${design(IO_MODULE)} -netlist_override -verbose
+}
+0 new pwr-pin connection was made to global net 'vddio'.
+0 new gnd-pin connection was made to global net 'gnd'.
+0 new pwr-pin connection was made to global net 'vdd'.
+0 new gnd-pin connection was made to global net 'gnd'.
+@innovus 161> 
+
+@innovus 161> # Power Intent
+# Power Intent
+@innovus 162> # read_power_intent -1801 $design(UPF_file)
+# read_power_intent -1801 $design(UPF_file)
+@innovus 163> # read_power_intent $design(CPF_file)
+# read_power_intent $design(CPF_file)
+@innovus 164> # commit_power_intent -verbose
+# commit_power_intent -verbose
+@innovus 165> 
+
+@innovus 165> # Don't Use and Size Only files
+# Don't Use and Size Only files
+@innovus 166> #    If Don't Use file exists
+#    If Don't Use file exists
+@innovus 167> # source $design(dont_use_file)
+# source $design(dont_use_file)
+@innovus 168> #    If Size Only file exists
+#    If Size Only file exists
+@innovus 169> # source $design(size_only_file)
+# source $design(size_only_file)
+@innovus 170>
+ 
+@innovus 170> enics_create_stage_reports -save_db no -report_timing no -pop_snapshot yes
+enics_create_stage_reports -save_db no -report_timing no -pop_snapshot yes
+
+ENICSINFO: Starting to create reports for stage: init_design
+------------------------------------------------------------
+ENICSINFO: Reports directory is: /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../reports/init_design/ 
+ENICSINFO: Export directory is: /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../export/init_design/ 
+ENICSINFO: Export directory is: /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../export/init_design/ 
+ENICSINFO: Reporting Timing
+AAE_INFO: opIsDesignInPostRouteState() is 0
+AAE_WARNING: Waveform propagation feature is not supported in pre-route stage, it is turned off.
+Deleting waveform storage...
+#################################################################################
+# Design Stage: PreRoute
+# Design Name: lp_riscv_top
+# Design Mode: 65nm
+# Analysis Mode: MMMC OCV 
+# Parasitics Mode: No SPEF/RCDB 
+# Signoff Settings: SI On (EWM)
+#################################################################################
+Start delay calculation (fullDC) (1 T). (MEM=2139.54)
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[7], driver i_ioring/i_IRAM_PROG_BYTE_7/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/g120781/A0 (cell AO22_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[7], driver i_ioring/i_IRAM_PROG_BYTE_7/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[3][7]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[7], driver i_ioring/i_IRAM_PROG_BYTE_7/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[2][7]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[7], driver i_ioring/i_IRAM_PROG_BYTE_7/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[1][7]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[7], driver i_ioring/i_IRAM_PROG_BYTE_7/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[0][7]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[7], driver i_ioring/i_IRAM_PROG_BYTE_7/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_addr_reg[1][7]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[6], driver i_ioring/i_IRAM_PROG_BYTE_6/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/g120785/A0 (cell AO22_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[6], driver i_ioring/i_IRAM_PROG_BYTE_6/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[3][6]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[6], driver i_ioring/i_IRAM_PROG_BYTE_6/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[2][6]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[6], driver i_ioring/i_IRAM_PROG_BYTE_6/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[1][6]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[6], driver i_ioring/i_IRAM_PROG_BYTE_6/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[0][6]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[6], driver i_ioring/i_IRAM_PROG_BYTE_6/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_addr_reg[1][6]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[5], driver i_ioring/i_IRAM_PROG_BYTE_5/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/g120783/A0 (cell AO22_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[5], driver i_ioring/i_IRAM_PROG_BYTE_5/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[3][5]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[5], driver i_ioring/i_IRAM_PROG_BYTE_5/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[2][5]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[5], driver i_ioring/i_IRAM_PROG_BYTE_5/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[1][5]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[5], driver i_ioring/i_IRAM_PROG_BYTE_5/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[0][5]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[5], driver i_ioring/i_IRAM_PROG_BYTE_5/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_addr_reg[1][5]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[4], driver i_ioring/i_IRAM_PROG_BYTE_4/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/g120784/A0 (cell AO22_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[4], driver i_ioring/i_IRAM_PROG_BYTE_4/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[3][4]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (EMS-27):	Message (IMPMSMV-1810) has exceeded the current message display limit of 20.
+To increase the message display limit, refer to the product command reference manual.
+Total number of fetched objects 23386
+AAE_INFO: Total number of nets for which stage creation was skipped for all views 0
+End delay calculation. (MEM=2254.66 CPU=0:00:04.3 REAL=0:00:05.0)
+End delay calculation (fullDC). (MEM=2254.66 CPU=0:00:04.7 REAL=0:00:05.0)
+ENICSINFO: Writing out Database
+wc_timing_condition bc_timing_condition tc_timing_condition
+#% Begin save design ... (date=02/11 18:36:04, mem=2012.8M)
+% Begin Save ccopt configuration ... (date=02/11 18:36:04, mem=2012.8M)
+% End Save ccopt configuration ... (date=02/11 18:36:04, total cpu=0:00:00.0, real=0:00:00.0, peak res=2012.9M, current mem=2012.9M)
+% Begin Save netlist data ... (date=02/11 18:36:04, mem=2012.9M)
+Writing Binary DB to /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../dbs/init_design.tmp/lp_riscv_top.v.bin in single-threaded mode...
+% End Save netlist data ... (date=02/11 18:36:05, total cpu=0:00:00.1, real=0:00:00.0, peak res=2013.0M, current mem=2013.0M)
+Writing Netlist "/data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../dbs/init_design.tmp/lp_riscv_top.v.gz" ...
+Saving congestion map file /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../dbs/init_design.tmp/lp_riscv_top.route.congmap.gz ...
+% Begin Save AAE data ... (date=02/11 18:36:05, mem=2013.0M)
+Saving AAE Data ...
+% End Save AAE data ... (date=02/11 18:36:05, total cpu=0:00:00.0, real=0:00:00.0, peak res=2013.0M, current mem=2013.0M)
+Saving preference file /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../dbs/init_design.tmp/gui.pref.tcl ...
+Saving mode setting ...
+Saving root attributes to be loaded post write_db ...
+'invalid command name "::ETS::save_globals"'.
+*** Message Summary: 0 warning(s), 0 error(s)
+
+'invalid command name "::ETS::save_globals"'.
+'invalid command name "::ETS::save_globals"'.
+@innovus 171> 
+
+@innovus 171> ############################################
+############################################
+@innovus 172> # Floorplan
+# Floorplan
+@innovus 173> ############################################
+############################################
+@innovus 174> enics_start_stage "floorplan"
+enics_start_stage "floorplan"
+*********************************************
+*********************************************
+**   ENICSINFO: Starting stage floorplan   **
+*********************************************
+*********************************************
+ENICSINFO: Current time is: 11/02/2025 18:36
+ENICSINFO: ----------------------------------
+source ../inputs/$design(TOPLEVEL).floorplan.defines -quiet
+@innovus 175> source ../inputs/$design(TOPLEVEL).floorplan.defines -quiet
+gnd vdd
+@innovus 176> 
+
+@innovus 176> # If Floorplan DEF is available:
+# If Floorplan DEF is available:
+@innovus 177> # read_def $design(floorplan_def)
+# read_def $design(floorplan_def)
+
+@innovus 178> 
+@innovus 178> # If SCAN DEF is available
+# If SCAN DEF is available
+@innovus 179> # read_def $design(scan_def)# read_def $design(scan_def)
+
+@innovus 180> 
+
+@innovus 180> 
+
+# Specify Floorpan
+@innovus 180> # Specify Floorpan
+@innovus 181> create_floorplan \
++     -core_size [list 2000.0 1700.0 150.0 150.0 150.0 150.0] \
++     -core_margins_by die \
++     -flip s \
++     -match_to_site
+create_floorplan \
+    -core_size [list 2000.0 1700.0 150.0 150.0 150.0 150.0] \
+    -core_margins_by die \
+    -flip s \
+    -match_to_site
+**WARN: (IMPFP-501):	fplan box is not large enough to accommodate all the io pads.
+Start create_tracks
+**WARN: (IMPFP-325):	Floorplan of the design is resized. All current create_floorplan objects are automatically derived based on specified new create_floorplan. This may change blocks, fixed standard cells, existing routes and blockages.
+@innovus 182> 
+
+# create_floorplan -site $tech(STANDARD_CELL_SITE) -match_to_site \
+#     -core_density_size $design(floorplan_ratio) $design(floorplan_utilization) {*}$design(floorplan_space_to_core)
+@innovus 182> # create_floorplan -site $tech(STANDARD_CELL_SITE) -match_to_site \
++ #     -core_density_size $design(floorplan_ratio) $design(floorplan_utilization) {*}$design(floorplan_space_to_core)
+@innovus 18gui_fit
+3> gui_fit
+@innovus 184> 
+@innovus 184> # Set up pads (for fullchip) or pins (for macro)
+# Set up pads (for fullchip) or pins (for macro)
+
+.                                            CompStatus_RegisterPct                    Debug_RegisterChkStop                       Debug_UnregisterChkStop
+_close.pre_expect                            _report_partition_info                    _tixDeleteFlags                             _tixRecordFlags
+add_area_io_fillers                          add_area_io_rows                          add_clock_tree_exclusion_drivers            add_clock_tree_source_group_roots
+add_connection_to_neighbor_partition         add_decap_cell_candidates                 add_decaps                                  add_decomp_filler
+add_dummy_boundary_wires                     add_endcaps                               add_fences                                  add_filler_gaps
+add_fillers                                  add_gate_array_filler                     add_io_buffers                              add_io_fillers
+add_io_insts                                 add_io_row_fillers                        add_line_end_track                          add_metal_fill
+add_metal_fill_signoff                       add_mim_cap                               add_notch_fill                              add_obj_on_bump
+add_partition_feedthrus                      add_power_mesh_colors                     add_power_switches                          add_reinforce_pg
+add_repeater_by_rule                         add_rings                                 add_route_via_defs                          add_sai_boundary_flops
+add_sdp_rows_blockages                       add_spare_insts                           add_split_power_vias                        add_stripes
+add_tap_walls                                add_target_pg                             add_tieoffs                                 add_to_collection
+add_tracks                                   add_tsv                                   add_via_fill                                add_well_taps
+add_what_if_shapes                           after                                     alias                                       align_partition_clones
+align_pins                                   align_selected                            all_clocks                                  all_connected
+all_fanin                                    all_fanout                                all_inputs                                  all_instances
+all_outputs                                  all_registers                             analyze_paths_by_bottleneck                 analyze_paths_by_clock_domain
+analyze_paths_by_critical_false_path         analyze_paths_by_default_path_group       analyze_paths_by_drv                        analyze_paths_by_hier_port
+analyze_paths_by_hierarchy                   analyze_paths_by_view                     append                                      append_to_collection
+apply                                        array                                     assemble_design                             assemble_proto_model
+assign_bumps                                 assign_clock_tree_source_groups           assign_io_pins                              assign_partition_pins
+assign_pg_bumps                              assign_signal_to_bump                     assign_tsv                                  auto_execok
+auto_import                                  auto_load                                 auto_load_index                             auto_mkindex
+auto_mkindex_old                             auto_qualify                              auto_reset                                  bell
+binary                                       bind                                      bindtags                                    break
+button                                       calculate_glitch_peak                     canvas                                      case
+catch                                        ccopt_design                              cd                                          chan
+check_ac_limits                              check_antenna                             check_bond_pad_spacing                      check_bumps
+check_ccr                                    check_clock_tree_convergence              check_connectivity                          check_cts_config
+check_cut_density                            check_design                              check_drc                                   check_endcaps
+check_filler                                 check_flip_chip_constraints               check_floorplan                             check_floorplan_space
+check_flow                                   check_footprint                           check_hier_route                            check_io_inst_overlap
+check_io_to_bump_connectivity                check_isolated_cuts                       check_ldb_version                           check_library
+check_macro_lower_left_on_track              check_macro_place_constraint              check_metal_density                         check_module_model
+check_multi_cpu_usage                        check_netlist                             check_noise                                 check_partition_sdc
+check_pg_library                             check_pg_shorts                           check_pgv                                   check_pin_assignment
+check_place                                  check_power_domains                       check_power_switches                        check_power_vias
+check_process_antenna                        check_sdps                                check_stacked_die                           check_syntax
+check_tieoffs                                check_timing                              check_timing_library                        check_timing_library_consistency
+check_timing_model                           check_tquantus_model_file                 check_tracks                                check_ufc
+check_unique                                 check_well_antenna                        check_well_taps                             check_wire_gaps
+checkbutton                                  clear_active_logic_view                   clear_all_rulers                            clipboard
+clock                                        clock_design                              clock_post_route_repair                     clone_msv_gate[145D[42A[145C[42B
+
+README                        debug.txt            fv/                        genus.cmd                  genus.cmd1                 genus.cmd2                 genus.log             genus.log1
+genus.log2                    innovus.cmd          innovus.cmd1               innovus.cmd10              innovus.cmd11              innovus.cmd12              innovus.cmd14         innovus.cmd15
+innovus.cmd16                 innovus.cmd17        innovus.cmd18              innovus.cmd19              innovus.cmd2               innovus.cmd3               innovus.cmd4          innovus.cmd5
+innovus.cmd6                  innovus.cmd7         innovus.cmd8               innovus.cmd9               innovus.log                innovus.log1               innovus.log10         innovus.log11
+innovus.log12                 innovus.log13        innovus.log14              innovus.log15              innovus.log16              innovus.log17              innovus.log18         innovus.log19
+innovus.log2                  innovus.log3         innovus.log4               innovus.log5               innovus.log6               innovus.log7               innovus.log8          innovus.log9
+innovus.logv                  innovus.logv1        innovus.logv10             innovus.logv11             innovus.logv12             innovus.logv13             innovus.logv14        innovus.logv15
+innovus.logv16                innovus.logv17       innovus.logv18             innovus.logv19             innovus.logv2              innovus.logv3              innovus.logv4         innovus.logv5
+innovus.logv6                 innovus.logv7        innovus.logv8              innovus.logv9              lp_riscv_top.conn.rpt      lp_riscv_top.conn.rpt.old  lp_riscv_top.def      lp_riscv_top.drc.rpt
+lp_riscv_top.drc.rpt.old      lp_riscv_top.fp      lp_riscv_top.fp.relFPlan   lp_riscv_top.fp.spr        lp_riscv_top.geom.rpt      lp_riscv_top.geom.rpt.old  lp_riscv_top.save.io  lp_riscv_top.welltap.rpt
+lp_riscv_top.welltap.rpt.old  pvsUI_ipvs.log       scheduling_file.cts.11050  scheduling_file.cts.14490  scheduling_file.cts.25165  scheduling_file.cts.30446  sroute.log            sroute.log1
+sroute.log2                   sroute.log3          sroute.log4                sroute.log5                sroute.log6                sroute.log7                sroute.log8           sroute.log9
+timingReports/                trace_core_00_0.log  waves.shm/                 xcelium.d/                 xrun.history               xrun.log[140D[12A[140C[12B
+
+README                        debug.txt            fv/                        genus.cmd                  genus.cmd1                 genus.cmd2                 genus.log             genus.log1
+genus.log2                    innovus.cmd          innovus.cmd1               innovus.cmd10              innovus.cmd11              innovus.cmd12              innovus.cmd14         innovus.cmd15
+innovus.cmd16                 innovus.cmd17        innovus.cmd18              innovus.cmd19              innovus.cmd2               innovus.cmd3               innovus.cmd4          innovus.cmd5
+innovus.cmd6                  innovus.cmd7         innovus.cmd8               innovus.cmd9               innovus.log                innovus.log1               innovus.log10         innovus.log11
+innovus.log12                 innovus.log13        innovus.log14              innovus.log15              innovus.log16              innovus.log17              innovus.log18         innovus.log19
+innovus.log2                  innovus.log3         innovus.log4               innovus.log5               innovus.log6               innovus.log7               innovus.log8          innovus.log9
+innovus.logv                  innovus.logv1        innovus.logv10             innovus.logv11             innovus.logv12             innovus.logv13             innovus.logv14        innovus.logv15
+innovus.logv16                innovus.logv17       innovus.logv18             innovus.logv19             innovus.logv2              innovus.logv3              innovus.logv4         innovus.logv5
+innovus.logv6                 innovus.logv7        innovus.logv8              innovus.logv9              lp_riscv_top.conn.rpt      lp_riscv_top.conn.rpt.old  lp_riscv_top.def      lp_riscv_top.drc.rpt
+lp_riscv_top.drc.rpt.old      lp_riscv_top.fp      lp_riscv_top.fp.relFPlan   lp_riscv_top.fp.spr        lp_riscv_top.geom.rpt      lp_riscv_top.geom.rpt.old  lp_riscv_top.save.io  lp_riscv_top.welltap.rpt
+lp_riscv_top.welltap.rpt.old  pvsUI_ipvs.log       scheduling_file.cts.11050  scheduling_file.cts.14490  scheduling_file.cts.25165  scheduling_file.cts.30446  sroute.log            sroute.log1
+sroute.log2                   sroute.log3          sroute.log4                sroute.log5                sroute.log6                sroute.log7                sroute.log8           sroute.log9
+timingReports/                trace_core_00_0.log  waves.shm/                 xcelium.d/                 xrun.history               xrun.log[140D[12A[140C[12B
+
+README                        debug.txt            fv/                        genus.cmd                  genus.cmd1                 genus.cmd2                 genus.log             genus.log1
+genus.log2                    innovus.cmd          innovus.cmd1               innovus.cmd10              innovus.cmd11              innovus.cmd12              innovus.cmd14         innovus.cmd15
+innovus.cmd16                 innovus.cmd17        innovus.cmd18              innovus.cmd19              innovus.cmd2               innovus.cmd3               innovus.cmd4          innovus.cmd5
+innovus.cmd6                  innovus.cmd7         innovus.cmd8               innovus.cmd9               innovus.log                innovus.log1               innovus.log10         innovus.log11
+innovus.log12                 innovus.log13        innovus.log14              innovus.log15              innovus.log16              innovus.log17              innovus.log18         innovus.log19
+innovus.log2                  innovus.log3         innovus.log4               innovus.log5               innovus.log6               innovus.log7               innovus.log8          innovus.log9
+innovus.logv                  innovus.logv1        innovus.logv10             innovus.logv11             innovus.logv12             innovus.logv13             innovus.logv14        innovus.logv15
+innovus.logv16                innovus.logv17       innovus.logv18             innovus.logv19             innovus.logv2              innovus.logv3              innovus.logv4         innovus.logv5
+innovus.logv6                 innovus.logv7        innovus.logv8              innovus.logv9              lp_riscv_top.conn.rpt      lp_riscv_top.conn.rpt.old  lp_riscv_top.def      lp_riscv_top.drc.rpt
+lp_riscv_top.drc.rpt.old      lp_riscv_top.fp      lp_riscv_top.fp.relFPlan   lp_riscv_top.fp.spr        lp_riscv_top.geom.rpt      lp_riscv_top.geom.rpt.old  lp_riscv_top.save.io  lp_riscv_top.welltap.rpt
+lp_riscv_top.welltap.rpt.old  pvsUI_ipvs.log       scheduling_file.cts.11050  scheduling_file.cts.14490  scheduling_file.cts.25165  scheduling_file.cts.30446  sroute.log            sroute.log1
+sroute.log2                   sroute.log3          sroute.log4                sroute.log5                sroute.log6                sroute.log7                sroute.log8           sroute.log9
+timingReports/                trace_core_00_0.log  waves.shm/                 xcelium.d/                 xrun.history               xrun.log[140D[12A[140C[12B
+
+.                                            CompStatus_RegisterPct                    Debug_RegisterChkStop                       Debug_UnregisterChkStop
+_close.pre_expect                            _report_partition_info                    _tixDeleteFlags                             _tixRecordFlags
+add_area_io_fillers                          add_area_io_rows                          add_clock_tree_exclusion_drivers            add_clock_tree_source_group_roots
+add_connection_to_neighbor_partition         add_decap_cell_candidates                 add_decaps                                  add_decomp_filler
+add_dummy_boundary_wires                     add_endcaps                               add_fences                                  add_filler_gaps
+add_fillers                                  add_gate_array_filler                     add_io_buffers                              add_io_fillers
+add_io_insts                                 add_io_row_fillers                        add_line_end_track                          add_metal_fill
+add_metal_fill_signoff                       add_mim_cap                               add_notch_fill                              add_obj_on_bump
+add_partition_feedthrus                      add_power_mesh_colors                     add_power_switches                          add_reinforce_pg
+add_repeater_by_rule                         add_rings                                 add_route_via_defs                          add_sai_boundary_flops
+add_sdp_rows_blockages                       add_spare_insts                           add_split_power_vias                        add_stripes
+add_tap_walls                                add_target_pg                             add_tieoffs                                 add_to_collection
+add_tracks                                   add_tsv                                   add_via_fill                                add_well_taps
+add_what_if_shapes                           after                                     alias                                       align_partition_clones
+align_pins                                   align_selected                            all_clocks                                  all_connected
+all_fanin                                    all_fanout                                all_inputs                                  all_instances
+all_outputs                                  all_registers                             analyze_paths_by_bottleneck                 analyze_paths_by_clock_domain
+analyze_paths_by_critical_false_path         analyze_paths_by_default_path_group       analyze_paths_by_drv                        analyze_paths_by_hier_port
+analyze_paths_by_hierarchy                   analyze_paths_by_view                     append                                      append_to_collection
+apply                                        array                                     assemble_design                             assemble_proto_model
+assign_bumps                                 assign_clock_tree_source_groups           assign_io_pins                              assign_partition_pins
+assign_pg_bumps                              assign_signal_to_bump                     assign_tsv                                  auto_execok
+auto_import                                  auto_load                                 auto_load_index                             auto_mkindex
+auto_mkindex_old                             auto_qualify                              auto_reset                                  bell
+binary                                       bind                                      bindtags                                    break
+button                                       calculate_glitch_peak                     canvas                                      case
+catch                                        ccopt_design                              cd                                          chan
+check_ac_limits                              check_antenna                             check_bond_pad_spacing                      check_bumps
+check_ccr                                    check_clock_tree_convergence              check_connectivity                          check_cts_config
+check_cut_density                            check_design                              check_drc                                   check_endcaps
+check_filler                                 check_flip_chip_constraints               check_floorplan                             check_floorplan_space
+check_flow                                   check_footprint                           check_hier_route                            check_io_inst_overlap
+check_io_to_bump_connectivity                check_isolated_cuts                       check_ldb_version                           check_library
+check_macro_lower_left_on_track              check_macro_place_constraint              check_metal_density                         check_module_model
+check_multi_cpu_usage                        check_netlist                             check_noise                                 check_partition_sdc
+check_pg_library                             check_pg_shorts                           check_pgv                                   check_pin_assignment
+check_place                                  check_power_domains                       check_power_switches                        check_power_vias
+check_process_antenna                        check_sdps                                check_stacked_die                           check_syntax
+check_tieoffs                                check_timing                              check_timing_library                        check_timing_library_consistency
+check_timing_model                           check_tquantus_model_file                 check_tracks                                check_ufc
+check_unique                                 check_well_antenna                        check_well_taps                             check_wire_gaps
+checkbutton                                  clear_active_logic_view                   clear_all_rulers                            clipboard
+clock                                        clock_design                              clock_post_route_repair                     clone_msv_gate[145D[42A[145C[42B
+
+README                        debug.txt            fv/                        genus.cmd                  genus.cmd1                 genus.cmd2                 genus.log             genus.log1
+genus.log2                    innovus.cmd          innovus.cmd1               innovus.cmd10              innovus.cmd11              innovus.cmd12              innovus.cmd14         innovus.cmd15
+innovus.cmd16                 innovus.cmd17        innovus.cmd18              innovus.cmd19              innovus.cmd2               innovus.cmd3               innovus.cmd4          innovus.cmd5
+innovus.cmd6                  innovus.cmd7         innovus.cmd8               innovus.cmd9               innovus.log                innovus.log1               innovus.log10         innovus.log11
+innovus.log12                 innovus.log13        innovus.log14              innovus.log15              innovus.log16              innovus.log17              innovus.log18         innovus.log19
+innovus.log2                  innovus.log3         innovus.log4               innovus.log5               innovus.log6               innovus.log7               innovus.log8          innovus.log9
+innovus.logv                  innovus.logv1        innovus.logv10             innovus.logv11             innovus.logv12             innovus.logv13             innovus.logv14        innovus.logv15
+innovus.logv16                innovus.logv17       innovus.logv18             innovus.logv19             innovus.logv2              innovus.logv3              innovus.logv4         innovus.logv5
+innovus.logv6                 innovus.logv7        innovus.logv8              innovus.logv9              lp_riscv_top.conn.rpt      lp_riscv_top.conn.rpt.old  lp_riscv_top.def      lp_riscv_top.drc.rpt
+lp_riscv_top.drc.rpt.old      lp_riscv_top.fp      lp_riscv_top.fp.relFPlan   lp_riscv_top.fp.spr        lp_riscv_top.geom.rpt      lp_riscv_top.geom.rpt.old  lp_riscv_top.save.io  lp_riscv_top.welltap.rpt
+lp_riscv_top.welltap.rpt.old  pvsUI_ipvs.log       scheduling_file.cts.11050  scheduling_file.cts.14490  scheduling_file.cts.25165  scheduling_file.cts.30446  sroute.log            sroute.log1
+sroute.log2                   sroute.log3          sroute.log4                sroute.log5                sroute.log6                sroute.log7                sroute.log8           sroute.log9
+timingReports/                trace_core_00_0.log  waves.shm/                 xcelium.d/                 xrun.history               xrun.log[140D[12A[140C[12B
+@innovus 185> if {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
++ enics_message "Defining IO Ring" medium
++ # Reload the IO file after resizing the floorplan
++ read_io_file $design(io_file)
++ # Add IO Fillers
++ add_io_fillers -cells $tech(IO_FILLERS) -prefix IOFILLER
++ # Connect Pad Rings
++ #route_special -connect {pad_ring} \
++ #-nets "$design(digital_gnd) $design(digital_vdd) $design(io_gnd) $design(io_vdd)"
++ } elseif {$design(FULLCHIP_OR_MACRO)=="MACRO"} {
++ enics_message "Spreading Pins around Macro" medium
++     # Spread pins
++ set pins_to_spread  [get_db ports .name] ;#[get_object_name [get_ports]]
++ #edit_pin -fix_overlap 1 -spread_direction clockwise -side Bottom -layer 4 -spread_type side 
++ edit_pin -spread_type start -start {0 0} -spread_direction clockwise -layer {3 4}  \
++         -pin $pins_to_spread -fix_overlap 1 -spacing 6
++ 
++ }
+if {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
+enics_message "Defining IO Ring" medium
+# Reload the IO file after resizing the floorplan
+read_io_file $design(io_file)
+# Add IO Fillers
+add_io_fillers -cells $tech(IO_FILLERS) -prefix IOFILLER
+# Connect Pad Rings
+#route_special -connect {pad_ring} \
+#-nets "$design(digital_gnd) $design(digital_vdd) $design(io_gnd) $design(io_vdd)"
+} elseif {$design(FULLCHIP_OR_MACRO)=="MACRO"} {
+enics_message "Spreading Pins around Macro" medium
+    # Spread pins
+set pins_to_spread  [get_db ports .name] ;#[get_object_name [get_ports]]
+#edit_pin -fix_overlap 1 -spread_direction clockwise -side Bottom -layer 4 -spread_type side 
+edit_pin -spread_type start -start {0 0} -spread_direction clockwise -layer {3 4}  \
+        -pin $pins_to_spread -fix_overlap 1 -spacing 6
+
+}
+
+ENICSINFO: Defining IO Ring
+---------------------------
+Reading IO assignment file "/data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../inputs/ioring.io" ...
+WARNING (IMPFP-3997): The Floorplan box has been changed from {(0.0000000000 , 0.0000000000) (2300.0000000000 , 2000.0000000000)} to {(-28.2925000000 , 0.0000000000) (2328.2925000000 , 2000.0000000000)}.
+Start create_tracks
+**ERROR: (IMPDB-2003):	Instance IOFILLER_N_0 already exists.
+Innovus terminated by internal (SEGV) error/signal...
+*** Stack trace:
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus[0x18b77b2b]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(syStackTrace+0x9c)[0x18b77fa7]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus[0x6a108e6]
+/lib64/libpthread.so.0(+0x118df)[0x15496509b8df]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(_Z22dbGetOrCreatePropByIdFPvPP7dbsPropi+0x0)[0x15c57810]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus[0x1227bb2d]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(_Z20dbiFillGapWithFillerP7dbsCelliiS0_Pccbcciicj+0x29b)[0x1227ddbb]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(_Z15dbAddFillerPadsiPPc+0x88a)[0x1227e6da]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus[0x1211c694]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(_ZN10tcmBaseCmd7executeEP10Tcl_InterpiPPc+0x1a8)[0x1b7d9778]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(_ZN6tcmMgr9cmdParserEPvP10Tcl_InterpiPPc+0x6c1)[0x1b7ccc51]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(TclInvokeStringCommand+0x7a)[0x292c661a]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(TclNRRunCallbacks+0x71)[0x292cb111]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus[0x292cd323]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(Tcl_EvalEx+0x12)[0x292cdd72]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(_Z17rdaEditCmdLineEndPc+0x334)[0x6b0bf44]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(_ZN9seConsole7sesMode9DoExecuteERKSsPv+0xee)[0x14debf9e]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(_ZN7Redline9EmacsMode10AcceptLineEv+0x3f)[0x1648a0bf]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(_ZN7Redline11ModeCommandINS_9EmacsModeEE15CommandFnNoKeysERKN5boost8functionIFvRS1_EEERNS_6EditorE+0x60)[0x16491880]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(_ZN5boost6detail8function26void_function_obj_invoker2INS_3_bi6bind_tINS3_11unspecifiedENS_8functionIFvRN7Redline6EditorEEEENS3_5list1INS_3argILi1EEEEEEEvS9_RKNS7_14KeyCombinationEE6invokeERNS1_15function_bufferES9_SJ_+0x1a)[0x1649fa1a]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(_ZNK7Redline7Command3RunERNS_6EditorERKNS_14KeyCombinationE+0x1b)[0x1649f23b]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(_ZN7Redline6Editor9Internals3RunEb+0xc6)[0x16486df6]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus[0x293cf2dd]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(Tcl_ServiceEvent+0x88)[0x2938fae8]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(Tcl_DoOneEvent+0x148)[0x2938fdf8]
+/tools/cadence/INNOVUS/21.15/tools/lib/64bit/libtq.so(_ZN17TqEventDispatcher13processEventsE6QFlagsIN10QEventLoop17ProcessEventsFlagEE+0x69)[0x15496d5db239]
+/tools/cadence/INNOVUS/21.15/tools/Qt/v5//64bit/lib/libcdsQt5Core.so.5(_ZN10QEventLoop4execE6QFlagsINS_17ProcessEventsFlagEE+0xe9)[0x15496c7860c9]
+/tools/cadence/INNOVUS/21.15/tools/Qt/v5//64bit/lib/libcdsQt5Core.so.5(_ZN16QCoreApplication4execEv+0x83)[0x15496c78e953]
+/tools/cadence/INNOVUS/21.15/tools/lib/64bit/libtq.so(_ZN13TqApplication4execEv+0x176)[0x15496d5da896]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(_Z12edi_app_initP10Tcl_Interp+0x2cb)[0x6ae92db]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(Tcl_MainEx+0x17b)[0x2938a53b]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(main+0x800)[0x5e7a680]
+/lib64/libc.so.6(__libc_start_main+0xe9)[0x15496452a139]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus[0x6a0de66]
+========================================
+               pstack
+========================================
+Thread 14 (Thread 0x154926211700 (LWP 2962)):
+#0  0x0000154965097377 in pthread_cond_wait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0
+#1  0x0000000028cc450e in CRL::Threading::ThreadPoolBase::thread(unsigned int) ()
+#2  0x0000000028cc46bf in CRL::Threading::ThreadPoolBase::thread(void*) ()
+#3  0x0000000006e1e085 in create_head(void*) ()
+#4  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#5  0x00001549645f852f in clone () from /lib64/libc.so.6
+Thread 13 (Thread 0x15491420f700 (LWP 2961)):
+#0  0x0000154965097377 in pthread_cond_wait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0
+#1  0x0000000028cc450e in CRL::Threading::ThreadPoolBase::thread(unsigned int) ()
+#2  0x0000000028cc46bf in CRL::Threading::ThreadPoolBase::thread(void*) ()
+#3  0x0000000006e1e085 in create_head(void*) ()
+#4  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#5  0x00001549645f852f in clone () from /lib64/libc.so.6
+Thread 12 (Thread 0x15492ca27700 (LWP 2509)):
+#0  0x0000154965097377 in pthread_cond_wait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0
+#1  0x000015496c5a9fbb in QWaitCondition::wait(QMutex*, unsigned long) () from /tools/cadence/INNOVUS/21.15/tools/Qt/v5//64bit/lib/libcdsQt5Core.so.5
+#2  0x000015496c1f5e22 in ?? () from /tools/cadence/INNOVUS/21.15/tools/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5
+#3  0x000015496c5a917a in ?? () from /tools/cadence/INNOVUS/21.15/tools/Qt/v5//64bit/lib/libcdsQt5Core.so.5
+#4  0x0000000006e1e085 in create_head(void*) ()
+#5  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#6  0x00001549645f852f in clone () from /lib64/libc.so.6
+Thread 11 (Thread 0x15494b783700 (LWP 2444)):
+#0  0x000015496509b42a in do_sigwait () from /lib64/libpthread.so.0
+#1  0x000015496509b4ac in sigwait () from /lib64/libpthread.so.0
+#2  0x0000000006a0e7b0 in ctrlCHandle(void*) ()
+#3  0x0000000006e1e085 in create_head(void*) ()
+#4  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#5  0x00001549645f852f in clone () from /lib64/libc.so.6
+Thread 10 (Thread 0x15494bfb3700 (LWP 2376)):
+#0  0x00001549645f03dc in select () from /lib64/libc.so.6
+#1  0x00000000293cefd8 in NotifierThreadProc ()
+#2  0x0000000006e1e085 in create_head(void*) ()
+#3  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#4  0x00001549645f852f in clone () from /lib64/libc.so.6
+Thread 9 (Thread 0x15494c2fb700 (LWP 2375)):
+#0  0x0000154965097377 in pthread_cond_wait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0
+#1  0x000015494fde70bf in thread_function () from /usr/lib64/dri/swrast_dri.so
+#2  0x000015494fde6f47 in impl_thrd_routine () from /usr/lib64/dri/swrast_dri.so
+#3  0x0000000006e1e085 in create_head(void*) ()
+#4  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#5  0x00001549645f852f in clone () from /lib64/libc.so.6
+Thread 8 (Thread 0x15494c4fc700 (LWP 2374)):
+#0  0x0000154965097377 in pthread_cond_wait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0
+#1  0x000015494fde70bf in thread_function () from /usr/lib64/dri/swrast_dri.so
+#2  0x000015494fde6f47 in impl_thrd_routine () from /usr/lib64/dri/swrast_dri.so
+#3  0x0000000006e1e085 in create_head(void*) ()
+#4  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#5  0x00001549645f852f in clone () from /lib64/libc.so.6
+Thread 7 (Thread 0x154952468700 (LWP 2373)):
+#0  0x00001549645ee639 in poll () from /lib64/libc.so.6
+#1  0x000015496936c007 in _xcb_conn_wait () from /lib64/libxcb.so.1
+#2  0x000015496936ddfa in xcb_wait_for_event () from /lib64/libxcb.so.1
+#3  0x00001549524bda59 in ?? () from /tools/cadence/INNOVUS/21.15/tools/Qt/v5//64bit/lib/libcdsQt5XcbQpa.so.5
+#4  0x000015496c5a917a in ?? () from /tools/cadence/INNOVUS/21.15/tools/Qt/v5//64bit/lib/libcdsQt5Core.so.5
+#5  0x0000000006e1e085 in create_head(void*) ()
+#6  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#7  0x00001549645f852f in clone () from /lib64/libc.so.6
+Thread 6 (Thread 0x154952a8b700 (LWP 2306)):
+#0  0x00001549645c8c2b in nanosleep () from /lib64/libc.so.6
+#1  0x00001549645c8b4a in sleep () from /lib64/libc.so.6
+#2  0x0000000018b9159a in syiPeakMem(void*) ()
+#3  0x0000000006e1e085 in create_head(void*) ()
+#4  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#5  0x00001549645f852f in clone () from /lib64/libc.so.6
+Thread 5 (Thread 0x154953297700 (LWP 2304)):
+#0  0x000015496509adfb in nanosleep () from /lib64/libpthread.so.0
+#1  0x0000000008ac0a8d in rdaiLicRecheck(void*) ()
+#2  0x0000000006e1e085 in create_head(void*) ()
+#3  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#4  0x00001549645f852f in clone () from /lib64/libc.so.6
+Thread 4 (Thread 0x154953599700 (LWP 2303)):
+#0  0x00001549645f03dc in select () from /lib64/libc.so.6
+#1  0x0000000018b9b225 in syiMonitorStdOE(void*) ()
+#2  0x0000000006e1e085 in create_head(void*) ()
+#3  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#4  0x00001549645f852f in clone () from /lib64/libc.so.6
+Thread 3 (Thread 0x15495379a700 (LWP 2299)):
+#0  0x00001549645f03dc in select () from /lib64/libc.so.6
+#1  0x0000000027b3d0cb in ProcessInfo::sampleUsage(void*) ()
+#2  0x0000000006e1e085 in create_head(void*) ()
+#3  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#4  0x00001549645f852f in clone () from /lib64/libc.so.6
+Thread 2 (Thread 0x15495399b700 (LWP 2298)):
+#0  0x000015496509a8c9 in accept () from /lib64/libpthread.so.0
+#1  0x0000000027b444ca in ProcessInfo::handleConnection(void*) ()
+#2  0x0000000006e1e085 in create_head(void*) ()
+#3  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#4  0x00001549645f852f in clone () from /lib64/libc.so.6
+Thread 1 (Thread 0x15495c023740 (LWP 2167)):
+#0  0x00001549645c8993 in waitpid () from /lib64/libc.so.6
+#1  0x00001549645495b0 in do_system () from /lib64/libc.so.6
+#2  0x0000000018b77c0e in syStackTraceDump(_IO_FILE*, bool) ()
+#3  0x0000000018b77fa8 in syStackTrace ()
+#4  0x0000000006a108e7 in rdaiErrorHandler(int, siginfo_t*, void*) ()
+#5  <signal handler called>
+#6  0x0000000015c57810 in dbGetOrCreatePropByIdF(void*, dbsProp**, int) ()
+#7  0x000000001227bb2e in dbiAddFillerPadsOnSide(dbsCell*, dbsIo**, int, int, dbsCell*, char*, char, bool, char, char, int, int, char, unsigned int) ()
+#8  0x000000001227ddbc in dbiFillGapWithFiller(dbsCell*, int, int, dbsCell*, char*, char, bool, char, char, int, int, char, unsigned int) ()
+#9  0x000000001227e6db in dbAddFillerPads(int, char**) ()
+#10 0x000000001211c695 in rdaiAddIoFillerCmd ()
+#11 0x000000001b7d9779 in tcmBaseCmd::execute(Tcl_Interp*, int, char**) ()
+#12 0x000000001b7ccc52 in tcmMgr::cmdParser(void*, Tcl_Interp*, int, char**) ()
+#13 0x00000000292c661b in TclInvokeStringCommand ()
+#14 0x00000000292cb112 in TclNRRunCallbacks ()
+#15 0x00000000292cd324 in TclEvalEx ()
+#16 0x00000000292cdd73 in Tcl_EvalEx ()
+#17 0x0000000006b0bf45 in rdaEditCmdLineEnd(char*) ()
+#18 0x0000000014debf9f in seConsole::sesMode::DoExecute(std::string const&, void*) ()
+#19 0x000000001648a0c0 in Redline::EmacsMode::AcceptLine() ()
+#20 0x0000000016491881 in Redline::ModeCommand<Redline::EmacsMode>::CommandFnNoKeys(boost::function<void (Redline::EmacsMode&)> const&, Redline::Editor&) ()
+#21 0x000000001649fa1b in boost::detail::function::void_function_obj_invoker2<boost::_bi::bind_t<boost::_bi::unspecified, boost::function<void (Redline::Editor&)>, boost::_bi::list1<boost::arg<1> > >, void, Redline::Editor&, Redline::KeyCombination const&>::invoke(boost::detail::function::function_buffer&, Redline::Editor&, Redline::KeyCombination const&) ()
+#22 0x000000001649f23c in Redline::Command::Run(Redline::Editor&, Redline::KeyCombination const&) const ()
+#23 0x0000000016486df7 in Redline::Editor::Internals::Run(bool) ()
+#24 0x00000000293cf2de in FileHandlerEventProc ()
+#25 0x000000002938fae9 in Tcl_ServiceEvent ()
+#26 0x000000002938fdf9 in Tcl_DoOneEvent ()
+#27 0x000015496d5db23a in TqEventDispatcher::processEvents(QFlags<QEventLoop::ProcessEventsFlag>) () from /tools/cadence/INNOVUS/21.15/tools/lib/64bit/libtq.so
+#28 0x000015496c7860ca in QEventLoop::exec(QFlags<QEventLoop::ProcessEventsFlag>) () from /tools/cadence/INNOVUS/21.15/tools/Qt/v5//64bit/lib/libcdsQt5Core.so.5
+#29 0x000015496c78e954 in QCoreApplication::exec() () from /tools/cadence/INNOVUS/21.15/tools/Qt/v5//64bit/lib/libcdsQt5Core.so.5
+#30 0x000015496d5da897 in TqApplication::exec() () from /tools/cadence/INNOVUS/21.15/tools/lib/64bit/libtq.so
+#31 0x0000000006ae92dc in edi_app_init(Tcl_Interp*) ()
+#32 0x000000002938a53c in Tcl_MainEx ()
+#33 0x0000000005e7a681 in main ()
+========================================
+                gdb
+========================================
+Using: gdb
+[New LWP 2298]
+[New LWP 2299]
+[New LWP 2303]
+[New LWP 2304]
+[New LWP 2306]
+[New LWP 2373]
+[New LWP 2374]
+[New LWP 2375]
+[New LWP 2376]
+[New LWP 2444]
+[New LWP 2509]
+[New LWP 2961]
+[New LWP 2962]
+BFD: warning: /lib64/libjpeg.so.62: unsupported GNU_PROPERTY_TYPE (5) type: 0xc0000002
+Missing separate debuginfo for /tools/cadence/INNOVUS/21.15/tools/OrbitIO/jre/lib/server/libjvm.so
+BFD: warning: /lib64/libjpeg.so.62: unsupported GNU_PROPERTY_TYPE (5) type: 0xc0000002
+
+warning: Loadable section ".note.gnu.property" outside of ELF segments
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib64/libthread_db.so.1".
+0x00001549645c8993 in waitpid () from /lib64/libc.so.6
+
+Thread 14 (Thread 0x154926211700 (LWP 2962)):
+#0  0x0000154965097377 in pthread_cond_wait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0
+#1  0x0000000028cc450e in CRL::Threading::ThreadPoolBase::thread(unsigned int) ()
+#2  0x0000000028cc46bf in CRL::Threading::ThreadPoolBase::thread(void*) ()
+#3  0x0000000006e1e085 in create_head(void*) ()
+#4  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#5  0x00001549645f852f in clone () from /lib64/libc.so.6
+
+Thread 13 (Thread 0x15491420f700 (LWP 2961)):
+#0  0x0000154965097377 in pthread_cond_wait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0
+#1  0x0000000028cc450e in CRL::Threading::ThreadPoolBase::thread(unsigned int) ()
+#2  0x0000000028cc46bf in CRL::Threading::ThreadPoolBase::thread(void*) ()
+#3  0x0000000006e1e085 in create_head(void*) ()
+#4  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#5  0x00001549645f852f in clone () from /lib64/libc.so.6
+
+Thread 12 (Thread 0x15492ca27700 (LWP 2509)):
+#0  0x0000154965097377 in pthread_cond_wait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0
+#1  0x000015496c5a9fbb in QWaitCondition::wait(QMutex*, unsigned long) () from /tools/cadence/INNOVUS/21.15/tools/Qt/v5//64bit/lib/libcdsQt5Core.so.5
+#2  0x000015496c1f5e22 in ?? () from /tools/cadence/INNOVUS/21.15/tools/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5
+#3  0x000015496c5a917a in ?? () from /tools/cadence/INNOVUS/21.15/tools/Qt/v5//64bit/lib/libcdsQt5Core.so.5
+#4  0x0000000006e1e085 in create_head(void*) ()
+#5  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#6  0x00001549645f852f in clone () from /lib64/libc.so.6
+
+Thread 11 (Thread 0x15494b783700 (LWP 2444)):
+#0  0x000015496509b42a in do_sigwait () from /lib64/libpthread.so.0
+#1  0x000015496509b4ac in sigwait () from /lib64/libpthread.so.0
+#2  0x0000000006a0e7b0 in ctrlCHandle(void*) ()
+#3  0x0000000006e1e085 in create_head(void*) ()
+#4  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#5  0x00001549645f852f in clone () from /lib64/libc.so.6
+
+Thread 10 (Thread 0x15494bfb3700 (LWP 2376)):
+#0  0x00001549645f03dc in select () from /lib64/libc.so.6
+#1  0x00000000293cefd8 in NotifierThreadProc ()
+#2  0x0000000006e1e085 in create_head(void*) ()
+#3  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#4  0x00001549645f852f in clone () from /lib64/libc.so.6
+
+Thread 9 (Thread 0x15494c2fb700 (LWP 2375)):
+#0  0x0000154965097377 in pthread_cond_wait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0
+#1  0x000015494fde70bf in thread_function () from /usr/lib64/dri/swrast_dri.so
+#2  0x000015494fde6f47 in impl_thrd_routine () from /usr/lib64/dri/swrast_dri.so
+#3  0x0000000006e1e085 in create_head(void*) ()
+#4  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#5  0x00001549645f852f in clone () from /lib64/libc.so.6
+
+Thread 8 (Thread 0x15494c4fc700 (LWP 2374)):
+#0  0x0000154965097377 in pthread_cond_wait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0
+#1  0x000015494fde70bf in thread_function () from /usr/lib64/dri/swrast_dri.so
+#2  0x000015494fde6f47 in impl_thrd_routine () from /usr/lib64/dri/swrast_dri.so
+#3  0x0000000006e1e085 in create_head(void*) ()
+#4  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#5  0x00001549645f852f in clone () from /lib64/libc.so.6
+
+Thread 7 (Thread 0x154952468700 (LWP 2373)):
+#0  0x00001549645ee639 in poll () from /lib64/libc.so.6
+#1  0x000015496936c007 in _xcb_conn_wait () from /lib64/libxcb.so.1
+#2  0x000015496936ddfa in xcb_wait_for_event () from /lib64/libxcb.so.1
+#3  0x00001549524bda59 in ?? () from /tools/cadence/INNOVUS/21.15/tools/Qt/v5//64bit/lib/libcdsQt5XcbQpa.so.5
+#4  0x000015496c5a917a in ?? () from /tools/cadence/INNOVUS/21.15/tools/Qt/v5//64bit/lib/libcdsQt5Core.so.5
+#5  0x0000000006e1e085 in create_head(void*) ()
+#6  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#7  0x00001549645f852f in clone () from /lib64/libc.so.6
+
+Thread 6 (Thread 0x154952a8b700 (LWP 2306)):
+#0  0x00001549645c8c2b in nanosleep () from /lib64/libc.so.6
+#1  0x00001549645c8b4a in sleep () from /lib64/libc.so.6
+#2  0x0000000018b9159a in syiPeakMem(void*) ()
+#3  0x0000000006e1e085 in create_head(void*) ()
+#4  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#5  0x00001549645f852f in clone () from /lib64/libc.so.6
+
+Thread 5 (Thread 0x154953297700 (LWP 2304)):
+#0  0x000015496509adfb in nanosleep () from /lib64/libpthread.so.0
+#1  0x0000000008ac0a8d in rdaiLicRecheck(void*) ()
+#2  0x0000000006e1e085 in create_head(void*) ()
+#3  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#4  0x00001549645f852f in clone () from /lib64/libc.so.6
+
+Thread 4 (Thread 0x154953599700 (LWP 2303)):
+#0  0x00001549645f03dc in select () from /lib64/libc.so.6
+#1  0x0000000018b9b225 in syiMonitorStdOE(void*) ()
+#2  0x0000000006e1e085 in create_head(void*) ()
+#3  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#4  0x00001549645f852f in clone () from /lib64/libc.so.6
+
+Thread 3 (Thread 0x15495379a700 (LWP 2299)):
+#0  0x00001549645f03dc in select () from /lib64/libc.so.6
+#1  0x0000000027b3d0cb in ProcessInfo::sampleUsage(void*) ()
+#2  0x0000000006e1e085 in create_head(void*) ()
+#3  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#4  0x00001549645f852f in clone () from /lib64/libc.so.6
+
+Thread 2 (Thread 0x15495399b700 (LWP 2298)):
+#0  0x000015496509a8c9 in accept () from /lib64/libpthread.so.0
+#1  0x0000000027b444ca in ProcessInfo::handleConnection(void*) ()
+#2  0x0000000006e1e085 in create_head(void*) ()
+#3  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#4  0x00001549645f852f in clone () from /lib64/libc.so.6
+
+Thread 1 (Thread 0x15495c023740 (LWP 2167)):
+#0  0x00001549645c8993 in waitpid () from /lib64/libc.so.6
+#1  0x00001549645495b0 in do_system () from /lib64/libc.so.6
+#2  0x0000000018b77c0e in syStackTraceDump(_IO_FILE*, bool) ()
+#3  0x0000000018b77fa8 in syStackTrace ()
+#4  0x0000000006a108e7 in rdaiErrorHandler(int, siginfo_t*, void*) ()
+#5  <signal handler called>
+#6  0x0000000015c57810 in dbGetOrCreatePropByIdF(void*, dbsProp**, int) ()
+#7  0x000000001227bb2e in dbiAddFillerPadsOnSide(dbsCell*, dbsIo**, int, int, dbsCell*, char*, char, bool, char, char, int, int, char, unsigned int) ()
+#8  0x000000001227ddbc in dbiFillGapWithFiller(dbsCell*, int, int, dbsCell*, char*, char, bool, char, char, int, int, char, unsigned int) ()
+#9  0x000000001227e6db in dbAddFillerPads(int, char**) ()
+#10 0x000000001211c695 in rdaiAddIoFillerCmd ()
+#11 0x000000001b7d9779 in tcmBaseCmd::execute(Tcl_Interp*, int, char**) ()
+#12 0x000000001b7ccc52 in tcmMgr::cmdParser(void*, Tcl_Interp*, int, char**) ()
+#13 0x00000000292c661b in TclInvokeStringCommand ()
+#14 0x00000000292cb112 in TclNRRunCallbacks ()
+#15 0x00000000292cd324 in TclEvalEx ()
+#16 0x00000000292cdd73 in Tcl_EvalEx ()
+#17 0x0000000006b0bf45 in rdaEditCmdLineEnd(char*) ()
+#18 0x0000000014debf9f in seConsole::sesMode::DoExecute(std::string const&, void*) ()
+#19 0x000000001648a0c0 in Redline::EmacsMode::AcceptLine() ()
+#20 0x0000000016491881 in Redline::ModeCommand<Redline::EmacsMode>::CommandFnNoKeys(boost::function<void (Redline::EmacsMode&)> const&, Redline::Editor&) ()
+#21 0x000000001649fa1b in boost::detail::function::void_function_obj_invoker2<boost::_bi::bind_t<boost::_bi::unspecified, boost::function<void (Redline::Editor&)>, boost::_bi::list1<boost::arg<1> > >, void, Redline::Editor&, Redline::KeyCombination const&>::invoke(boost::detail::function::function_buffer&, Redline::Editor&, Redline::KeyCombination const&) ()
+#22 0x000000001649f23c in Redline::Command::Run(Redline::Editor&, Redline::KeyCombination const&) const ()
+#23 0x0000000016486df7 in Redline::Editor::Internals::Run(bool) ()
+#24 0x00000000293cf2de in FileHandlerEventProc ()
+#25 0x000000002938fae9 in Tcl_ServiceEvent ()
+#26 0x000000002938fdf9 in Tcl_DoOneEvent ()
+#27 0x000015496d5db23a in TqEventDispatcher::processEvents(QFlags<QEventLoop::ProcessEventsFlag>) () from /tools/cadence/INNOVUS/21.15/tools/lib/64bit/libtq.so
+#28 0x000015496c7860ca in QEventLoop::exec(QFlags<QEventLoop::ProcessEventsFlag>) () from /tools/cadence/INNOVUS/21.15/tools/Qt/v5//64bit/lib/libcdsQt5Core.so.5
+#29 0x000015496c78e954 in QCoreApplication::exec() () from /tools/cadence/INNOVUS/21.15/tools/Qt/v5//64bit/lib/libcdsQt5Core.so.5
+#30 0x000015496d5da897 in TqApplication::exec() () from /tools/cadence/INNOVUS/21.15/tools/lib/64bit/libtq.so
+#31 0x0000000006ae92dc in edi_app_init(Tcl_Interp*) ()
+#32 0x000000002938a53c in Tcl_MainEx ()
+#33 0x0000000005e7a681 in main ()
+A debugging session is active.
+
+	Inferior 1 [process 2167] will be detached.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+*** Stack trace:
+*** Stack trace in log file.
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus[0x18b77a86]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(syStackTrace+0xad)[0x18b77fb8]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus[0x6a108e6]
+/lib64/libpthread.so.0(+0x118df)[0x15496509b8df]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(_Z22dbGetOrCreatePropByIdFPvPP7dbsPropi+0x0)[0x15c57810]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus[0x1227bb2d]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(_Z20dbiFillGapWithFillerP7dbsCelliiS0_Pccbcciicj+0x29b)[0x1227ddbb]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(_Z15dbAddFillerPadsiPPc+0x88a)[0x1227e6da]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus[0x1211c694]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(_ZN10tcmBaseCmd7executeEP10Tcl_InterpiPPc+0x1a8)[0x1b7d9778]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(_ZN6tcmMgr9cmdParserEPvP10Tcl_InterpiPPc+0x6c1)[0x1b7ccc51]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(TclInvokeStringCommand+0x7a)[0x292c661a]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(TclNRRunCallbacks+0x71)[0x292cb111]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus[0x292cd323]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(Tcl_EvalEx+0x12)[0x292cdd72]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(_Z17rdaEditCmdLineEndPc+0x334)[0x6b0bf44]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(_ZN9seConsole7sesMode9DoExecuteERKSsPv+0xee)[0x14debf9e]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(_ZN7Redline9EmacsMode10AcceptLineEv+0x3f)[0x1648a0bf]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(_ZN7Redline11ModeCommandINS_9EmacsModeEE15CommandFnNoKeysERKN5boost8functionIFvRS1_EEERNS_6EditorE+0x60)[0x16491880]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(_ZN5boost6detail8function26void_function_obj_invoker2INS_3_bi6bind_tINS3_11unspecifiedENS_8functionIFvRN7Redline6EditorEEEENS3_5list1INS_3argILi1EEEEEEEvS9_RKNS7_14KeyCombinationEE6invokeERNS1_15function_bufferES9_SJ_+0x1a)[0x1649fa1a]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(_ZNK7Redline7Command3RunERNS_6EditorERKNS_14KeyCombinationE+0x1b)[0x1649f23b]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(_ZN7Redline6Editor9Internals3RunEb+0xc6)[0x16486df6]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus[0x293cf2dd]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(Tcl_ServiceEvent+0x88)[0x2938fae8]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(Tcl_DoOneEvent+0x148)[0x2938fdf8]
+/tools/cadence/INNOVUS/21.15/tools/lib/64bit/libtq.so(_ZN17TqEventDispatcher13processEventsE6QFlagsIN10QEventLoop17ProcessEventsFlagEE+0x69)[0x15496d5db239]
+/tools/cadence/INNOVUS/21.15/tools/Qt/v5//64bit/lib/libcdsQt5Core.so.5(_ZN10QEventLoop4execE6QFlagsINS_17ProcessEventsFlagEE+0xe9)[0x15496c7860c9]
+/tools/cadence/INNOVUS/21.15/tools/Qt/v5//64bit/lib/libcdsQt5Core.so.5(_ZN16QCoreApplication4execEv+0x83)[0x15496c78e953]
+/tools/cadence/INNOVUS/21.15/tools/lib/64bit/libtq.so(_ZN13TqApplication4execEv+0x176)[0x15496d5da896]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(_Z12edi_app_initP10Tcl_Interp+0x2cb)[0x6ae92db]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(Tcl_MainEx+0x17b)[0x2938a53b]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus(main+0x800)[0x5e7a680]
+/lib64/libc.so.6(__libc_start_main+0xe9)[0x15496452a139]
+/tools/cadence/INNOVUS/21.15/tools/innovus/bin/64bit/innovus[0x6a0de66]
+========================================
+               pstack
+========================================
+Thread 14 (Thread 0x154926211700 (LWP 2962)):
+#0  0x0000154965097377 in pthread_cond_wait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0
+#1  0x0000000028cc450e in CRL::Threading::ThreadPoolBase::thread(unsigned int) ()
+#2  0x0000000028cc46bf in CRL::Threading::ThreadPoolBase::thread(void*) ()
+#3  0x0000000006e1e085 in create_head(void*) ()
+#4  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#5  0x00001549645f852f in clone () from /lib64/libc.so.6
+Thread 13 (Thread 0x15491420f700 (LWP 2961)):
+#0  0x0000154965097377 in pthread_cond_wait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0
+#1  0x0000000028cc450e in CRL::Threading::ThreadPoolBase::thread(unsigned int) ()
+#2  0x0000000028cc46bf in CRL::Threading::ThreadPoolBase::thread(void*) ()
+#3  0x0000000006e1e085 in create_head(void*) ()
+#4  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#5  0x00001549645f852f in clone () from /lib64/libc.so.6
+Thread 12 (Thread 0x15492ca27700 (LWP 2509)):
+#0  0x0000154965097377 in pthread_cond_wait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0
+#1  0x000015496c5a9fbb in QWaitCondition::wait(QMutex*, unsigned long) () from /tools/cadence/INNOVUS/21.15/tools/Qt/v5//64bit/lib/libcdsQt5Core.so.5
+#2  0x000015496c1f5e22 in ?? () from /tools/cadence/INNOVUS/21.15/tools/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5
+#3  0x000015496c5a917a in ?? () from /tools/cadence/INNOVUS/21.15/tools/Qt/v5//64bit/lib/libcdsQt5Core.so.5
+#4  0x0000000006e1e085 in create_head(void*) ()
+#5  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#6  0x00001549645f852f in clone () from /lib64/libc.so.6
+Thread 11 (Thread 0x15494b783700 (LWP 2444)):
+#0  0x000015496509b42a in do_sigwait () from /lib64/libpthread.so.0
+#1  0x000015496509b4ac in sigwait () from /lib64/libpthread.so.0
+#2  0x0000000006a0e7b0 in ctrlCHandle(void*) ()
+#3  0x0000000006e1e085 in create_head(void*) ()
+#4  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#5  0x00001549645f852f in clone () from /lib64/libc.so.6
+Thread 10 (Thread 0x15494bfb3700 (LWP 2376)):
+#0  0x00001549645f03dc in select () from /lib64/libc.so.6
+#1  0x00000000293cefd8 in NotifierThreadProc ()
+#2  0x0000000006e1e085 in create_head(void*) ()
+#3  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#4  0x00001549645f852f in clone () from /lib64/libc.so.6
+Thread 9 (Thread 0x15494c2fb700 (LWP 2375)):
+#0  0x0000154965097377 in pthread_cond_wait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0
+#1  0x000015494fde70bf in thread_function () from /usr/lib64/dri/swrast_dri.so
+#2  0x000015494fde6f47 in impl_thrd_routine () from /usr/lib64/dri/swrast_dri.so
+#3  0x0000000006e1e085 in create_head(void*) ()
+#4  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#5  0x00001549645f852f in clone () from /lib64/libc.so.6
+Thread 8 (Thread 0x15494c4fc700 (LWP 2374)):
+#0  0x0000154965097377 in pthread_cond_wait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0
+#1  0x000015494fde70bf in thread_function () from /usr/lib64/dri/swrast_dri.so
+#2  0x000015494fde6f47 in impl_thrd_routine () from /usr/lib64/dri/swrast_dri.so
+#3  0x0000000006e1e085 in create_head(void*) ()
+#4  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#5  0x00001549645f852f in clone () from /lib64/libc.so.6
+Thread 7 (Thread 0x154952468700 (LWP 2373)):
+#0  0x00001549645ee639 in poll () from /lib64/libc.so.6
+#1  0x000015496936c007 in _xcb_conn_wait () from /lib64/libxcb.so.1
+#2  0x000015496936ddfa in xcb_wait_for_event () from /lib64/libxcb.so.1
+#3  0x00001549524bda59 in ?? () from /tools/cadence/INNOVUS/21.15/tools/Qt/v5//64bit/lib/libcdsQt5XcbQpa.so.5
+#4  0x000015496c5a917a in ?? () from /tools/cadence/INNOVUS/21.15/tools/Qt/v5//64bit/lib/libcdsQt5Core.so.5
+#5  0x0000000006e1e085 in create_head(void*) ()
+#6  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#7  0x00001549645f852f in clone () from /lib64/libc.so.6
+Thread 6 (Thread 0x154952a8b700 (LWP 2306)):
+#0  0x00001549645c8c2b in nanosleep () from /lib64/libc.so.6
+#1  0x00001549645c8b4a in sleep () from /lib64/libc.so.6
+#2  0x0000000018b9159a in syiPeakMem(void*) ()
+#3  0x0000000006e1e085 in create_head(void*) ()
+#4  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#5  0x00001549645f852f in clone () from /lib64/libc.so.6
+Thread 5 (Thread 0x154953297700 (LWP 2304)):
+#0  0x000015496509adfb in nanosleep () from /lib64/libpthread.so.0
+#1  0x0000000008ac0a8d in rdaiLicRecheck(void*) ()
+#2  0x0000000006e1e085 in create_head(void*) ()
+#3  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#4  0x00001549645f852f in clone () from /lib64/libc.so.6
+Thread 4 (Thread 0x154953599700 (LWP 2303)):
+#0  0x00001549645f03dc in select () from /lib64/libc.so.6
+#1  0x0000000018b9b225 in syiMonitorStdOE(void*) ()
+#2  0x0000000006e1e085 in create_head(void*) ()
+#3  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#4  0x00001549645f852f in clone () from /lib64/libc.so.6
+Thread 3 (Thread 0x15495379a700 (LWP 2299)):
+#0  0x00001549645f03dc in select () from /lib64/libc.so.6
+#1  0x0000000027b3d0cb in ProcessInfo::sampleUsage(void*) ()
+#2  0x0000000006e1e085 in create_head(void*) ()
+#3  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#4  0x00001549645f852f in clone () from /lib64/libc.so.6
+Thread 2 (Thread 0x15495399b700 (LWP 2298)):
+#0  0x000015496509a8c9 in accept () from /lib64/libpthread.so.0
+#1  0x0000000027b444ca in ProcessInfo::handleConnection(void*) ()
+#2  0x0000000006e1e085 in create_head(void*) ()
+#3  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#4  0x00001549645f852f in clone () from /lib64/libc.so.6
+Thread 1 (Thread 0x15495c023740 (LWP 2167)):
+#0  0x00001549645c8993 in waitpid () from /lib64/libc.so.6
+#1  0x00001549645495b0 in do_system () from /lib64/libc.so.6
+#2  0x0000000018b77bb2 in syStackTraceDump(_IO_FILE*, bool) ()
+#3  0x0000000018b77fb9 in syStackTrace ()
+#4  0x0000000006a108e7 in rdaiErrorHandler(int, siginfo_t*, void*) ()
+#5  <signal handler called>
+#6  0x0000000015c57810 in dbGetOrCreatePropByIdF(void*, dbsProp**, int) ()
+#7  0x000000001227bb2e in dbiAddFillerPadsOnSide(dbsCell*, dbsIo**, int, int, dbsCell*, char*, char, bool, char, char, int, int, char, unsigned int) ()
+#8  0x000000001227ddbc in dbiFillGapWithFiller(dbsCell*, int, int, dbsCell*, char*, char, bool, char, char, int, int, char, unsigned int) ()
+#9  0x000000001227e6db in dbAddFillerPads(int, char**) ()
+#10 0x000000001211c695 in rdaiAddIoFillerCmd ()
+#11 0x000000001b7d9779 in tcmBaseCmd::execute(Tcl_Interp*, int, char**) ()
+#12 0x000000001b7ccc52 in tcmMgr::cmdParser(void*, Tcl_Interp*, int, char**) ()
+#13 0x00000000292c661b in TclInvokeStringCommand ()
+#14 0x00000000292cb112 in TclNRRunCallbacks ()
+#15 0x00000000292cd324 in TclEvalEx ()
+#16 0x00000000292cdd73 in Tcl_EvalEx ()
+#17 0x0000000006b0bf45 in rdaEditCmdLineEnd(char*) ()
+#18 0x0000000014debf9f in seConsole::sesMode::DoExecute(std::string const&, void*) ()
+#19 0x000000001648a0c0 in Redline::EmacsMode::AcceptLine() ()
+#20 0x0000000016491881 in Redline::ModeCommand<Redline::EmacsMode>::CommandFnNoKeys(boost::function<void (Redline::EmacsMode&)> const&, Redline::Editor&) ()
+#21 0x000000001649fa1b in boost::detail::function::void_function_obj_invoker2<boost::_bi::bind_t<boost::_bi::unspecified, boost::function<void (Redline::Editor&)>, boost::_bi::list1<boost::arg<1> > >, void, Redline::Editor&, Redline::KeyCombination const&>::invoke(boost::detail::function::function_buffer&, Redline::Editor&, Redline::KeyCombination const&) ()
+#22 0x000000001649f23c in Redline::Command::Run(Redline::Editor&, Redline::KeyCombination const&) const ()
+#23 0x0000000016486df7 in Redline::Editor::Internals::Run(bool) ()
+#24 0x00000000293cf2de in FileHandlerEventProc ()
+#25 0x000000002938fae9 in Tcl_ServiceEvent ()
+#26 0x000000002938fdf9 in Tcl_DoOneEvent ()
+#27 0x000015496d5db23a in TqEventDispatcher::processEvents(QFlags<QEventLoop::ProcessEventsFlag>) () from /tools/cadence/INNOVUS/21.15/tools/lib/64bit/libtq.so
+#28 0x000015496c7860ca in QEventLoop::exec(QFlags<QEventLoop::ProcessEventsFlag>) () from /tools/cadence/INNOVUS/21.15/tools/Qt/v5//64bit/lib/libcdsQt5Core.so.5
+#29 0x000015496c78e954 in QCoreApplication::exec() () from /tools/cadence/INNOVUS/21.15/tools/Qt/v5//64bit/lib/libcdsQt5Core.so.5
+#30 0x000015496d5da897 in TqApplication::exec() () from /tools/cadence/INNOVUS/21.15/tools/lib/64bit/libtq.so
+#31 0x0000000006ae92dc in edi_app_init(Tcl_Interp*) ()
+#32 0x000000002938a53c in Tcl_MainEx ()
+#33 0x0000000005e7a681 in main ()
+========================================
+                gdb
+========================================
+Using: gdb
+[New LWP 2298]
+[New LWP 2299]
+[New LWP 2303]
+[New LWP 2304]
+[New LWP 2306]
+[New LWP 2373]
+[New LWP 2374]
+[New LWP 2375]
+[New LWP 2376]
+[New LWP 2444]
+[New LWP 2509]
+[New LWP 2961]
+[New LWP 2962]
+BFD: warning: /lib64/libjpeg.so.62: unsupported GNU_PROPERTY_TYPE (5) type: 0xc0000002
+Missing separate debuginfo for /tools/cadence/INNOVUS/21.15/tools/OrbitIO/jre/lib/server/libjvm.so
+BFD: warning: /lib64/libjpeg.so.62: unsupported GNU_PROPERTY_TYPE (5) type: 0xc0000002
+
+warning: Loadable section ".note.gnu.property" outside of ELF segments
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib64/libthread_db.so.1".
+0x00001549645c8993 in waitpid () from /lib64/libc.so.6
+
+Thread 14 (Thread 0x154926211700 (LWP 2962)):
+#0  0x0000154965097377 in pthread_cond_wait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0
+#1  0x0000000028cc450e in CRL::Threading::ThreadPoolBase::thread(unsigned int) ()
+#2  0x0000000028cc46bf in CRL::Threading::ThreadPoolBase::thread(void*) ()
+#3  0x0000000006e1e085 in create_head(void*) ()
+#4  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#5  0x00001549645f852f in clone () from /lib64/libc.so.6
+
+Thread 13 (Thread 0x15491420f700 (LWP 2961)):
+#0  0x0000154965097377 in pthread_cond_wait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0
+#1  0x0000000028cc450e in CRL::Threading::ThreadPoolBase::thread(unsigned int) ()
+#2  0x0000000028cc46bf in CRL::Threading::ThreadPoolBase::thread(void*) ()
+#3  0x0000000006e1e085 in create_head(void*) ()
+#4  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#5  0x00001549645f852f in clone () from /lib64/libc.so.6
+
+Thread 12 (Thread 0x15492ca27700 (LWP 2509)):
+#0  0x0000154965097377 in pthread_cond_wait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0
+#1  0x000015496c5a9fbb in QWaitCondition::wait(QMutex*, unsigned long) () from /tools/cadence/INNOVUS/21.15/tools/Qt/v5//64bit/lib/libcdsQt5Core.so.5
+#2  0x000015496c1f5e22 in ?? () from /tools/cadence/INNOVUS/21.15/tools/Qt/v5//64bit/lib/libcdsQt5Widgets.so.5
+#3  0x000015496c5a917a in ?? () from /tools/cadence/INNOVUS/21.15/tools/Qt/v5//64bit/lib/libcdsQt5Core.so.5
+#4  0x0000000006e1e085 in create_head(void*) ()
+#5  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#6  0x00001549645f852f in clone () from /lib64/libc.so.6
+
+Thread 11 (Thread 0x15494b783700 (LWP 2444)):
+#0  0x000015496509b42a in do_sigwait () from /lib64/libpthread.so.0
+#1  0x000015496509b4ac in sigwait () from /lib64/libpthread.so.0
+#2  0x0000000006a0e7b0 in ctrlCHandle(void*) ()
+#3  0x0000000006e1e085 in create_head(void*) ()
+#4  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#5  0x00001549645f852f in clone () from /lib64/libc.so.6
+
+Thread 10 (Thread 0x15494bfb3700 (LWP 2376)):
+#0  0x00001549645f03dc in select () from /lib64/libc.so.6
+#1  0x00000000293cefd8 in NotifierThreadProc ()
+#2  0x0000000006e1e085 in create_head(void*) ()
+#3  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#4  0x00001549645f852f in clone () from /lib64/libc.so.6
+
+Thread 9 (Thread 0x15494c2fb700 (LWP 2375)):
+#0  0x0000154965097377 in pthread_cond_wait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0
+#1  0x000015494fde70bf in thread_function () from /usr/lib64/dri/swrast_dri.so
+#2  0x000015494fde6f47 in impl_thrd_routine () from /usr/lib64/dri/swrast_dri.so
+#3  0x0000000006e1e085 in create_head(void*) ()
+#4  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#5  0x00001549645f852f in clone () from /lib64/libc.so.6
+
+Thread 8 (Thread 0x15494c4fc700 (LWP 2374)):
+#0  0x0000154965097377 in pthread_cond_wait@@GLIBC_2.3.2 () from /lib64/libpthread.so.0
+#1  0x000015494fde70bf in thread_function () from /usr/lib64/dri/swrast_dri.so
+#2  0x000015494fde6f47 in impl_thrd_routine () from /usr/lib64/dri/swrast_dri.so
+#3  0x0000000006e1e085 in create_head(void*) ()
+#4  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#5  0x00001549645f852f in clone () from /lib64/libc.so.6
+
+Thread 7 (Thread 0x154952468700 (LWP 2373)):
+#0  0x00001549645ee639 in poll () from /lib64/libc.so.6
+#1  0x000015496936c007 in _xcb_conn_wait () from /lib64/libxcb.so.1
+#2  0x000015496936ddfa in xcb_wait_for_event () from /lib64/libxcb.so.1
+#3  0x00001549524bda59 in ?? () from /tools/cadence/INNOVUS/21.15/tools/Qt/v5//64bit/lib/libcdsQt5XcbQpa.so.5
+#4  0x000015496c5a917a in ?? () from /tools/cadence/INNOVUS/21.15/tools/Qt/v5//64bit/lib/libcdsQt5Core.so.5
+#5  0x0000000006e1e085 in create_head(void*) ()
+#6  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#7  0x00001549645f852f in clone () from /lib64/libc.so.6
+
+Thread 6 (Thread 0x154952a8b700 (LWP 2306)):
+#0  0x00001549645c8c2b in nanosleep () from /lib64/libc.so.6
+#1  0x00001549645c8b4a in sleep () from /lib64/libc.so.6
+#2  0x0000000018b9159a in syiPeakMem(void*) ()
+#3  0x0000000006e1e085 in create_head(void*) ()
+#4  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#5  0x00001549645f852f in clone () from /lib64/libc.so.6
+
+Thread 5 (Thread 0x154953297700 (LWP 2304)):
+#0  0x000015496509adfb in nanosleep () from /lib64/libpthread.so.0
+#1  0x0000000008ac0a8d in rdaiLicRecheck(void*) ()
+#2  0x0000000006e1e085 in create_head(void*) ()
+#3  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#4  0x00001549645f852f in clone () from /lib64/libc.so.6
+
+Thread 4 (Thread 0x154953599700 (LWP 2303)):
+#0  0x00001549645f03dc in select () from /lib64/libc.so.6
+#1  0x0000000018b9b225 in syiMonitorStdOE(void*) ()
+#2  0x0000000006e1e085 in create_head(void*) ()
+#3  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#4  0x00001549645f852f in clone () from /lib64/libc.so.6
+
+Thread 3 (Thread 0x15495379a700 (LWP 2299)):
+#0  0x00001549645f03dc in select () from /lib64/libc.so.6
+#1  0x0000000027b3d0cb in ProcessInfo::sampleUsage(void*) ()
+#2  0x0000000006e1e085 in create_head(void*) ()
+#3  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#4  0x00001549645f852f in clone () from /lib64/libc.so.6
+
+Thread 2 (Thread 0x15495399b700 (LWP 2298)):
+#0  0x000015496509a8c9 in accept () from /lib64/libpthread.so.0
+#1  0x0000000027b444ca in ProcessInfo::handleConnection(void*) ()
+#2  0x0000000006e1e085 in create_head(void*) ()
+#3  0x000015496509144b in start_thread () from /lib64/libpthread.so.0
+#4  0x00001549645f852f in clone () from /lib64/libc.so.6
+
+Thread 1 (Thread 0x15495c023740 (LWP 2167)):
+#0  0x00001549645c8993 in waitpid () from /lib64/libc.so.6
+#1  0x00001549645495b0 in do_system () from /lib64/libc.so.6
+#2  0x0000000018b77bb2 in syStackTraceDump(_IO_FILE*, bool) ()
+#3  0x0000000018b77fb9 in syStackTrace ()
+#4  0x0000000006a108e7 in rdaiErrorHandler(int, siginfo_t*, void*) ()
+#5  <signal handler called>
+#6  0x0000000015c57810 in dbGetOrCreatePropByIdF(void*, dbsProp**, int) ()
+#7  0x000000001227bb2e in dbiAddFillerPadsOnSide(dbsCell*, dbsIo**, int, int, dbsCell*, char*, char, bool, char, char, int, int, char, unsigned int) ()
+#8  0x000000001227ddbc in dbiFillGapWithFiller(dbsCell*, int, int, dbsCell*, char*, char, bool, char, char, int, int, char, unsigned int) ()
+#9  0x000000001227e6db in dbAddFillerPads(int, char**) ()
+#10 0x000000001211c695 in rdaiAddIoFillerCmd ()
+#11 0x000000001b7d9779 in tcmBaseCmd::execute(Tcl_Interp*, int, char**) ()
+#12 0x000000001b7ccc52 in tcmMgr::cmdParser(void*, Tcl_Interp*, int, char**) ()
+#13 0x00000000292c661b in TclInvokeStringCommand ()
+#14 0x00000000292cb112 in TclNRRunCallbacks ()
+#15 0x00000000292cd324 in TclEvalEx ()
+#16 0x00000000292cdd73 in Tcl_EvalEx ()
+#17 0x0000000006b0bf45 in rdaEditCmdLineEnd(char*) ()
+#18 0x0000000014debf9f in seConsole::sesMode::DoExecute(std::string const&, void*) ()
+#19 0x000000001648a0c0 in Redline::EmacsMode::AcceptLine() ()
+#20 0x0000000016491881 in Redline::ModeCommand<Redline::EmacsMode>::CommandFnNoKeys(boost::function<void (Redline::EmacsMode&)> const&, Redline::Editor&) ()
+#21 0x000000001649fa1b in boost::detail::function::void_function_obj_invoker2<boost::_bi::bind_t<boost::_bi::unspecified, boost::function<void (Redline::Editor&)>, boost::_bi::list1<boost::arg<1> > >, void, Redline::Editor&, Redline::KeyCombination const&>::invoke(boost::detail::function::function_buffer&, Redline::Editor&, Redline::KeyCombination const&) ()
+#22 0x000000001649f23c in Redline::Command::Run(Redline::Editor&, Redline::KeyCombination const&) const ()
+#23 0x0000000016486df7 in Redline::Editor::Internals::Run(bool) ()
+#24 0x00000000293cf2de in FileHandlerEventProc ()
+#25 0x000000002938fae9 in Tcl_ServiceEvent ()
+#26 0x000000002938fdf9 in Tcl_DoOneEvent ()
+#27 0x000015496d5db23a in TqEventDispatcher::processEvents(QFlags<QEventLoop::ProcessEventsFlag>) () from /tools/cadence/INNOVUS/21.15/tools/lib/64bit/libtq.so
+#28 0x000015496c7860ca in QEventLoop::exec(QFlags<QEventLoop::ProcessEventsFlag>) () from /tools/cadence/INNOVUS/21.15/tools/Qt/v5//64bit/lib/libcdsQt5Core.so.5
+#29 0x000015496c78e954 in QCoreApplication::exec() () from /tools/cadence/INNOVUS/21.15/tools/Qt/v5//64bit/lib/libcdsQt5Core.so.5
+#30 0x000015496d5da897 in TqApplication::exec() () from /tools/cadence/INNOVUS/21.15/tools/lib/64bit/libtq.so
+#31 0x0000000006ae92dc in edi_app_init(Tcl_Interp*) ()
+#32 0x000000002938a53c in Tcl_MainEx ()
+#33 0x0000000005e7a681 in main ()
+A debugging session is active.
+
+	Inferior 1 [process 2167] will be detached.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+Crashed in AAE on net Unknown net.
+
+*** Memory Usage v#1 (Current mem = 2170.457M, initial mem = 474.215M) ***
+*** Message Summary: 269 warning(s), 5 error(s)
+
+--- Ending "Innovus" (totcpu=0:01:09, real=0:05:25, mem=2170.5M) ---

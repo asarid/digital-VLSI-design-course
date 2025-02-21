@@ -1,0 +1,15 @@
+[02/10 23:45:16      0s] 
+[02/10 23:45:16      0s] Cadence Innovus(TM) Implementation System.
+[02/10 23:45:16      0s] Copyright 2021 Cadence Design Systems, Inc. All rights reserved worldwide.
+[02/10 23:45:16      0s] 
+[02/10 23:45:16      0s] Version:	v21.15-s110_1, built Fri Sep 23 13:08:12 PDT 2022
+[02/10 23:45:16      0s] Options:	stylus 
+[02/10 23:45:16      0s] Date:		Mon Feb 10 23:45:16 2025
+[02/10 23:45:16      0s] Host:		ip-10-70-166-58.il-central-1.compute.internal (x86_64 w/Linux 4.14.355-275.570.amzn2.x86_64) (1core*2cpus*Intel(R) Xeon(R) Platinum 8375C CPU @ 2.90GHz 55296KB)
+[02/10 23:45:16      0s] OS:		CentOS Linux release 7.9.2009 (Core)
+[02/10 23:45:17      0s] 
+[02/10 23:45:17      0s] License:
+[02/10 23:45:17      0s] 		[23:45:17.019889] Configured Lic search path (21.01-s002): 5280@ip-10-70-133-150.il-central-1.compute.internal
+
+[02/10 23:45:17      0s] **ERROR: (IMPLIC-68):	Unknown argument: stylus.
+	Run "innovus -help" for valid option/argument.

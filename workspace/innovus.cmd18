@@ -1,0 +1,495 @@
+#######################################################
+#                                                     
+#  Innovus Command Logging File                     
+#  Created on Tue Feb 11 09:33:24 2025                
+#                                                     
+#######################################################
+
+#@(#)CDS: Innovus v21.15-s110_1 (64bit) 09/23/2022 13:08 (Linux 3.10.0-693.el7.x86_64)
+#@(#)CDS: NanoRoute 21.15-s110_1 NR220912-2004/21_15-UB (database version 18.20.592) {superthreading v2.17}
+#@(#)CDS: AAE 21.15-s039 (64bit) 09/23/2022 (Linux 3.10.0-693.el7.x86_64)
+#@(#)CDS: CTE 21.15-s038_1 () Sep 20 2022 11:42:13 ( )
+#@(#)CDS: SYNTECH 21.15-s012_1 () Sep  5 2022 10:25:51 ( )
+#@(#)CDS: CPE v21.15-s076
+#@(#)CDS: IQuantus/TQuantus 21.1.1-s867 (64bit) Sun Jun 26 22:12:54 PDT 2022 (Linux 3.10.0-693.el7.x86_64)
+
+set design(TOPLEVEL) "lp_riscv_top"
+set runtype "pnr"
+set debug_file "debug.txt"
+source ../scripts/procedures.tcl -quiet
+enics_start_stage "start"
+source ../inputs/$design(TOPLEVEL).defines -quiet
+source $design(libraries_dir)/libraries.$TECHNOLOGY.tcl -quiet
+source $design(libraries_dir)/libraries.$SC_TECHNOLOGY.tcl -quiet
+source $design(libraries_dir)/libraries.$SRAM_TECHNOLOGY.tcl -quiet
+if {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
+    source $design(libraries_dir)/libraries.$IO_TECHNOLOGY.tcl -quiet
+}
+set_library_unit -time 1ns -cap 1pf
+set var_list {runtype}
+set dic_list {paths tech tech_files design}
+enics_print_debug_data w $debug_file "after everything was loaded" $var_list $dic_list
+enable_metrics -on
+enics_start_stage "init_design"
+gui_select -point {0.04500 0.05800}
+gui_select -point {0.09400 0.04000}
+set_db init_ground_nets $design(all_ground_nets)
+set_db init_power_nets $design(all_power_nets)
+enics_message "Suppressing the following messages that are reported due to the LIB definitions:" 
+enics_message "$tech(LIB_SUPPRESS_MESSAGES_INNOVUS)"
+set_message -suppress -id $tech(LIB_SUPPRESS_MESSAGES_INNOVUS) 
+enics_message "Reading MMMC File" medium
+read_mmmc $design(mmmc_view_file) 
+#@ Begin verbose source (pre): 
+create_constraint_mode \
+	-name functional_mode \
+	-sdc_files $design(functional_sdc)
+if {$runtype=="synthesis"} {...
+} else {
+set_message -suppress -id ENCEXT-6202 ;
+}
+create_rc_corner \
+	-name bc_rc_corner \
+	-temperature $tech(TEMPERATURE_BC) \
+    -qrc_tech $tech_files(QRCTECH_FILE_BC)
+create_rc_corner \
+	-name tc_rc_corner \
+	-temperature $tech(TEMPERATURE_TC) \
+	-qrc_tech $tech_files(QRCTECH_FILE_TC)
+create_rc_corner \
+	-name wc_rc_corner \
+	-temperature $tech(TEMPERATURE_WC) \
+    -qrc_tech $tech_files(QRCTECH_FILE_WC)
+create_library_set \
+	-name bc_libset \
+	-timing $tech_files(ALL_BC_LIBS)  
+create_library_set \
+	-name tc_libset \
+	-timing $tech_files(ALL_TC_LIBS)  
+create_library_set \
+	-name wc_libset \
+	-timing $tech_files(ALL_WC_LIBS)  
+create_timing_condition \
+   -name         bc_timing_condition \
+   -library_sets bc_libset
+create_timing_condition \
+   -name         tc_timing_condition \
+   -library_sets tc_libset
+create_timing_condition \
+   -name         wc_timing_condition \
+   -library_sets wc_libset
+create_delay_corner \
+	-name bc_dly_corner \
+	-timing_condition bc_timing_condition \
+	-rc_corner bc_rc_corner
+create_delay_corner \
+	-name tc_dly_corner \
+	-timing_condition tc_timing_condition \
+	-rc_corner tc_rc_corner
+create_delay_corner \
+	-name wc_dly_corner \
+	-timing_condition wc_timing_condition \
+	-rc_corner wc_rc_corner
+create_analysis_view \
+	-name bc_analysis_view \
+	-constraint_mode functional_mode \
+	-delay_corner bc_dly_corner
+create_analysis_view \
+    -name tc_analysis_view \
+	-constraint_mode functional_mode \
+	-delay_corner tc_dly_corner
+create_analysis_view \
+	-name wc_analysis_view \
+	-constraint_mode functional_mode \
+	-delay_corner wc_dly_corner
+set_analysis_view \
+	-setup $design(selected_setup_analysis_views) \
+	-hold  $design(selected_hold_analysis_views)
+#@ End verbose source: /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../inputs/lp_riscv_top.mmmc
+enics_message "Suppressing the following messages that are reported due to the LEF definitions:" 
+enics_message "$tech(LEF_SUPPRESS_MESSAGES_INNOVUS)"
+set_message -suppress -id $tech(LEF_SUPPRESS_MESSAGES_INNOVUS) 
+enics_message "Reading LEF abstracts"
+read_physical -lef $tech_files(ALL_LEFS)
+enics_message "Reading the Post Synthesis netlist at $design(postsyn_netlist)" medium
+read_netlist $design(postsyn_netlist)
+gui_select -point {0.10000 0.02300}
+gui_select -point {0.08550 0.01700}
+enics_message "Running init_design command" medium
+init_design
+source ../scripts/settings.tcl -quiet
+enics_default_cost_groups
+enics_message "Connecting Global Nets" medium
+connect_global_net $design(digital_gnd) -pin $tech(STANDARD_CELL_GND) -all -verbose
+connect_global_net $design(digital_vdd) -pin $tech(STANDARD_CELL_VDD) -all -verbose
+connect_global_net $design(digital_vdd) -type tiehi -all -verbose 
+connect_global_net $design(digital_gnd) -type tielo -all -verbose 
+connect_global_net $design(digital_vdd) -pin $tech(SRAM_VDDCORE_PIN)      -all -verbose 
+connect_global_net $design(digital_vdd) -pin $tech(SRAM_VDDPERIPHERY_PIN) -all -verbose 
+connect_global_net $design(digital_gnd) -pin $tech(SRAM_GND_PIN)          -all -verbose 
+if {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
+    # Connect pads to IO and CORE voltages
+    #    -netlist_override is needed, since GENUS connects these pins to UNCONNECTED during synthesis
+    connect_global_net $design(io_vdd)      -pin $tech(IO_VDDIO)   -hinst i_${design(IO_MODULE)} -netlist_override -verbose
+    connect_global_net $design(io_gnd)      -pin $tech(IO_GNDIO)   -hinst i_${design(IO_MODULE)} -netlist_override -verbose
+    connect_global_net $design(digital_vdd) -pin $tech(IO_VDDCORE) -hinst i_${design(IO_MODULE)} -netlist_override -verbose
+    connect_global_net $design(digital_gnd) -pin $tech(IO_GNDCORE) -hinst i_${design(IO_MODULE)} -netlist_override -verbose
+}
+enics_create_stage_reports -save_db no -report_timing no -pop_snapshot yes
+gui_select -point {2077.23150 150.38500}
+gui_select -point {1916.37750 545.20850}
+gui_select -point {2320.12050 104.71950}
+gui_select -point {2183.75000 290.09850}
+gui_select -rect {2162.44200 343.36800 2186.59100 283.70600}
+gui_select -point {2179.65850 314.42300}
+gui_select -point {2179.88050 314.42300}
+gui_select -point {2413.56250 398.97750}
+gui_select -point {2095.51050 636.60250}
+gui_select -point {2073.57550 325.86200}
+gui_select -point {2154.00250 219.84500}
+gui_select -point {2358.72600 398.97750}
+gui_select -point {3900.73050 -25.09200}
+gui_select -point {2665.08000 91.89300}
+set_layer_preference M2 -is_visible 0
+set_layer_preference M2 -is_visible 1
+set_layer_preference violation -is_visible 1
+gui_select -point {2343.37200 186.94300}
+gui_select -point {2045.21700 151.93000}
+gui_select -rect {2045.41000 151.86100 2045.45150 152.81300}
+enics_start_stage "floorplan"
+source ../inputs/$design(TOPLEVEL).floorplan.defines -quiet
+create_floorplan \
+    -core_size [list 2300.0 1700.0 150.0 150.0 150.0 150.0] \
+    -core_margins_by die \
+    -flip s \
+    -match_to_site
+gui_select -point {-311.23850 1639.04750}
+enics_message "Defining IO Ring" medium
+read_io_file $design(io_file)
+gui_select -point {1197.29300 -48.14000}
+gui_select -point {1565.98550 -327.29300}
+gui_select -point {1060.35000 -116.61150}
+gui_select -point {655.88350 38.00650}
+gui_select -point {747.19550 38.00650}
+gui_select -point {838.06900 46.34750}
+gui_select -point {2806.47600 1014.66650}
+gui_select -point {158.09500 1965.90500}
+gui_select -point {133.85000 2030.67750}
+update_floorplan_obj -obj 0x1491253085b0 -rects {214.8245 1879.042 264.8245 1999.042}
+gui_deselect -all
+update_floorplan_obj -obj 0x149125309e30 -rects {2480.0 1796.476 2600.0 1846.476}
+gui_deselect -all
+update_floorplan_obj -obj 0x149125309730 -rects {2480.0 140.9525 2600.0 190.9525}
+update_floorplan_obj -obj 0x149125309730 -rects {2480.0 161.9025 2600.0 211.9025}
+gui_deselect -all
+update_floorplan_obj -obj 0x149125308850 -rects {0.0 198.6725 120.0 248.6725}
+gui_deselect -all
+update_floorplan_obj -obj 0x149125308e70 -rects {0.0 1593.6065 120.0 1643.6065}
+gui_deselect -all
+update_floorplan_obj -obj 0x149125308ee0 -rects {0.0 1684.5655 120.0 1734.5655}
+gui_deselect -all
+update_floorplan_obj -obj 0x149125308f50 -rects {-4.1905 1771.3335 115.8095 1821.3335}
+update_floorplan_obj -obj 0x149125308f50 -rects {0.0 1767.143 120.0 1817.143}
+gui_deselect -all
+update_floorplan_obj -obj 0x1491253097a0 -rects {2480.0 247.8275 2600.0 297.8275}
+gui_deselect -all
+update_floorplan_obj -obj 0x1491253096c0 -rects {2203.3455 -4.1905 2253.3455 115.8095}
+update_floorplan_obj -obj 0x1491253096c0 -rects {2186.584 0.0 2236.584 120.0}
+gui_deselect -all
+update_floorplan_obj -obj 0x149125308bd0 -rects {1751.8815 -4.1905 1801.8815 115.8095}
+update_floorplan_obj -obj 0x149125308bd0 -rects {1735.12 8.381 1785.12 128.381}
+gui_deselect -all
+update_floorplan_obj -obj 0x149125309500 -rects {1462.798 4.1905 1512.798 124.1905}
+gui_deselect -all
+update_floorplan_obj -obj 0x149125309b90 -rects {1329.4225 4.19 1379.4225 124.19}
+gui_deselect -all
+update_floorplan_obj -obj 0x149125308b60 -rects {1523.5995 1871.619 1573.5995 1991.619}
+write_io_file -locations ../inputs/ioring.io
+add_io_fillers -cells $tech(IO_FILLERS) -prefix IOFILLER
+check_legacy_design -all -out_dir $design(reports_dir)/$this_run(stage)
+gui_select -point {2663.99950 1429.52400}
+set_layer_preference violation -is_visible 1
+enics_message "Placing Hard Macros" medium
+delete_relative_floorplan -all
+set imem0_name [get_db [get_db insts $design(imem0)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem0_name \
+    -horizontal_edge_separate {3  25  3} \
+    -vertical_edge_separate {1  25  1} -orient MX
+gui_select -point {1821.71400 503.42850}
+gui_select -point {1151.23800 411.23800}
+gui_select -point {723.80900 1697.71450}
+set imem1_name [get_db [get_db insts $design(imem1)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem1_name \
+         -horizontal_edge_separate { 1 -25 1 } \
+         -vertical_edge_separate { 0 25 0 } -orient MX
+gui_select -point {556.19000 1605.52400}
+gui_select -point {665.14250 1324.76200}
+gui_select -point {606.47600 1664.19050}
+gui_select -point {719.61850 1308.00000}
+gui_select -point {470.44400 1830.98550}
+gui_select -point {2944.76150 272.95250}
+gui_select -point {5797.63800 210.09500}
+set dmem0_name [get_db [get_db insts $design(dmem0)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $dmem0_name \
+    -horizontal_edge_separate {1  -25  1} \
+    -vertical_edge_separate {2  -25  2} -orient R90
+gui_select -point {2840.00000 8.95250}
+gui_select -point {2215.61900 905.71400}
+gui_select -point {2215.61900 905.71400}
+gui_select -point {2119.23800 746.47600}
+gui_select -point {2043.80900 1563.61900}
+create_relative_floorplan -ref_type core_boundary -horizontal_edge_separate {1  -25  1} -vertical_edge_separate {2  -25  2} -orient R90 -place lp_riscv/dccm_ram_wrapper_dccm_ram_0_sram_sp_32768x32 -ref lp_riscv_top -no_record
+update_floorplan_obj -obj 0x14912531be10 -rects {1816.39 405.646 2425.0 1615.476}
+create_relative_floorplan -ref_type core_boundary -horizontal_edge_separate {1  -25  1} -vertical_edge_separate {2  -25  2} -orient R90 -place lp_riscv/dccm_ram_wrapper_dccm_ram_0_sram_sp_32768x32 -ref lp_riscv_top -no_record
+update_floorplan_obj -obj 0x14912531be10 -rects {1816.39 359.551 2425.0 1569.381}
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $dmem0_name \
+    -horizontal_edge_separate {1  -25  1} \
+    -vertical_edge_separate {2  -50  2} -orient R90
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $dmem0_name \
+    -horizontal_edge_separate {1  -150  1} \
+    -vertical_edge_separate {2  -30  2} -orient R90
+enics_message "Adding Rings Around Hard Macros and creating Halos"
+deselect_obj -all
+select_obj $imem0_name
+add_rings -around selected -type block_rings -nets "$design(digital_gnd) $design(digital_vdd)" \
+-layer {bottom M1 top M1 right M2 left M2} -width 3 -spacing 0.5
+create_place_halo -halo_deltas {10 10 10 10} -insts $imem0_name -snap_to_site
+deselect_obj -all
+select_obj $imem1_name
+add_rings -around selected -type block_rings -nets "$design(digital_gnd) $design(digital_vdd)" \
+-layer {bottom M1 top M1 right M2 left M2} -width 3 -spacing 0.5
+create_place_halo -halo_deltas {10 10 10 10} -insts $imem1_name -snap_to_site
+gui_select -point {1666.66650 1253.52400}
+gui_select -point {1121.90450 293.90500}
+gui_select -point {1046.47600 1785.71450}
+deselect_obj -all
+select_obj $dmem0_name
+add_rings -around selected -type block_rings -nets "$design(digital_gnd) $design(digital_vdd)" \
+-layer {bottom M1 top M1 right M2 left M2} -width 3 -spacing 0.5
+create_place_halo -halo_deltas {10 10 10 10} -insts $dmem0_name -snap_to_site
+enics_message "Creating Core Rings" medium
+add_rings -type core_rings -nets $design(core_ring_nets) -center 1 -follow core \
+-layer $design(core_ring_layers) -width $design(core_ring_width) -spacing $design(core_ring_spacing) 
+enics_message "Routing Follow Pins" medium
+route_special -connect { core_pin } -nets  "$design(digital_gnd) $design(digital_vdd)" -detailed_log
+gui_select -point {1797.33800 1399.45450}
+gui_select -rect {1805.50250 1402.52100 1808.31050 1398.08800}
+gui_select -rect {1387.81100 1581.28850 1390.50200 1576.08650}
+check_drc
+if {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
+    # Connect pads to the rings
+    enics_message "Connecting PG Pads to Core Ring" medium
+    route_special -connect {pad_pin} -nets $design(core_ring_nets) -pad_pin_port_connect all_geom -detailed_log
+}
+gui_select -point {2240.76150 264.57150}
+gui_select -point {1344.85800 99.68200}
+gui_select -point {50.63500 1008.29700}
+check_drc
+if {$tech(LIBRARY_HAS_ENDCAPS)=="YES"} {
+    # get_db -category add_endcaps *
+    enics_message "Adding End Caps" medium
+    add_endcaps  
+}
+gui_select -point {681.90450 1287.04750}
+enics_message "Adding Well Taps" medium
+add_well_taps -cell $tech(WELLTAP)  -checker_board -prefix $design(well_tap_prefix) \
+    -cell_interval [expr 2 * $tech(WELLTAP_RULE)] 
+check_well_taps -max_distance $tech(WELLTAP_RULE)
+gui_select -point {526.85700 1408.57150}
+gui_select -rect {1327.23800 1668.38100 1503.23800 1467.23800}
+gui_select -point {1352.38050 1609.71450}
+gui_select -point {933.33300 1270.28550}
+enics_message "Creating Power Grid" high
+add_stripes -layer [lindex [get_db layers .name] 1] -direction vertical -nets $design(M2_stripe_nets) \
+    -width $design(M2_stripes_width) -spacing $design(M2_stripes_spacing) \
+    -start_from left -start_offset $design(M2_stripes_from_left) \
+    -set_to_set_distance $design(M2_stripes_interval) -create_pins true \
+    -max_same_layer_jog_length 10.0 
+gui_select -point {656.76150 620.76200}
+check_drc
+gui_select -point {903.99950 277.14300}
+gui_select -point {2018.66650 746.47600}
+gui_select -point {2902.85700 817.71450}
+gui_select -point {2027.04750 381.90500}
+gui_select -point {2406.38900 1668.32900}
+gui_select -point {782.47600 1463.04750}
+enics_message "Routing Follow Pins" medium
+route_special -connect { core_pin } -nets  "$design(digital_gnd) $design(digital_vdd)" -detailed_log
+gui_select -point {652.57100 604.00000}
+enics_message "Connecting Block Pins of hard macros to Power/Ground"
+route_special -connect {block_pin} -nets "$design(digital_gnd) $design(digital_vdd)" \
+    -block_pin_layer_range {1 4} \
+    -block_pin on_boundary \
+    -detailed_log
+gui_select -point {1795.79900 1132.36300}
+add_stripes -layer [lindex [get_db layers .name] 1] -direction vertical -nets $design(M2_stripe_nets) \
+    -width $design(M2_stripes_width) -spacing $design(M2_stripes_spacing) \
+    -start_from left -start_offset $design(M2_stripes_from_left) \
+    -set_to_set_distance $design(M2_stripes_interval) -create_pins true \
+    -max_same_layer_jog_length 10.0
+check_drc
+enics_create_stage_reports -pop_snapshot yes 
+set_layer_preference violation -is_visible 1
+gui_select -point {204.19000 1429.52400}
+enics_create_stage_reports 
+check_connectivity 
+delete_drc_markers 
+check_connectivity -type special -ignore_unrouted_nets 
+gui_select -point {2286.85700 235.23800}
+set_layer_preference violation -is_visible 1
+trim
+gui_select -point {-478.85750 1819.23800}
+man trim_design 
+man trim_design 
+edit_trim_routes 
+gui_select -point {1078.56150 1499.50600}
+gui_select -point {1076.60050 1498.62100}
+gui_select -point {1076.65450 1499.18400}
+gui_select -point {1076.76150 1499.13050}
+gui_select -point {1076.78850 1499.31800}
+gui_select -point {1079.49550 1499.23750}
+edit_trim
+gui_select -point {1077.83350 1499.82750}
+gui_select -point {1077.80700 1498.19250}
+gui_select -point {1076.94900 1497.12000}
+gui_select -point {1087.32200 1499.77400}
+delete_drc_markers 
+check_connectivity -type special -ignore_unrouted_nets 
+set_db route_design_top_routing_layer 10
+set_db route_design_bottom_routing_layer 1
+set_db route_design_detail_end_iteration 1
+set_db route_design_with_timing_driven false
+set_db route_design_with_si_driven false
+route_design -global_detail
+gui_select -point {2037.63950 485.72350}
+gui_select -point {2036.65200 486.83450}
+gui_select -point {2039.87200 481.41300}
+gui_select -point {1406.85700 784.19050}
+gui_select -point {1109.33300 1236.76200}
+check_connectivity -type special -ignore_unrouted_nets 
+delete_drc_markers 
+check_connectivity -type special -ignore_unrouted_nets 
+set_layer_preference violation -is_visible 1
+gui_select -point {2336.91600 487.20350}
+gui_select -point {1595.42800 1127.80950}
+gui_select -point {2031.23800 1266.09500}
+gui_select -point {593.90450 1722.85700}
+gui_select -point {635.80900 1215.80950}
+gui_select -point {2296.85850 1702.68100}
+gui_select -rect {1084.19000 1538.47600 1142.85700 1467.23800}
+gui_select -point {1127.81100 1498.95800}
+gui_select -point {2297.09500 1702.92650}
+gui_select -point {2296.97700 1702.92650}
+man trim_metal_fill_near_net 
+man edit_trim_routes 
+edit_trim_routes -all
+gui_select -point {1921.72600 1709.76200}
+delete_drc_markers 
+check_connectivity -type special -ignore_unrouted_nets 
+check_drc
+write_def -floorplan -no_std_cells "$design(floorplan_def)"
+gui_select -point {1949.96000 1705.53750}
+enics_start_stage "placement"
+enics_message "Creating M2 blockage around stripes"
+deselect_obj -all
+deselect_routes
+select_routes -shapes stripe -layer M2 -nets $design(M2_stripe_nets)
+foreach stripe [get_db selected] {
+    create_route_blockage -name M2_pwr_stripe_route_blk \
+-layers "M1 M2" \
+-spacing 0.2 \
+-area [get_db $stripe .rect]
+}
+deselect_routes
+set_layer_preference violation -is_visible 1
+enics_message "Starting place_opt_design" medium
+set_db place_global_cong_effort auto
+place_opt_design -report_dir "$design(reports_dir)/placement/place_opt_design" 
+gui_select -point {1392.92800 1179.37200}
+gui_select -rect {775.03450 781.04200 851.68550 675.14300}
+gui_select -point {766.96600 760.87100}
+gui_select -point {727.30850 1702.35750}
+gui_select -point {1099.01750 1235.56000}
+gui_select -rect {627.89800 1650.49100 1008.25150 1473.28100}
+gui_select -point {727.30850 1680.74650}
+gui_select -rect {619.25350 1814.73500 848.33000 1689.39100}
+gui_select -point {714.19300 1716.92050}
+gui_select -point {706.55100 1716.28350}
+gui_select -point {669.40050 1698.02700}
+gui_select -point {995.28500 1313.35950}
+gui_select -point {2888.40850 1395.48150}
+gui_select -rect {1678.19250 1192.33800 1712.77000 1105.89400}
+gui_select -point {1194.10600 1309.03750}
+set_layer_preference node_layer -is_visible 0
+set_layer_preference M2 -is_visible 1
+set_layer_preference M1 -is_visible 1
+set_layer_preference VIA1 -is_visible 1
+set_layer_preference node_layer -is_visible 1
+set_layer_preference node_layer -is_visible 0
+gui_select -rect {2313.55600 1162.08250 2529.66600 928.68350}
+gui_select -point {2814.93150 1412.77000}
+gui_select -point {2465.64350 1165.50450}
+gui_select -point {2442.66550 1169.70800}
+gui_select -point {2456.11600 1169.70800}
+gui_select -point {1354.02750 77.21000}
+gui_select -point {2598.82150 431.63050}
+gui_select -point {1721.41450 1097.24950}
+gui_select -point {1622.00400 1079.96050}
+gui_select -point {3165.02950 855.20650}
+enics_message "Finished place_opt_design"
+enics_message "Adding Tie Cells" medium
+add_tieoffs
+enics_message "Fixing DRVs before CTS" medium
+opt_design -pre_cts -drv
+opt_design -pre_cts -setup 
+opt_design -pre_cts -setup -drv
+enics_create_stage_reports -pop_snapshot yes
+set_layer_preference node_layer -is_visible 1
+gui_select -point {1395.20700 1522.49150}
+set_layer_preference violation -is_visible 1
+check_connectivity -type special -ignore_unrouted_nets 
+set_layer_preference violation -is_visible 1
+trim_dangling_wores
+trim_dangling_wires
+edit_trim_routes -all
+gui_select -point {3083.42050 1197.73100}
+set_layer_preference node_layer -is_visible 0
+set_layer_preference node_layer -is_visible 1
+set_layer_preference node_layer -is_visible 0
+gui_select -point {3805.23550 1186.21300}
+enics_start_stage "cts"
+enics_message "Reading in clock spec from $design(clock_tree_spec)"
+reset_ccopt_config
+#@ source $design(clock_tree_spec)
+#@ Begin verbose source (pre): source $design(clock_tree_spec)
+foreach clk_name $design(clock_list) \
+        clk_port $design(clock_port_list) \
+        clk_period $design(clock_period_list) {
+            create_clock_tree -name $clk_name -source $clk_port -no_skew_group
+            create_skew_group -name $clk_name -sources $clk_port -auto_sinks
+            set_db clock_tree:$clk_name .cts_source_driver $tech(CCOPT_DRIVING_PIN)
+            set_db port:$clk_port .cts_clock_period $clk_period
+        }
+set_db cts_target_max_transition_time $design(CLOCK_MAX_TRANSITION)
+set_db cts_max_fanout  $design(CLOCK_MAX_FANOUT)
+set_db cts_target_max_capacitance $design(CLOCK_MAX_CAPACITANCE)
+set_db cts_buffer_cells $tech(CLOCK_BUFFERS)
+set_db cts_clock_gating_cells $tech(CLOCK_GATES)
+set_db cts_inverter_cells  $tech(CLOCK_INVERTERS)
+set_db cts_logic_cells $tech(CLOCK_LOGIC)
+set_db cts_delay_cells $tech(CLOCK_DELAYS)
+check_clock_tree_convergence
+#@ End verbose source: /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../inputs/lp_riscv_top.ccopt
+enics_message "Starting ccopt_design" medium
+ccopt_design -report_dir "$design(reports_dir)/cts/ccopt_design"  
+gui_select -point {937.17250 1170.85550}
+gui_select -point {1539.96500 1140.14000}
+report_timing
+enics_message "Finished running ccopt_design"
+enics_create_stage_reports -pop_snapshot yes
+enics_start_stage "post_cts_hold"
+opt_design -post_cts -hold
+enics_message "Finished post CTS hold optimization"
+report_timing
+opt_design -post_cts -hold
+report_timing

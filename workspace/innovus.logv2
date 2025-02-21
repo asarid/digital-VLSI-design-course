@@ -1,0 +1,1193 @@
+[01/30 17:57:57      0s] 
+[01/30 17:57:57      0s] Cadence Innovus(TM) Implementation System.
+[01/30 17:57:57      0s] Copyright 2021 Cadence Design Systems, Inc. All rights reserved worldwide.
+[01/30 17:57:57      0s] 
+[01/30 17:57:57      0s] Version:	v21.15-s110_1, built Fri Sep 23 13:08:12 PDT 2022
+[01/30 17:57:57      0s] Options:	-stylus 
+[01/30 17:57:57      0s] Date:		Thu Jan 30 17:57:56 2025
+[01/30 17:57:57      0s] Host:		ip-10-70-151-239.il-central-1.compute.internal (x86_64 w/Linux 4.14.355-275.570.amzn2.x86_64) (1core*2cpus*Intel(R) Xeon(R) Platinum 8375C CPU @ 2.90GHz 55296KB)
+[01/30 17:57:57      0s] OS:		CentOS Linux release 7.9.2009 (Core)
+[01/30 17:57:57      0s] 
+[01/30 17:57:57      0s] License:
+[01/30 17:57:57      0s] 		[17:57:56.019961] Configured Lic search path (21.01-s002): 5280@ip-10-70-133-150.il-central-1.compute.internal
+[01/30 17:57:57      0s] 
+[01/30 17:57:57      0s] 		invs	Innovus Implementation System	21.1	checkout succeeded
+[01/30 17:57:57      0s] 		8 CPU jobs allowed with the current license(s). Use set_multi_cpu_usage to set your required CPU count.
+[01/30 17:58:07      7s] 
+[01/30 17:58:07      7s] 
+[01/30 17:58:16     12s] Reset Parastics called with the command setExtractRCMode -reset@(#)CDS: Innovus v21.15-s110_1 (64bit) 09/23/2022 13:08 (Linux 3.10.0-693.el7.x86_64)
+[01/30 17:58:20     14s] @(#)CDS: NanoRoute 21.15-s110_1 NR220912-2004/21_15-UB (database version 18.20.592) {superthreading v2.17}
+[01/30 17:58:20     14s] @(#)CDS: AAE 21.15-s039 (64bit) 09/23/2022 (Linux 3.10.0-693.el7.x86_64)
+[01/30 17:58:20     14s] @(#)CDS: CTE 21.15-s038_1 () Sep 20 2022 11:42:13 ( )
+[01/30 17:58:20     14s] @(#)CDS: SYNTECH 21.15-s012_1 () Sep  5 2022 10:25:51 ( )
+[01/30 17:58:20     14s] @(#)CDS: CPE v21.15-s076
+[01/30 17:58:20     14s] @(#)CDS: IQuantus/TQuantus 21.1.1-s867 (64bit) Sun Jun 26 22:12:54 PDT 2022 (Linux 3.10.0-693.el7.x86_64)
+[01/30 17:58:20     14s] @(#)CDS: OA 22.60-p076 Wed May 18 13:45:29 2022
+[01/30 17:58:20     14s] @(#)CDS: SGN 20.10-d001 (01-Jun-2020) (64 bit executable, Qt5.9.0)
+[01/30 17:58:20     14s] @(#)CDS: RCDB 11.15.0
+[01/30 17:58:20     14s] @(#)CDS: STYLUS 21.12-s013_1 (08/15/2022 08:25 PDT)
+[01/30 17:58:20     14s] @(#)CDS: SystemPlanner-21.15Rel-8720 (21.15) (2022-08-22 18:31:54+0800)
+[01/30 17:58:20     14s] Create and set the environment variable TMPDIR to /tmp/innovus_temp_20717_ip-10-70-151-239.il-central-1.compute.internal_saridav_AwLL66.
+
+[01/30 17:58:20     14s] Create and set the environment variable TMPDIR to /tmp/innovus_temp_20717_ip-10-70-151-239.il-central-1.compute.internal_saridav_AwLL66.
+[01/30 17:58:20     14s] 
+[01/30 17:58:20     14s] The soft stacksize limit is either up to the hard limit or larger than 0.2% of RAM. No change is needed.
+[01/30 17:58:22     15s] [INFO] Loading PVS 23.11 fill procedures
+[01/30 17:58:24     16s] 
+[01/30 17:58:24     16s] **INFO:  MMMC transition support version v31-84 
+[01/30 17:58:24     16s] 
+[01/30 17:58:28     19s] @innovus 1> set design(TOPLEVEL) "lp_riscv_top"
+lp_riscv_top
+[01/30 18:01:10     27s] @innovus 2> set runtype "pnr"
+set runtype "pnr"
+[01/30 18:01:10     27s] pnr
+[01/30 18:01:10     27s] @innovus 3> set debug_file "debug.txt"
+set debug_file "debug.txt"
+[01/30 18:01:10     27s] debug.txt
+[01/30 18:01:10     27s] @innovus 4> 
+
+[01/30 18:01:10     27s] @innovus 4> # Load general procedures
+# Load general procedures
+[01/30 18:01:10     27s] @innovus 5> source ../scripts/procedures.tcl -quiet
+source ../scripts/procedures.tcl -quiet
+[01/30 18:01:10     27s] @innovus 6> 
+
+[01/30 18:01:10     27s] @innovus 6> ###############################################
+###############################################
+# Starting Stage - Load defines and technology
+[01/30 18:01:10     27s] @innovus 7> # Starting Stage - Load defines and technology
+[01/30 18:01:10     27s] @innovus 8> ###############################################
+###############################################
+[01/30 18:01:10     27s] @innovus 9> enics_start_stage "start"
+enics_start_stage "start"
+[01/30 18:01:10     27s] *****************************************
+[01/30 18:01:10     27s] *****************************************
+[01/30 18:01:10     27s] **   ENICSINFO: Starting stage start   **
+[01/30 18:01:10     27s] *****************************************
+[01/30 18:01:10     27s] *****************************************
+[01/30 18:01:10     27s] ENICSINFO: Current time is: 30/01/2025 18:01
+[01/30 18:01:10     27s] ENICSINFO: This session is running on Hostname : ip-10-70-151-239.il-central-1.compute.internal
+[01/30 18:01:10     27s] ENICSINFO: The log file is innovus.log2 and the command file is innovus.cmd2
+[01/30 18:01:10     27s] ENICSINFO: ----------------------------------
+[01/30 18:01:10     27s] @innovus 10> 
+
+
+[01/30 18:01:10     27s] @innovus 10> 
+[01/30 18:01:10     27s] @innovus 10> # Load the specific definitions for this project
+# Load the specific definitions for this project
+[01/30 18:01:10     27s] @innovus 11> source ../inputs/$design(TOPLEVEL).defines -quiet
+source ../inputs/$design(TOPLEVEL).defines -quiet
+
+
+[01/30 18:01:10     27s] @innovus 12> 
+[01/30 18:01:10     27s] @innovus 12> 
+[01/30 18:01:10     27s] @innovus 12> 
+
+[01/30 18:01:10     27s] @innovus 12> # Load the library paths and definitions for this technology
+# Load the library paths and definitions for this technology
+[01/30 18:01:10     27s] @innovus 13> source $design(libraries_dir)/libraries.$TECHNOLOGY.tcl -quiet
+source $design(libraries_dir)/libraries.$TECHNOLOGY.tcl -quiet
+[01/30 18:01:10     27s] ##  Process: 65            (User Set)               
+[01/30 18:01:10     27s] ##     Node: (not set)                           
+[01/30 18:01:10     27s] 
+[01/30 18:01:10     27s] ##  Check design process and node:  
+[01/30 18:01:10     27s] ##  Design tech node is not set.
+[01/30 18:01:10     27s] 
+[01/30 18:01:10     27s] Applying the recommended capacitance filtering threshold values for 65nm process node: total_c_th=0, relative_c_th=1 and coupling_c_th=0.1.
+[01/30 18:01:10     27s] 	These values will be used by all post-route extraction engines, including TQuantus, IQuantus and Quantus QRC extraction.
+[01/30 18:01:10     27s] 	Capacitance filtering mode(extract_rc_cap_filter_mode option of the set_db) is 'relative_and_coupling' for all engines.
+[01/30 18:01:10     27s] 	The accuracy mode for post_route extract_rc_effort_level low extraction will be set to 'high'.
+[01/30 18:01:10     27s] 	Default value for EffortLevel(extract_rc_effort_level option of the set_db) in post_route extraction mode will be 'medium' if Quantus QRC technology file is specified else 'low'.
+[01/30 18:01:10     27s] @innovus 14> source $design(libraries_dir)/libraries.$SC_TECHNOLOGY.tcl -quiet
+source $design(libraries_dir)/libraries.$SC_TECHNOLOGY.tcl -quiet
+[01/30 18:01:10     27s] @innovus 15> source $design(libraries_dir)/libraries.$SRAM_TECHNOLOGY.tcl -quietsource $design(libraries_dir)/libraries.$SRAM_TECHNOLOGY.tcl -quiet
+ [1G
+[01/30 18:01:10     27s] @innovus 16> if {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
+[01/30 18:01:10     27s] +     source $design(libraries_dir)/libraries.$IO_TECHNOLOGY.tcl -quiet
+[01/30 18:01:10     27s] + }
+if {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
+    source $design(libraries_dir)/libraries.$IO_TECHNOLOGY.tcl -quiet
+}
+[01/30 18:01:10     27s] @innovus 17> set_library_unit -time 1ns -cap 1pf
+set_library_unit -time 1ns -cap 1pf
+[01/30 18:01:10     27s] @innovus 18> 
+
+[01/30 18:01:10     27s] @innovus 18> #############################################
+#############################################
+[01/30 18:01:10     27s] @innovus 19> #       Print values to debug file
+#       Print values to debug file
+[01/30 18:01:10     27s] @innovus 20> #############################################
+#############################################
+[01/30 18:01:10     27s] @innovus 21> set var_list {runtype}
+set var_list {runtype}
+[01/30 18:01:10     27s] runtype
+[01/30 18:01:10     27s] @innovus 22> set dic_list {paths tech tech_files design}
+set dic_list {paths tech tech_files design}
+[01/30 18:01:10     27s] paths tech tech_files design
+[01/30 18:01:10     27s] @innovus 23> enics_print_debug_data w $debug_file "after everything was loaded"  [1G$var_list $dic_list
+enics_print_debug_data w $debug_file "after everything was loaded" $var_list $dic_list
+[01/30 18:01:10     27s] @innovus 24> 
+
+[01/30 18:01:10     27s] @innovus 24> 
+
+[01/30 18:01:10     27s] @innovus 24> ##############################################################
+##########################
+[01/30 18:01:10     27s] @innovus 25> # Init Desig# Init Design
+n
+[01/30 18:01:10     27s] @innovus 26> ############################################
+############################################
+[01/30 18:01:10     27s] @innovus 27> enable_metrenable_metrics -on
+ics -on
+[01/30 18:01:10     27s] @innovus 28> enics_start_stageenics_start_stage "init_design"
+ "init_design"
+[01/30 18:01:10     27s] ***********************************************
+[01/30 18:01:10     27s] ***********************************************
+[01/30 18:01:10     27s] **   ENICSINFO: Starting stage init_design   **
+[01/30 18:01:10     27s] ***********************************************
+[01/30 18:01:10     27s] ***********************************************
+[01/30 18:01:10     27s] ENICSINFO: Current time is: 30/01/2025 18:01
+[01/30 18:01:10     27s] ENICSINFO: ----------------------------------
+[01/30 18:01:10     27s] @innovus 29> 
+
+[01/30 18:01:10     27s] @innovus 29> # Global# Global Nets
+ Nets
+[01/30 18:01:10     27s] @innovus 30> set_db init_ground_nets $design(all_ground_nets)
+set_db init_ground_nets $design(all_ground_nets)
+[01/30 18:01:10     27s] 1 gnd
+set_db init_power_nets $design(all_power_nets)
+[01/30 18:01:10     27s] @innovus 31> set_db init_power_nets $design(all_power_nets)
+[01/30 18:01:10     27s] 1 {vdd vddio}
+[01/30 18:01:10     27s] @innovus 32> 
+
+# MMMC
+[01/30 18:01:10     27s] @innovus 32> # MMMC
+[01/30 18:01:10     27s] @innovus 33> enics_message "Suppressing the following messages that are reported [1G due to the LIB definitions:" 
+enics_message "Suppressing the following messages that are reported due to the LIB definitions:" 
+[01/30 18:01:10     27s] ENICSINFO: Suppressing the following messages that are reported due to the LIB definitions:
+[01/30 18:01:10     27s] @innovus 34> enics_message "$tech(LIB_SUPPRESS_MESSAGES_INNOVUS)"
+enics_message "$tech(LIB_SUPPRESS_MESSAGES_INNOVUS)"
+[01/30 18:01:10     27s] ENICSINFO: TECHLIB-436 TECHLIB-1318 TECHLIB-302 IMPCTE-337 IMPTS-282
+[01/30 18:01:10     27s] @innovus 35> set_message -suppress -id $tech(LIB_SUPPRESS_MESSAGES_INNOVUS) 
+set_message -suppress -id $tech(LIB_SUPPRESS_MESSAGES_INNOVUS) 
+[01/30 18:01:10     27s] @innovus 36> enics_message "Reading MMMC File" medium
+enics_message "Reading MMMC File" medium
+[01/30 18:01:10     27s] 
+[01/30 18:01:10     27s] ENICSINFO: Reading MMMC File
+[01/30 18:01:10     27s] ----------------------------
+[01/30 18:01:10     27s] @innovus 37> read_mmmc $design(mmmc_view_file) 
+read_mmmc $design(mmmc_view_file) 
+[01/30 18:01:10     27s] #@ Begin verbose source (pre): 
+[01/30 18:01:10     27s] @file 1: #  Version:1.0 MMMC View Definition File
+[01/30 18:01:10     27s] @file 2: # Do Not Remove Above Line
+[01/30 18:01:10     27s] @file 3:
+[01/30 18:01:10     27s] @file 4: ############# MMMC Hierarchy ########################################################################################
+[01/30 18:01:10     27s] @file 5: #                                                                                                                   #
+[01/30 18:01:10     27s] @file 6: #   Setup Analysis View |                   |--> Constraint Corner --> SDC File                                     #
+[01/30 18:01:10     27s] @file 7: #                       |--> Analysis View  |                                                                       #
+[01/30 18:01:10     27s] @file 8: #    Hold Analysis View |                   |                 |--> Timing Condition --> Library Set --> LIB File    #
+[01/30 18:01:10     27s] @file 9: #                                           |--> Delay Corner |                                                     #
+[01/30 18:01:10     27s] @file 10: #                                                             |--> RC Corner --> QRCTech File                       #
+[01/30 18:01:10     27s] @file 11: #####################################################################################################################
+[01/30 18:01:10     27s] @file 12:
+[01/30 18:01:10     27s] @file 13: # Constraint Modes #
+[01/30 18:01:10     27s] @file 14: # ---------------- #
+[01/30 18:01:10     27s] @@file 15: create_constraint_mode \
+[01/30 18:01:10     27s] 	-name functional_mode \
+[01/30 18:01:10     27s] 	-sdc_files $design(functional_sdc)
+[01/30 18:01:10     27s] @file 18:
+[01/30 18:01:10     27s] @file 19: # RC Corners #
+[01/30 18:01:10     27s] @file 20: # ---------- #
+[01/30 18:01:10     27s] @file 21: if {$runtype=="synthesis"} {...
+[01/30 18:01:10     27s] @file 24: } else {
+[01/30 18:01:10     27s] @@file 25: set_message -suppress -id ENCEXT-6202 ;
+[01/30 18:01:10     27s] @file 25: # In addition to the technology file, capacitance table file is specified for all RC corners.
+[01/30 18:01:10     27s] @file 26: }
+[01/30 18:01:10     27s] @file 27:
+[01/30 18:01:10     27s] @@file 28: create_rc_corner \
+[01/30 18:01:10     27s] 	-name bc_rc_corner \
+[01/30 18:01:10     27s] 	-temperature $tech(TEMPERATURE_BC) \
+[01/30 18:01:10     27s]     -qrc_tech $tech_files(QRCTECH_FILE_BC)
+[01/30 18:01:10     27s] @file 32: #	-cap_table $tech_files(CAPTABLE_BC) \
+[01/30 18:01:10     27s] @file 33:
+[01/30 18:01:10     27s] @@file 34: create_rc_corner \
+[01/30 18:01:10     27s] 	-name tc_rc_corner \
+[01/30 18:01:10     27s] 	-temperature $tech(TEMPERATURE_TC) \
+[01/30 18:01:10     27s] 	-qrc_tech $tech_files(QRCTECH_FILE_TC)
+[01/30 18:01:10     27s] @file 38: #	-cap_table $tech_files(CAPTABLE_TC) \
+[01/30 18:01:10     27s] @file 39:
+[01/30 18:01:10     27s] @@file 40: create_rc_corner \
+[01/30 18:01:10     27s] 	-name wc_rc_corner \
+[01/30 18:01:10     27s] 	-temperature $tech(TEMPERATURE_WC) \
+[01/30 18:01:10     27s]     -qrc_tech $tech_files(QRCTECH_FILE_WC)
+[01/30 18:01:10     27s] @file 44: #	-cap_table $tech_files(CAPTABLE_WC) \
+[01/30 18:01:10     27s] @file 45:
+[01/30 18:01:10     27s] @file 46: # Library Sets #
+[01/30 18:01:10     27s] @file 47: # ------------ #
+[01/30 18:01:10     27s] @@file 48: create_library_set \
+[01/30 18:01:10     27s] 	-name bc_libset \
+[01/30 18:01:10     27s] 	-timing $tech_files(ALL_BC_LIBS)  
+[01/30 18:01:10     27s] @file 51: # -aocv $tech_files(ALL_BC_AOCV_LIBS)
+[01/30 18:01:10     27s] @file 52:
+[01/30 18:01:10     27s] @@file 53: create_library_set \
+[01/30 18:01:10     27s] 	-name tc_libset \
+[01/30 18:01:10     27s] 	-timing $tech_files(ALL_TC_LIBS)  
+[01/30 18:01:11     27s] @file 56: # -aocv $tech_files(ALL_TC_AOCV_LIBS)
+[01/30 18:01:11     27s] @file 57:     
+[01/30 18:01:11     27s] @@file 58: create_library_set \
+[01/30 18:01:11     27s] 	-name wc_libset \
+[01/30 18:01:11     27s] 	-timing $tech_files(ALL_WC_LIBS)  
+[01/30 18:01:11     27s] @file 61: # -aocv $tech_files(ALL_WC_AOCV_LIBS)
+[01/30 18:01:11     27s] @file 62:
+[01/30 18:01:11     27s] @file 63: # Timing Conditions #
+[01/30 18:01:11     27s] @file 64: # ----------------- #
+[01/30 18:01:11     27s] @@file 65: create_timing_condition \
+[01/30 18:01:11     27s]    -name         bc_timing_condition \
+[01/30 18:01:11     27s]    -library_sets bc_libset
+[01/30 18:01:11     27s] @file 68:
+[01/30 18:01:11     27s] @@file 69: create_timing_condition \
+[01/30 18:01:11     27s]    -name         tc_timing_condition \
+[01/30 18:01:11     27s]    -library_sets tc_libset
+[01/30 18:01:11     27s] @file 72:
+[01/30 18:01:11     27s] @@file 73: create_timing_condition \
+[01/30 18:01:11     27s]    -name         wc_timing_condition \
+[01/30 18:01:11     27s]    -library_sets wc_libset
+[01/30 18:01:11     27s] @file 76:
+[01/30 18:01:11     27s] @file 77: # Delay Corners #
+[01/30 18:01:11     27s] @file 78: # ------------- #
+[01/30 18:01:11     27s] @@file 79: create_delay_corner \
+[01/30 18:01:11     27s] 	-name bc_dly_corner \
+[01/30 18:01:11     27s] 	-timing_condition bc_timing_condition \
+[01/30 18:01:11     27s] 	-rc_corner bc_rc_corner
+[01/30 18:01:11     27s] @file 83:
+[01/30 18:01:11     27s] @@file 84: create_delay_corner \
+[01/30 18:01:11     27s] 	-name tc_dly_corner \
+[01/30 18:01:11     27s] 	-timing_condition tc_timing_condition \
+[01/30 18:01:11     27s] 	-rc_corner tc_rc_corner
+[01/30 18:01:11     27s] @file 88:
+[01/30 18:01:11     27s] @@file 89: create_delay_corner \
+[01/30 18:01:11     27s] 	-name wc_dly_corner \
+[01/30 18:01:11     27s] 	-timing_condition wc_timing_condition \
+[01/30 18:01:11     27s] 	-rc_corner wc_rc_corner
+[01/30 18:01:11     27s] @file 93:
+[01/30 18:01:11     27s] @file 94: # Analysis Views #
+[01/30 18:01:11     27s] @file 95: # -------------- #
+[01/30 18:01:11     27s] @@file 96: create_analysis_view \
+[01/30 18:01:11     27s] 	-name bc_analysis_view \
+[01/30 18:01:11     27s] 	-constraint_mode functional_mode \
+[01/30 18:01:11     27s] 	-delay_corner bc_dly_corner
+[01/30 18:01:11     27s] @file 100:
+[01/30 18:01:11     27s] @@file 101: create_analysis_view \
+[01/30 18:01:11     27s]     -name tc_analysis_view \
+[01/30 18:01:11     27s] 	-constraint_mode functional_mode \
+[01/30 18:01:11     27s] 	-delay_corner tc_dly_corner
+[01/30 18:01:11     27s] @file 105:
+[01/30 18:01:11     27s] @@file 106: create_analysis_view \
+[01/30 18:01:11     27s] 	-name wc_analysis_view \
+[01/30 18:01:11     27s] 	-constraint_mode functional_mode \
+[01/30 18:01:11     27s] 	-delay_corner wc_dly_corner
+[01/30 18:01:11     27s] @file 110:
+[01/30 18:01:11     27s] @file 111: # Selected Analysis Views #
+[01/30 18:01:11     27s] @file 112: # ----------------------- #
+[01/30 18:01:11     27s] @@file 113: set_analysis_view \
+[01/30 18:01:11     27s] 	-setup $design(selected_setup_analysis_views) \
+[01/30 18:01:11     27s] 	-hold  $design(selected_hold_analysis_views)
+[01/30 18:01:11     27s] @file 116: # -leakage $design(selected_leakage_analysis_views)
+[01/30 18:01:11     27s] @file 117:     # -dynamic $design(selected_dynamic_power_analysis_views)
+[01/30 18:01:11     27s] @file 118:
+[01/30 18:01:11     27s] @file 119:
+[01/30 18:01:11     27s] #@ End verbose source: /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../inputs/lp_riscv_top.mmmc
+[01/30 18:01:11     27s] Reading wc_libset timing library '/tech/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp/sc9_base_rvt/r0p0/lib/sc9_cln65lp_base_rvt_ss_typical_max_0p90v_125c.lib' ...
+[01/30 18:01:12     29s] Read 949 cells in library 'sc9_cln65lp_base_rvt_ss_typical_max_0p90v_125c' 
+[01/30 18:01:12     29s] Reading wc_libset timing library '/tech/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp/sc9_base_lvt/r0p0/lib/sc9_cln65lp_base_lvt_ss_typical_max_0p90v_125c.lib' ...
+[01/30 18:01:14     31s] Read 949 cells in library 'sc9_cln65lp_base_lvt_ss_typical_max_0p90v_125c' 
+[01/30 18:01:14     31s] Reading wc_libset timing library '/tech/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp/sc9_base_hvt/r0p0/lib/sc9_cln65lp_base_hvt_ss_typical_max_0p90v_125c.lib' ...
+[01/30 18:01:16     32s] Read 949 cells in library 'sc9_cln65lp_base_hvt_ss_typical_max_0p90v_125c' 
+[01/30 18:01:16     32s] Reading wc_libset timing library '/project/tsmc65/users/saridav/ws/DVD25/hw7/mem_gen/SP_32768X32/M32/sp_hde_32768_m32_ss_1p08v_1p08v_125c.lib' ...
+[01/30 18:01:16     33s] Read 1 cells in library 'USERLIB_ss_1p08v_1p08v_125c' 
+[01/30 18:01:16     33s] Reading wc_libset timing library '/project/tsmc65/users/saridav/ws/DVD25/hw7/mem_gen/SP_16384X32/M32/sp_hde_16384_m32_ss_1p08v_1p08v_125c.lib' ...
+[01/30 18:01:16     33s] **WARN: (TECHLIB-459):	Appending library 'USERLIB_ss_1p08v_1p08v_125c' to the previously read library of the same name and nominal PVT. Cell definitions from the previously read library will not be overridden. (File /project/tsmc65/users/saridav/ws/DVD25/hw7/mem_gen/SP_16384X32/M32/sp_hde_16384_m32_ss_1p08v_1p08v_125c.lib)
+[01/30 18:01:16     33s] Read 1 cells in library 'USERLIB_ss_1p08v_1p08v_125c' 
+[01/30 18:01:16     33s] Reading wc_libset timing library '/tech/tsmc/65LP/dig_libs/ARM_FEONLY/TSMCHOME_fe/digital/Front_End/timing_power_noise/NLDM/tpdn65lpnv2od3_200a/tpdn65lpnv2od3wc.lib' ...
+[01/30 18:01:16     33s] Read 47 cells in library 'tpdn65lpnv2od3wc' 
+[01/30 18:01:16     33s] Reading bc_libset timing library '/tech/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp/sc9_base_rvt/r0p0/lib/sc9_cln65lp_base_rvt_ff_typical_min_1p32v_m40c.lib' ...
+[01/30 18:01:18     35s] Read 949 cells in library 'sc9_cln65lp_base_rvt_ff_typical_min_1p32v_m40c' 
+[01/30 18:01:18     35s] Reading bc_libset timing library '/tech/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp/sc9_base_lvt/r0p0/lib/sc9_cln65lp_base_lvt_ff_typical_min_1p32v_m40c.lib' ...
+[01/30 18:01:19     36s] Read 949 cells in library 'sc9_cln65lp_base_lvt_ff_typical_min_1p32v_m40c' 
+[01/30 18:01:19     36s] Reading bc_libset timing library '/tech/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp/sc9_base_hvt/r0p0/lib/sc9_cln65lp_base_hvt_ff_typical_min_1p32v_m40c.lib' ...
+[01/30 18:01:21     38s] Read 949 cells in library 'sc9_cln65lp_base_hvt_ff_typical_min_1p32v_m40c' 
+[01/30 18:01:21     38s] Reading bc_libset timing library '/project/tsmc65/users/saridav/ws/DVD25/hw7/mem_gen/SP_32768X32/M32/sp_hde_32768_m32_ff_1p32v_1p32v_m40c.lib' ...
+[01/30 18:01:21     38s] Read 1 cells in library 'USERLIB_ff_1p32v_1p32v_m40c' 
+[01/30 18:01:21     38s] Reading bc_libset timing library '/project/tsmc65/users/saridav/ws/DVD25/hw7/mem_gen/SP_16384X32/M32/sp_hde_16384_m32_ff_1p32v_1p32v_m40c.lib' ...
+[01/30 18:01:21     38s] **WARN: (TECHLIB-459):	Appending library 'USERLIB_ff_1p32v_1p32v_m40c' to the previously read library of the same name and nominal PVT. Cell definitions from the previously read library will not be overridden. (File /project/tsmc65/users/saridav/ws/DVD25/hw7/mem_gen/SP_16384X32/M32/sp_hde_16384_m32_ff_1p32v_1p32v_m40c.lib)
+[01/30 18:01:21     38s] Read 1 cells in library 'USERLIB_ff_1p32v_1p32v_m40c' 
+[01/30 18:01:21     38s] Reading bc_libset timing library '/tech/tsmc/65LP/dig_libs/ARM_FEONLY/TSMCHOME_fe/digital/Front_End/timing_power_noise/NLDM/tpdn65lpnv2od3_200a/tpdn65lpnv2od3bc.lib' ...
+[01/30 18:01:21     38s] Read 47 cells in library 'tpdn65lpnv2od3bc' 
+[01/30 18:01:22     38s] Ending "PreSetAnalysisView" (total cpu=0:00:11.1, real=0:00:11.0, peak res=1259.7M, current mem=1013.8M)
+[01/30 18:01:22     38s] timing_initialized
+[01/30 18:01:22     38s] @innovus 38> 
+
+[01/30 18:01:22     38s] @innovus 38> # LEFs
+# LEFs
+[01/30 18:01:22     38s] @innovus 39> enics_message "Suppressing the following messages that are reported [1G due to the LEF definitions:" 
+enics_message "Suppressing the following messages that are reported due to the LEF definitions:" 
+[01/30 18:01:22     38s] ENICSINFO: Suppressing the following messages that are reported due to the LEF definitions:
+[01/30 18:01:22     38s] @innovus 40> enics_message "$tech(LEF_SUPPRESS_MESSAGES_INNOVUS)"
+enics_message "$tech(LEF_SUPPRESS_MESSAGES_INNOVUS)"
+[01/30 18:01:22     38s] ENICSINFO: ENCEXT-6202 IMPLF-200 LEFPARS-2001 LEFPARS-2065 LEFPARS-2076 IMPLF-58 IMPFP-3961 IMPSR-4302
+[01/30 18:01:22     38s] @innovus 41> set_message -suppress -id $tech(LEF_SUPPRESS_MESSAGES_INNOVUS) 
+set_message -suppress -id $tech(LEF_SUPPRESS_MESSAGES_INNOVUS) 
+[01/30 18:01:22     38s] @innovus 42> enics_message "Reading LEF abstracts"
+enics_message "Reading LEF abstracts"
+[01/30 18:01:22     38s] ENICSINFO: Reading LEF abstracts
+[01/30 18:01:22     38s] @innovus 43> read_physical -lef $tech_files(ALL_LEFS)
+read_physical -lef $tech_files(ALL_LEFS)
+[01/30 18:01:22     38s] 
+[01/30 18:01:22     38s] Loading LEF file /data/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp//arm_tech/r2p0/lef/1p9m_6x2z/sc9_tech.lef ...
+[01/30 18:01:22     39s] 
+[01/30 18:01:22     39s] Loading LEF file /data/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp//sc9_base_rvt/r0p0/lef/sc9_cln65lp_base_rvt.lef ...
+[01/30 18:01:22     39s] Set DBUPerIGU to M2 pitch 400.
+[01/30 18:01:22     39s] 
+[01/30 18:01:22     39s] Loading LEF file /data/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp//sc9_base_lvt/r0p0/lef/sc9_cln65lp_base_lvt.lef ...
+[01/30 18:01:22     39s] 
+[01/30 18:01:22     39s] Loading LEF file /data/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp//sc9_base_hvt/r0p0/lef/sc9_cln65lp_base_hvt.lef ...
+[01/30 18:01:22     39s] 
+[01/30 18:01:22     39s] Loading LEF file ../mem_gen/SP_32768X32/M32/sp_hde_32768_m32.lef ...
+[01/30 18:01:22     39s] 
+[01/30 18:01:22     39s] Loading LEF file ../mem_gen/SP_16384X32/M32/sp_hde_16384_m32.lef ...
+[01/30 18:01:22     39s] 
+[01/30 18:01:22     39s] Loading LEF file /data/project/tsmc65/shared/modified_libraries/tpdn65lpnv2od3_9lm.lef ...
+[01/30 18:01:22     39s] WARNING (LEFPARS-2502): Message (LEFPARS-2065) has been suppressed from output. See file /data/project/tsmc65/shared/modified_libraries/tpdn65lpnv2od3_9lm.lef at line 12683.
+[01/30 18:01:22     39s] WARNING (LEFPARS-2502): Message (LEFPARS-2076) has been suppressed from output. See file /data/project/tsmc65/shared/modified_libraries/tpdn65lpnv2od3_9lm.lef at line 12686.
+[01/30 18:01:22     39s] WARNING (LEFPARS-2502): Message (LEFPARS-2001) has been suppressed from output. See file /data/project/tsmc65/shared/modified_libraries/tpdn65lpnv2od3_9lm.lef at line 13714.
+[01/30 18:01:22     39s] 
+[01/30 18:01:22     39s] Loading LEF file /data/tsmc/65LP/dig_libs/ARM_FEONLY/TSMCHOME_fe/digital/Back_End/lef/tpdn65lpnv2od3_140b/mt/9lm/lef//antenna_9lm.lef ...
+[01/30 18:01:22     39s] **WARN: (IMPLF-61):	43 duplicated MACRO definitions have been found in the LEF file(s). Their content except DENSITY and PIN ANTENNA* data, and certain properties, have been ignored.
+[01/30 18:01:22     39s] Review the LEF files specified in the init_lef_files variable and remove redundant definitions.
+[01/30 18:01:22     39s] Type 'man IMPLF-61' for more detail.
+[01/30 18:01:22     39s] 
+[01/30 18:01:22     39s] ##  Check design process and node:  
+[01/30 18:01:22     39s] ##  Design tech node is not set.
+[01/30 18:01:22     39s] 
+
+[01/30 18:01:22     39s] 0
+[01/30 18:01:22     39s] @innovus 44> 
+# Post Synthesis Netlist
+[01/30 18:01:22     39s] @innovus 44> # Post Synthesis Netlist
+[01/30 18:01:22     39s] @innovus 45> enics_message "Reading the Post Synthesis netlist at $design(postsy [1Gn_netlist)" medium
+enics_message "Reading the Post Synthesis netlist at $design(postsyn_netlist)" medium
+read_netlist $design(postsyn_netlist)
+[01/30 18:01:22     39s] 
+[01/30 18:01:22     39s] ENICSINFO: Reading the Post Synthesis netlist at /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../export/lp_riscv_top.postsyn.v
+[01/30 18:01:22     39s] -------------------------------------------------------------------------------------------------------------------------------------------
+[01/30 18:01:22     39s] @innovus 46> read_netlist $design(postsyn_netlist)
+[01/30 18:01:22     39s] #% Begin Load netlist data ... (date=01/30 18:01:22, mem=1030.6M)
+[01/30 18:01:22     39s] *** Begin netlist parsing (mem=7337.3M) ***
+[01/30 18:01:22     39s] Pin 'VSS' of cell 'PVSS3CDG' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+[01/30 18:01:22     39s] Pin 'VSSPST' of cell 'PVSS2CDG' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+[01/30 18:01:22     39s] Pin 'AVSS' of cell 'PVSS2ANA' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+[01/30 18:01:22     39s] Pin 'VSS' of cell 'PVSS1CDG' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+[01/30 18:01:22     39s] Pin 'AVSS' of cell 'PVSS1ANA' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+[01/30 18:01:22     39s] Pin 'VDDPST' of cell 'PVDD2POC' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+[01/30 18:01:22     39s] Pin 'VDDPST' of cell 'PVDD2CDG' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+[01/30 18:01:22     39s] Pin 'AVDD' of cell 'PVDD2ANA' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+[01/30 18:01:22     39s] Pin 'VDD' of cell 'PVDD1CDG' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+[01/30 18:01:22     39s] Pin 'AVDD' of cell 'PVDD1ANA' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+[01/30 18:01:22     39s] Created 2896 new cells from 10 timing libraries.
+[01/30 18:01:22     39s] Reading netlist ...
+[01/30 18:01:22     39s] Backslashed names will retain backslash and a trailing blank character.
+[01/30 18:01:22     39s] Reading verilog netlist '/data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../export/lp_riscv_top.postsyn.v'
+[01/30 18:01:22     39s] 
+[01/30 18:01:22     39s] *** Memory Usage v#1 (Current mem = 7343.297M, initial mem = 2004.215M) ***
+[01/30 18:01:22     39s] *** End netlist parsing (cpu=0:00:00.2, real=0:00:00.0, mem=7343.3M) ***
+[01/30 18:01:22     39s] #% End Load netlist data ... (date=01/30 18:01:22, total cpu=0:00:00.3, real=0:00:00.0, peak res=1182.7M, current mem=1182.7M)
+[01/30 18:01:22     39s] Top level cell is lp_riscv_top.
+[01/30 18:01:24     40s] Hooked 5792 DB cells to tlib cells.
+[01/30 18:01:24     40s] Ending "BindLib:" (total cpu=0:00:00.7, real=0:00:01.0, peak res=1289.6M, current mem=1289.6M)
+[01/30 18:01:24     40s] Starting recursive module instantiation check.
+[01/30 18:01:24     40s] No recursion found.
+[01/30 18:01:24     40s] Building hierarchical netlist for Cell lp_riscv_top ...
+[01/30 18:01:24     40s] *** Netlist is unique.
+[01/30 18:01:24     40s] Setting Std. cell height to 3600 DBU (smallest netlist inst).
+[01/30 18:01:24     40s] ** info: there are 5914 modules.
+[01/30 18:01:24     40s] ** info: there are 26117 stdCell insts.
+[01/30 18:01:24     40s] ** info: there are 68 Pad insts.
+[01/30 18:01:24     40s] ** info: there are 3 macros.
+[01/30 18:01:24     41s] 
+[01/30 18:01:24     41s] *** Memory Usage v#1 (Current mem = 7459.711M, initial mem = 2004.215M) ***
+[01/30 18:01:24     41s] 0
+[01/30 18:01:24     41s] @innovus 47> 
+
+[01/30 18:01:24     41s] @innovus 47> # Import and initialize desig# Import and initialize design
+n
+[01/30 18:01:24     41s] @innovus 48> enics_message "Running init_design command" mediumenics_message "Running init_design command" medium
+
+[01/30 18:01:28     41s] ENICSINFO: Running init_design command
+[01/30 18:01:28     41s] --------------------------------------
+[01/30 18:01:28     41s] @innovus 49> init_design
+Pre-connect netlist-defined P/G connections...
+[01/30 18:01:45     42s]   Updated 24 instances.
+[01/30 18:01:45     42s] Initializing I/O assignment ...
+[01/30 18:01:45     42s] Start create_tracks
+[01/30 18:01:45     42s] Extraction setup Started 
+[01/30 18:01:45     42s] 
+[01/30 18:01:45     42s] Trim Metal Layers:
+[01/30 18:01:45     42s] __QRC_SADV_USE_LE__ is set 0
+[01/30 18:01:45     42s] Initializing multi-corner RC extraction with 2 active RC Corners ...
+[01/30 18:01:45     42s] Captable file(s) not specified in multi-corner setup. PreRoute extraction will use technology file. For post_route extraction, default value for effort level would be 'medium' and effort level 'low' would not be allowed.
+[01/30 18:01:46     43s] Metal Layer Id 1 is M1 
+[01/30 18:01:46     43s] Metal Layer Id 2 is M2 
+[01/30 18:01:46     43s] Metal Layer Id 3 is M3 
+[01/30 18:01:46     43s] Metal Layer Id 4 is M4 
+[01/30 18:01:46     43s] Metal Layer Id 5 is M5 
+[01/30 18:01:46     43s] Metal Layer Id 6 is M6 
+[01/30 18:01:46     43s] Metal Layer Id 7 is M7 
+[01/30 18:01:46     43s] Metal Layer Id 8 is M8 
+[01/30 18:01:46     43s] Metal Layer Id 9 is M9 
+[01/30 18:01:46     43s] Metal Layer Id 10 is AP 
+[01/30 18:01:46     43s] Via Layer Id 34 is VIA1 
+[01/30 18:01:46     43s] Via Layer Id 35 is VIA2 
+[01/30 18:01:46     43s] Via Layer Id 36 is VIA3 
+[01/30 18:01:46     43s] Via Layer Id 37 is VIA4 
+[01/30 18:01:46     43s] Via Layer Id 38 is VIA5 
+[01/30 18:01:46     43s] Via Layer Id 39 is VIA6 
+[01/30 18:01:46     43s] Via Layer Id 40 is VIA7 
+[01/30 18:01:46     43s] Via Layer Id 41 is VIA8 
+[01/30 18:01:46     43s] Via Layer Id 42 is RV 
+[01/30 18:01:46     43s] 
+[01/30 18:01:46     43s] Trim Metal Layers:
+[01/30 18:01:46     43s]  lef metal Layer Id 1 mapped to tech Id 7 of Layer metal1 
+[01/30 18:01:46     43s]  lef via Layer Id 1 mapped to tech Id 8 of Layer via1 
+[01/30 18:01:46     43s] Generating auto layer map file.
+[01/30 18:01:46     43s]  lef metal Layer Id 2 mapped to tech Id 9 of Layer metal2 
+[01/30 18:01:46     43s]  lef via Layer Id 2 mapped to tech Id 10 of Layer via2 
+[01/30 18:01:46     43s]  lef metal Layer Id 3 mapped to tech Id 11 of Layer metal3 
+[01/30 18:01:46     43s]  lef via Layer Id 3 mapped to tech Id 12 of Layer via3 
+[01/30 18:01:46     43s]  lef metal Layer Id 4 mapped to tech Id 13 of Layer metal4 
+[01/30 18:01:46     43s]  lef via Layer Id 4 mapped to tech Id 14 of Layer via4 
+[01/30 18:01:46     43s]  lef metal Layer Id 5 mapped to tech Id 15 of Layer metal5 
+[01/30 18:01:46     43s]  lef via Layer Id 5 mapped to tech Id 16 of Layer via5 
+[01/30 18:01:46     43s]  lef metal Layer Id 6 mapped to tech Id 17 of Layer metal6 
+[01/30 18:01:46     43s]  lef via Layer Id 6 mapped to tech Id 18 of Layer via6 
+[01/30 18:01:46     43s]  lef metal Layer Id 7 mapped to tech Id 19 of Layer metal7 
+[01/30 18:01:46     43s]  lef via Layer Id 7 mapped to tech Id 20 of Layer via7 
+[01/30 18:01:46     43s]  lef metal Layer Id 8 mapped to tech Id 21 of Layer metal8 
+[01/30 18:01:46     43s]  lef via Layer Id 8 mapped to tech Id 22 of Layer via8 
+[01/30 18:01:46     43s]  lef metal Layer Id 9 mapped to tech Id 23 of Layer metal9 
+[01/30 18:01:46     43s]  lef via Layer Id 9 mapped to tech Id 24 of Layer via9 
+[01/30 18:01:46     43s]  lef metal Layer Id 10 mapped to tech Id 25 of Layer metal10 
+[01/30 18:01:46     43s] Metal Layer Id 1 mapped to 7 
+[01/30 18:01:46     43s] Via Layer Id 1 mapped to 8 
+[01/30 18:01:46     43s] Metal Layer Id 2 mapped to 9 
+[01/30 18:01:46     43s] Via Layer Id 2 mapped to 10 
+[01/30 18:01:46     43s] Metal Layer Id 3 mapped to 11 
+[01/30 18:01:46     43s] Via Layer Id 3 mapped to 12 
+[01/30 18:01:46     43s] Metal Layer Id 4 mapped to 13 
+[01/30 18:01:46     43s] Via Layer Id 4 mapped to 14 
+[01/30 18:01:46     43s] Metal Layer Id 5 mapped to 15 
+[01/30 18:01:46     43s] Via Layer Id 5 mapped to 16 
+[01/30 18:01:46     43s] Metal Layer Id 6 mapped to 17 
+[01/30 18:01:46     43s] Via Layer Id 6 mapped to 18 
+[01/30 18:01:46     43s] Metal Layer Id 7 mapped to 19 
+[01/30 18:01:46     43s] Via Layer Id 7 mapped to 20 
+[01/30 18:01:46     43s] Metal Layer Id 8 mapped to 21 
+[01/30 18:01:46     43s] Via Layer Id 8 mapped to 22 
+[01/30 18:01:46     43s] Metal Layer Id 9 mapped to 23 
+[01/30 18:01:46     43s] Via Layer Id 9 mapped to 24 
+[01/30 18:01:46     43s] Metal Layer Id 10 mapped to 25 
+[01/30 18:01:46     43s] eee: pegPreRouteEnableSaveRestoreRCPatterns:1, retVal:1, doesAnyTechFileNeedExtraction1
+[01/30 18:01:46     43s] eee: Reading patterns meta data.
+[01/30 18:01:46     43s] eee: PatternAvail:0, PreRoutePatternReadFailed:2
+[01/30 18:01:46     43s] Restore PreRoute Pattern Extraction data failed.
+[01/30 18:01:46     43s] Importing multi-corner technology file(s) for preRoute extraction...
+[01/30 18:01:46     43s] /data/tsmc/65LP/QRC/1.3a//rcworst/qrcTechFile
+[01/30 18:01:47     43s] Metal Layer Id 1 is M1 
+[01/30 18:01:47     43s] Metal Layer Id 2 is M2 
+[01/30 18:01:47     43s] Metal Layer Id 3 is M3 
+[01/30 18:01:47     43s] Metal Layer Id 4 is M4 
+[01/30 18:01:47     43s] Metal Layer Id 5 is M5 
+[01/30 18:01:47     43s] Metal Layer Id 6 is M6 
+[01/30 18:01:47     43s] Metal Layer Id 7 is M7 
+[01/30 18:01:47     43s] Metal Layer Id 8 is M8 
+[01/30 18:01:47     43s] Metal Layer Id 9 is M9 
+[01/30 18:01:47     43s] Metal Layer Id 10 is AP 
+[01/30 18:01:47     43s] Via Layer Id 34 is VIA1 
+[01/30 18:01:47     43s] Via Layer Id 35 is VIA2 
+[01/30 18:01:47     43s] Via Layer Id 36 is VIA3 
+[01/30 18:01:47     43s] Via Layer Id 37 is VIA4 
+[01/30 18:01:47     43s] Via Layer Id 38 is VIA5 
+[01/30 18:01:47     43s] Via Layer Id 39 is VIA6 
+[01/30 18:01:47     43s] Via Layer Id 40 is VIA7 
+[01/30 18:01:47     43s] Via Layer Id 41 is VIA8 
+[01/30 18:01:47     43s] Via Layer Id 42 is RV 
+[01/30 18:01:47     43s] 
+[01/30 18:01:47     43s] Trim Metal Layers:
+[01/30 18:01:47     43s]  lef metal Layer Id 1 mapped to tech Id 7 of Layer metal1 
+[01/30 18:01:47     43s]  lef via Layer Id 1 mapped to tech Id 8 of Layer via1 
+[01/30 18:01:47     43s] Generating auto layer map file.
+[01/30 18:01:47     43s]  lef metal Layer Id 2 mapped to tech Id 9 of Layer metal2 
+[01/30 18:01:47     43s]  lef via Layer Id 2 mapped to tech Id 10 of Layer via2 
+[01/30 18:01:47     43s]  lef metal Layer Id 3 mapped to tech Id 11 of Layer metal3 
+[01/30 18:01:47     43s]  lef via Layer Id 3 mapped to tech Id 12 of Layer via3 
+[01/30 18:01:47     43s]  lef metal Layer Id 4 mapped to tech Id 13 of Layer metal4 
+[01/30 18:01:47     43s]  lef via Layer Id 4 mapped to tech Id 14 of Layer via4 
+[01/30 18:01:47     43s]  lef metal Layer Id 5 mapped to tech Id 15 of Layer metal5 
+[01/30 18:01:47     43s]  lef via Layer Id 5 mapped to tech Id 16 of Layer via5 
+[01/30 18:01:47     43s]  lef metal Layer Id 6 mapped to tech Id 17 of Layer metal6 
+[01/30 18:01:47     43s]  lef via Layer Id 6 mapped to tech Id 18 of Layer via6 
+[01/30 18:01:47     43s]  lef metal Layer Id 7 mapped to tech Id 19 of Layer metal7 
+[01/30 18:01:47     43s]  lef via Layer Id 7 mapped to tech Id 20 of Layer via7 
+[01/30 18:01:47     43s]  lef metal Layer Id 8 mapped to tech Id 21 of Layer metal8 
+[01/30 18:01:47     43s]  lef via Layer Id 8 mapped to tech Id 22 of Layer via8 
+[01/30 18:01:47     43s]  lef metal Layer Id 9 mapped to tech Id 23 of Layer metal9 
+[01/30 18:01:47     43s]  lef via Layer Id 9 mapped to tech Id 24 of Layer via9 
+[01/30 18:01:47     43s]  lef metal Layer Id 10 mapped to tech Id 25 of Layer metal10 
+[01/30 18:01:47     43s] Metal Layer Id 1 mapped to 7 
+[01/30 18:01:47     43s] Via Layer Id 1 mapped to 8 
+[01/30 18:01:47     43s] Metal Layer Id 2 mapped to 9 
+[01/30 18:01:47     43s] Via Layer Id 2 mapped to 10 
+[01/30 18:01:47     43s] Metal Layer Id 3 mapped to 11 
+[01/30 18:01:47     43s] Via Layer Id 3 mapped to 12 
+[01/30 18:01:47     43s] Metal Layer Id 4 mapped to 13 
+[01/30 18:01:47     43s] Via Layer Id 4 mapped to 14 
+[01/30 18:01:47     43s] Metal Layer Id 5 mapped to 15 
+[01/30 18:01:47     43s] Via Layer Id 5 mapped to 16 
+[01/30 18:01:47     43s] Metal Layer Id 6 mapped to 17 
+[01/30 18:01:47     43s] Via Layer Id 6 mapped to 18 
+[01/30 18:01:47     43s] Metal Layer Id 7 mapped to 19 
+[01/30 18:01:47     43s] Via Layer Id 7 mapped to 20 
+[01/30 18:01:47     43s] Metal Layer Id 8 mapped to 21 
+[01/30 18:01:47     43s] Via Layer Id 8 mapped to 22 
+[01/30 18:01:47     43s] Metal Layer Id 9 mapped to 23 
+[01/30 18:01:47     43s] Via Layer Id 9 mapped to 24 
+[01/30 18:01:47     43s] Metal Layer Id 10 mapped to 25 
+[01/30 18:01:48     45s] /data/tsmc/65LP/QRC/1.3a//rcbest/qrcTechFile
+[01/30 18:01:49     45s] Metal Layer Id 1 is M1 
+[01/30 18:01:49     45s] Metal Layer Id 2 is M2 
+[01/30 18:01:49     45s] Metal Layer Id 3 is M3 
+[01/30 18:01:49     45s] Metal Layer Id 4 is M4 
+[01/30 18:01:49     45s] Metal Layer Id 5 is M5 
+[01/30 18:01:49     45s] Metal Layer Id 6 is M6 
+[01/30 18:01:49     45s] Metal Layer Id 7 is M7 
+[01/30 18:01:49     45s] Metal Layer Id 8 is M8 
+[01/30 18:01:49     45s] Metal Layer Id 9 is M9 
+[01/30 18:01:49     45s] Metal Layer Id 10 is AP 
+[01/30 18:01:49     45s] Via Layer Id 34 is VIA1 
+[01/30 18:01:49     45s] Via Layer Id 35 is VIA2 
+[01/30 18:01:49     45s] Via Layer Id 36 is VIA3 
+[01/30 18:01:49     45s] Via Layer Id 37 is VIA4 
+[01/30 18:01:49     45s] Via Layer Id 38 is VIA5 
+[01/30 18:01:49     45s] Via Layer Id 39 is VIA6 
+[01/30 18:01:49     45s] Via Layer Id 40 is VIA7 
+[01/30 18:01:49     45s] Via Layer Id 41 is VIA8 
+[01/30 18:01:49     45s] Via Layer Id 42 is RV 
+[01/30 18:01:49     45s] 
+[01/30 18:01:49     45s] Trim Metal Layers:
+[01/30 18:01:49     45s]  lef metal Layer Id 1 mapped to tech Id 7 of Layer metal1 
+[01/30 18:01:49     45s]  lef via Layer Id 1 mapped to tech Id 8 of Layer via1 
+[01/30 18:01:49     45s]  lef metal Layer Id 2 mapped to tech Id 9 of Layer metal2 
+[01/30 18:01:49     45s] Generating auto layer map file.
+[01/30 18:01:49     45s]  lef via Layer Id 2 mapped to tech Id 10 of Layer via2 
+[01/30 18:01:49     45s]  lef metal Layer Id 3 mapped to tech Id 11 of Layer metal3 
+[01/30 18:01:49     45s]  lef via Layer Id 3 mapped to tech Id 12 of Layer via3 
+[01/30 18:01:49     45s]  lef metal Layer Id 4 mapped to tech Id 13 of Layer metal4 
+[01/30 18:01:49     45s]  lef via Layer Id 4 mapped to tech Id 14 of Layer via4 
+[01/30 18:01:49     45s]  lef metal Layer Id 5 mapped to tech Id 15 of Layer metal5 
+[01/30 18:01:49     45s]  lef via Layer Id 5 mapped to tech Id 16 of Layer via5 
+[01/30 18:01:49     45s]  lef metal Layer Id 6 mapped to tech Id 17 of Layer metal6 
+[01/30 18:01:49     45s]  lef via Layer Id 6 mapped to tech Id 18 of Layer via6 
+[01/30 18:01:49     45s]  lef metal Layer Id 7 mapped to tech Id 19 of Layer metal7 
+[01/30 18:01:49     45s]  lef via Layer Id 7 mapped to tech Id 20 of Layer via7 
+[01/30 18:01:49     45s]  lef metal Layer Id 8 mapped to tech Id 21 of Layer metal8 
+[01/30 18:01:49     45s]  lef via Layer Id 8 mapped to tech Id 22 of Layer via8 
+[01/30 18:01:49     45s]  lef metal Layer Id 9 mapped to tech Id 23 of Layer metal9 
+[01/30 18:01:49     45s]  lef via Layer Id 9 mapped to tech Id 24 of Layer via9 
+[01/30 18:01:49     45s]  lef metal Layer Id 10 mapped to tech Id 25 of Layer metal10 
+[01/30 18:01:49     45s] Metal Layer Id 1 mapped to 7 
+[01/30 18:01:49     45s] Via Layer Id 1 mapped to 8 
+[01/30 18:01:49     45s] Metal Layer Id 2 mapped to 9 
+[01/30 18:01:49     45s] Via Layer Id 2 mapped to 10 
+[01/30 18:01:49     45s] Metal Layer Id 3 mapped to 11 
+[01/30 18:01:49     45s] Via Layer Id 3 mapped to 12 
+[01/30 18:01:49     45s] Metal Layer Id 4 mapped to 13 
+[01/30 18:01:49     45s] Via Layer Id 4 mapped to 14 
+[01/30 18:01:49     45s] Metal Layer Id 5 mapped to 15 
+[01/30 18:01:49     45s] Via Layer Id 5 mapped to 16 
+[01/30 18:01:49     45s] Metal Layer Id 6 mapped to 17 
+[01/30 18:01:49     45s] Via Layer Id 6 mapped to 18 
+[01/30 18:01:49     45s] Metal Layer Id 7 mapped to 19 
+[01/30 18:01:49     45s] Via Layer Id 7 mapped to 20 
+[01/30 18:01:49     45s] Metal Layer Id 8 mapped to 21 
+[01/30 18:01:49     45s] Via Layer Id 8 mapped to 22 
+[01/30 18:01:49     45s] Metal Layer Id 9 mapped to 23 
+[01/30 18:01:49     45s] Via Layer Id 9 mapped to 24 
+[01/30 18:01:49     45s] Metal Layer Id 10 mapped to 25 
+[01/30 18:01:50     47s] Completed (cpu: 0:00:04.4 real: 0:00:05.0)
+[01/30 18:01:50     47s] Set Shrink Factor to 1.00000
+[01/30 18:01:50     47s] Technology file '/data/tsmc/65LP/QRC/1.3a//rcworst/qrcTechFile' associated with first view 'wc_analysis_view' will be used as the primary corner for the multi-corner extraction.
+[01/30 18:01:50     47s] Summary of Active RC-Corners : 
+[01/30 18:01:50     47s]  
+[01/30 18:01:50     47s]  Analysis View: wc_analysis_view
+[01/30 18:01:50     47s]     RC-Corner Name        : wc_rc_corner
+[01/30 18:01:50     47s]     RC-Corner Index       : 0
+[01/30 18:01:50     47s]     RC-Corner Temperature : 125 Celsius
+[01/30 18:01:50     47s]     RC-Corner Cap Table   : ''
+[01/30 18:01:50     47s]     RC-Corner PreRoute Res Factor         : 1
+[01/30 18:01:50     47s]     RC-Corner PreRoute Cap Factor         : 1
+[01/30 18:01:50     47s]     RC-Corner PostRoute Res Factor        : 1 {1 1 1}
+[01/30 18:01:50     47s]     RC-Corner PostRoute Cap Factor        : 1 {1 1 1}
+[01/30 18:01:50     47s]     RC-Corner PostRoute XCap Factor       : 1 {1 1 1}
+[01/30 18:01:50     47s]     RC-Corner PreRoute Clock Res Factor   : 1	[Derived from postRoute_res (effortLevel low)]
+[01/30 18:01:50     47s]     RC-Corner PreRoute Clock Cap Factor   : 1	[Derived from postRoute_cap (effortLevel low)]
+[01/30 18:01:50     47s]     RC-Corner PostRoute Clock Cap Factor  : 1 {1 1 1} 	[Derived from postRoute_cap (effortLevel low)]
+[01/30 18:01:50     47s]     RC-Corner PostRoute Clock Res Factor  : 1 {1 1 1} 	[Derived from postRoute_res (effortLevel low)]
+[01/30 18:01:50     47s]     RC-Corner PostRoute Clock coupling capacitance Factor : 1 {1 1 1} 
+[01/30 18:01:50     47s]     RC-Corner Technology file: '/data/tsmc/65LP/QRC/1.3a//rcworst/qrcTechFile'
+[01/30 18:01:50     47s]  
+[01/30 18:01:50     47s]  Analysis View: bc_analysis_view
+[01/30 18:01:50     47s]     RC-Corner Name        : bc_rc_corner
+[01/30 18:01:50     47s]     RC-Corner Index       : 1
+[01/30 18:01:50     47s]     RC-Corner Temperature : -40 Celsius
+[01/30 18:01:50     47s]     RC-Corner Cap Table   : ''
+[01/30 18:01:50     47s]     RC-Corner PreRoute Res Factor         : 1
+[01/30 18:01:50     47s]     RC-Corner PreRoute Cap Factor         : 1
+[01/30 18:01:50     47s]     RC-Corner PostRoute Res Factor        : 1 {1 1 1}
+[01/30 18:01:50     47s]     RC-Corner PostRoute Cap Factor        : 1 {1 1 1}
+[01/30 18:01:50     47s]     RC-Corner PostRoute XCap Factor       : 1 {1 1 1}
+[01/30 18:01:50     47s]     RC-Corner PreRoute Clock Res Factor   : 1	[Derived from postRoute_res (effortLevel low)]
+[01/30 18:01:50     47s]     RC-Corner PreRoute Clock Cap Factor   : 1	[Derived from postRoute_cap (effortLevel low)]
+[01/30 18:01:50     47s]     RC-Corner PostRoute Clock Cap Factor  : 1 {1 1 1} 	[Derived from postRoute_cap (effortLevel low)]
+[01/30 18:01:50     47s]     RC-Corner PostRoute Clock Res Factor  : 1 {1 1 1} 	[Derived from postRoute_res (effortLevel low)]
+[01/30 18:01:50     47s]     RC-Corner PostRoute Clock coupling capacitance Factor : 1 {1 1 1} 
+[01/30 18:01:50     47s]     RC-Corner Technology file: '/data/tsmc/65LP/QRC/1.3a//rcbest/qrcTechFile'
+[01/30 18:01:50     47s] 
+[01/30 18:01:50     47s] Trim Metal Layers:
+[01/30 18:01:50     47s] LayerId::1 widthSet size::1
+[01/30 18:01:50     47s] LayerId::2 widthSet size::1
+[01/30 18:01:50     47s] LayerId::3 widthSet size::1
+[01/30 18:01:50     47s] LayerId::4 widthSet size::1
+[01/30 18:01:50     47s] LayerId::5 widthSet size::1
+[01/30 18:01:50     47s] LayerId::6 widthSet size::1
+[01/30 18:01:50     47s] LayerId::7 widthSet size::1
+[01/30 18:01:50     47s] LayerId::8 widthSet size::1
+[01/30 18:01:50     47s] LayerId::9 widthSet size::1
+[01/30 18:01:50     47s] LayerId::10 widthSet size::1
+[01/30 18:01:50     47s] eee: pegSigSF::1.070000
+[01/30 18:01:50     47s] Updating RC grid for preRoute extraction ...
+[01/30 18:01:50     47s] Initializing multi-corner resistance tables ...
+[01/30 18:01:50     47s] eee: l::1 avDens::0.000000 usedTrk::0.000000 availTrk::0.000000 sigTrk::0.000000
+[01/30 18:01:50     47s] eee: l::2 avDens::0.000000 usedTrk::0.000000 availTrk::0.000000 sigTrk::0.000000
+[01/30 18:01:50     47s] eee: l::3 avDens::0.000000 usedTrk::0.000000 availTrk::0.000000 sigTrk::0.000000
+[01/30 18:01:50     47s] eee: l::4 avDens::0.000000 usedTrk::0.000000 availTrk::0.000000 sigTrk::0.000000
+[01/30 18:01:50     47s] eee: l::5 avDens::0.000000 usedTrk::0.000000 availTrk::0.000000 sigTrk::0.000000
+[01/30 18:01:50     47s] eee: l::6 avDens::0.000000 usedTrk::0.000000 availTrk::0.000000 sigTrk::0.000000
+[01/30 18:01:50     47s] eee: l::7 avDens::0.000000 usedTrk::0.000000 availTrk::0.000000 sigTrk::0.000000
+[01/30 18:01:50     47s] eee: l::8 avDens::0.000000 usedTrk::0.000000 availTrk::0.000000 sigTrk::0.000000
+[01/30 18:01:50     47s] eee: l::9 avDens::0.000000 usedTrk::0.000000 availTrk::0.000000 sigTrk::0.000000
+[01/30 18:01:50     47s] eee: l::10 avDens::0.000000 usedTrk::0.000000 availTrk::0.000000 sigTrk::0.000000
+[01/30 18:01:50     47s] {RT wc_rc_corner 0 10 10 {9 0} 1}
+[01/30 18:01:50     47s] eee: LAM: n=40 LLS=2-3 HLS=3-5 rDens=0.000000 uaWl=0.000000 uaWlH=0.000000 aWlH=0.000000 lMod=0 pMax=0.850000 pMod=82 wcR=0.694200 newSi=0.000000 wHLS=1.735500 siPrev=0 viaL=0.000000
+[01/30 18:01:50     47s] Default value for post_route extraction mode's extract_rc_effort_level (extract_rc_effort_level option of set_db) changed to 'medium'.
+[01/30 18:01:50     47s] *Info: initialize multi-corner CTS.
+[01/30 18:01:51     47s] Ending "SetAnalysisView" (total cpu=0:00:00.1, real=0:00:01.0, peak res=1589.7M, current mem=1310.7M)
+[01/30 18:01:51     47s] Reading timing constraints file '/data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../inputs/lp_riscv_top.sdc' ...
+[01/30 18:01:51     47s] Current (total cpu=0:00:47.4, real=0:03:55, peak res=1709.3M, current mem=1709.3M)
+[01/30 18:01:51     47s] INFO (CTE): Constraints read successfully.
+[01/30 18:01:51     47s] Ending "Constraint file reading stats" (total cpu=0:00:00.1, real=0:00:00.0, peak res=1752.7M, current mem=1752.7M)
+[01/30 18:01:51     47s] Current (total cpu=0:00:47.5, real=0:03:55, peak res=1752.7M, current mem=1752.7M)
+[01/30 18:01:51     47s] Tech dependent Parameter, Build TLibAnalyzer for: cellAreaConsiderPadding
+[01/30 18:01:51     47s] 
+[01/30 18:01:51     47s] TimeStamp Creating Cell Server ...(0, 1, 1, 1) Begin ...
+[01/30 18:01:51     47s] Summary for sequential cells identification: 
+[01/30 18:01:51     47s]   Identified SBFF number: 444
+[01/30 18:01:51     47s]   Identified MBFF number: 0
+[01/30 18:01:51     47s]   Identified SB Latch number: 0
+[01/30 18:01:51     47s]   Identified MB Latch number: 0
+[01/30 18:01:51     47s]   Not identified SBFF number: 0
+[01/30 18:01:51     47s]   Not identified MBFF number: 0
+[01/30 18:01:51     47s]   Not identified SB Latch number: 0
+[01/30 18:01:51     47s]   Not identified MB Latch number: 0
+[01/30 18:01:51     47s]   Number of sequential cells which are not FFs: 318
+[01/30 18:01:51     47s] Total number of combinational cells: 2058
+[01/30 18:01:51     47s] Total number of sequential cells: 762
+[01/30 18:01:51     47s] Total number of tristate cells: 27
+[01/30 18:01:51     47s] Total number of level shifter cells: 0
+[01/30 18:01:51     47s] 
+[01/30 18:01:51     47s] TimeStamp Creating Cell Server ...(0, 1, 1, 1) End ...
+[01/30 18:01:51     47s] Total number of power gating cells: 0
+[01/30 18:01:51     47s] Total number of isolation cells: 0
+[01/30 18:01:51     47s] Total number of power switch cells: 0
+[01/30 18:01:51     47s] Total number of pulse generator cells: 0
+[01/30 18:01:51     47s] Total number of always on buffers: 0
+[01/30 18:01:51     47s] Total number of retention cells: 0
+[01/30 18:01:51     47s] List of usable buffers: BUFH_X11M_A9TH BUFH_X13M_A9TH BUFH_X16M_A9TH BUFH_X2M_A9TH BUFH_X1P7M_A9TH BUFH_X4M_A9TH BUFH_X5M_A9TH BUFH_X6M_A9TH BUFH_X7P5M_A9TH BUFH_X9M_A9TH BUFH_X0P8M_A9TL BUFH_X0P7M_A9TL BUFH_X11M_A9TL BUFH_X13M_A9TL BUFH_X16M_A9TL BUFH_X1M_A9TL BUFH_X1P4M_A9TL BUFH_X1P2M_A9TL BUFH_X2M_A9TL BUFH_X1P7M_A9TL BUFH_X3M_A9TL BUFH_X2P5M_A9TL BUFH_X4M_A9TL BUFH_X3P5M_A9TL BUFH_X5M_A9TL BUFH_X6M_A9TL BUFH_X7P5M_A9TL BUFH_X9M_A9TL BUF_X0P7B_A9TL BUF_X0P7M_A9TL BUF_X0P8M_A9TL BUF_X0P8B_A9TL BUF_X11M_A9TL BUF_X11B_A9TL BUF_X13M_A9TL BUF_X13B_A9TL BUF_X16B_A9TL BUF_X16M_A9TL BUF_X1M_A9TL BUF_X1B_A9TL BUF_X1P2B_A9TL BUF_X1P2M_A9TL BUF_X1P4B_A9TL BUF_X1P4M_A9TL BUF_X1P7B_A9TL BUF_X1P7M_A9TL BUF_X2M_A9TL BUF_X2B_A9TL BUF_X2P5B_A9TL BUF_X2P5M_A9TL BUF_X3M_A9TL BUF_X3B_A9TL BUF_X3P5M_A9TL BUF_X3P5B_A9TL BUF_X4M_A9TL BUF_X4B_A9TL BUF_X5M_A9TL BUF_X5B_A9TL BUF_X6M_A9TL BUF_X6B_A9TL BUF_X7P5M_A9TL BUF_X7P5B_A9TL BUF_X9B_A9TL BUF_X9M_A9TL DLY2_X0P5M_A9TL DLY2_X1M_A9TL DLY2_X2M_A9TL DLY2_X4M_A9TL BUFH_X0P8M_A9TR BUFH_X0P7M_A9TR BUFH_X11M_A9TR BUFH_X13M_A9TR BUFH_X16M_A9TR BUFH_X1M_A9TR BUFH_X1P4M_A9TR BUFH_X1P2M_A9TR BUFH_X2M_A9TR BUFH_X1P7M_A9TR BUFH_X3M_A9TR BUFH_X2P5M_A9TR BUFH_X4M_A9TR BUFH_X3P5M_A9TR BUFH_X5M_A9TR BUFH_X6M_A9TR BUFH_X7P5M_A9TR BUFH_X9M_A9TR BUF_X0P7B_A9TR BUF_X0P7M_A9TR BUF_X0P8M_A9TR BUF_X0P8B_A9TR BUF_X11M_A9TR BUF_X11B_A9TR BUF_X13M_A9TR BUF_X13B_A9TR BUF_X16B_A9TR BUF_X16M_A9TR BUF_X1M_A9TR BUF_X1B_A9TR BUF_X1P2B_A9TR BUF_X1P2M_A9TR BUF_X1P4B_A9TR BUF_X1P4M_A9TR BUF_X1P7B_A9TR BUF_X1P7M_A9TR BUF_X2M_A9TR BUF_X2B_A9TR BUF_X2P5B_A9TR BUF_X2P5M_A9TR BUF_X3M_A9TR BUF_X3B_A9TR BUF_X3P5M_A9TR BUF_X3P5B_A9TR BUF_X4M_A9TR BUF_X4B_A9TR BUF_X5M_A9TR BUF_X5B_A9TR BUF_X6M_A9TR BUF_X6B_A9TR BUF_X7P5M_A9TR BUF_X7P5B_A9TR BUF_X9B_A9TR BUF_X9M_A9TR
+[01/30 18:01:51     47s] Total number of usable buffers: 122
+[01/30 18:01:51     47s] List of unusable buffers: FRICG_X0P5B_A9TL FRICG_X0P6B_A9TL FRICG_X0P8B_A9TL FRICG_X0P7B_A9TL FRICG_X11B_A9TL FRICG_X13B_A9TL FRICG_X16B_A9TL FRICG_X1B_A9TL FRICG_X1P2B_A9TL FRICG_X1P4B_A9TL FRICG_X2B_A9TL FRICG_X1P7B_A9TL FRICG_X3B_A9TL FRICG_X2P5B_A9TL FRICG_X4B_A9TL FRICG_X3P5B_A9TL FRICG_X5B_A9TL FRICG_X6B_A9TL FRICG_X7P5B_A9TL FRICG_X9B_A9TL FRICG_X0P5B_A9TR FRICG_X0P6B_A9TR FRICG_X0P8B_A9TR FRICG_X0P7B_A9TR FRICG_X11B_A9TR FRICG_X13B_A9TR FRICG_X16B_A9TR FRICG_X1B_A9TR FRICG_X1P2B_A9TR FRICG_X1P4B_A9TR FRICG_X2B_A9TR FRICG_X1P7B_A9TR FRICG_X3B_A9TR FRICG_X2P5B_A9TR FRICG_X4B_A9TR FRICG_X3P5B_A9TR FRICG_X5B_A9TR FRICG_X6B_A9TR FRICG_X7P5B_A9TR FRICG_X9B_A9TR
+[01/30 18:01:51     47s] Total number of unusable buffers: 40
+[01/30 18:01:51     47s] List of usable inverters: INV_X0P5B_A9TH INV_X0P5M_A9TH INV_X0P6B_A9TH INV_X0P6M_A9TH INV_X0P7B_A9TH INV_X0P7M_A9TH INV_X0P8M_A9TH INV_X0P8B_A9TH INV_X11M_A9TH INV_X11B_A9TH INV_X13M_A9TH INV_X13B_A9TH INV_X16B_A9TH INV_X16M_A9TH INV_X1M_A9TH INV_X1B_A9TH INV_X1P2B_A9TH INV_X1P2M_A9TH INV_X1P4B_A9TH INV_X1P4M_A9TH INV_X1P7B_A9TH INV_X1P7M_A9TH INV_X2M_A9TH INV_X2B_A9TH INV_X2P5B_A9TH INV_X2P5M_A9TH INV_X3M_A9TH INV_X3B_A9TH INV_X3P5B_A9TH INV_X3P5M_A9TH INV_X4M_A9TH INV_X4B_A9TH INV_X5M_A9TH INV_X5B_A9TH INV_X6M_A9TH INV_X6B_A9TH INV_X7P5M_A9TH INV_X7P5B_A9TH INV_X9B_A9TH INV_X9M_A9TH INV_X0P5B_A9TL INV_X0P5M_A9TL INV_X0P6B_A9TL INV_X0P6M_A9TL INV_X0P7B_A9TL INV_X0P7M_A9TL INV_X0P8M_A9TL INV_X0P8B_A9TL INV_X11M_A9TL INV_X11B_A9TL INV_X13M_A9TL INV_X13B_A9TL INV_X16B_A9TL INV_X16M_A9TL INV_X1M_A9TL INV_X1B_A9TL INV_X1P2B_A9TL INV_X1P2M_A9TL INV_X1P4B_A9TL INV_X1P4M_A9TL INV_X1P7B_A9TL INV_X1P7M_A9TL INV_X2M_A9TL INV_X2B_A9TL INV_X2P5B_A9TL INV_X2P5M_A9TL INV_X3M_A9TL INV_X3B_A9TL INV_X3P5B_A9TL INV_X3P5M_A9TL INV_X4M_A9TL INV_X4B_A9TL INV_X5M_A9TL INV_X5B_A9TL INV_X6M_A9TL INV_X6B_A9TL INV_X7P5M_A9TL INV_X7P5B_A9TL INV_X9B_A9TL INV_X9M_A9TL INV_X0P5B_A9TR INV_X0P5M_A9TR INV_X0P6B_A9TR INV_X0P6M_A9TR INV_X0P7B_A9TR INV_X0P7M_A9TR INV_X0P8M_A9TR INV_X0P8B_A9TR INV_X11M_A9TR INV_X11B_A9TR INV_X13M_A9TR INV_X13B_A9TR INV_X16B_A9TR INV_X16M_A9TR INV_X1M_A9TR INV_X1B_A9TR INV_X1P2B_A9TR INV_X1P2M_A9TR INV_X1P4B_A9TR INV_X1P4M_A9TR INV_X1P7B_A9TR INV_X1P7M_A9TR INV_X2M_A9TR INV_X2B_A9TR INV_X2P5B_A9TR INV_X2P5M_A9TR INV_X3M_A9TR INV_X3B_A9TR INV_X3P5B_A9TR INV_X3P5M_A9TR INV_X4M_A9TR INV_X4B_A9TR INV_X5M_A9TR INV_X5B_A9TR INV_X6M_A9TR INV_X6B_A9TR INV_X7P5M_A9TR INV_X7P5B_A9TR INV_X9M_A9TR INV_X9B_A9TR
+[01/30 18:01:51     47s] Total number of usable inverters: 120
+[01/30 18:01:51     47s] List of unusable inverters:
+[01/30 18:01:51     47s] Total number of unusable inverters: 0
+[01/30 18:01:51     47s] List of identified usable delay cells: BUFH_X0P8M_A9TH BUFH_X0P7M_A9TH BUFH_X1M_A9TH BUFH_X1P4M_A9TH BUFH_X1P2M_A9TH BUFH_X3M_A9TH BUFH_X2P5M_A9TH BUFH_X3P5M_A9TH BUF_X0P7B_A9TH BUF_X0P7M_A9TH BUF_X0P8M_A9TH BUF_X0P8B_A9TH BUF_X11M_A9TH BUF_X11B_A9TH BUF_X13M_A9TH BUF_X13B_A9TH BUF_X16B_A9TH BUF_X16M_A9TH BUF_X1M_A9TH BUF_X1B_A9TH BUF_X1P2B_A9TH BUF_X1P2M_A9TH BUF_X1P4B_A9TH BUF_X1P4M_A9TH BUF_X1P7B_A9TH BUF_X1P7M_A9TH BUF_X2M_A9TH BUF_X2B_A9TH BUF_X2P5B_A9TH BUF_X2P5M_A9TH BUF_X3M_A9TH BUF_X3B_A9TH BUF_X3P5M_A9TH BUF_X3P5B_A9TH BUF_X4M_A9TH BUF_X4B_A9TH BUF_X5M_A9TH BUF_X5B_A9TH BUF_X6M_A9TH BUF_X6B_A9TH BUF_X7P5M_A9TH BUF_X7P5B_A9TH BUF_X9B_A9TH BUF_X9M_A9TH DLY2_X0P5M_A9TH DLY2_X1M_A9TH DLY2_X2M_A9TH DLY2_X4M_A9TH DLY4_X1M_A9TH DLY4_X0P5M_A9TH DLY4_X2M_A9TH DLY4_X4M_A9TH DLY4_X1M_A9TL DLY4_X0P5M_A9TL DLY4_X2M_A9TL DLY4_X4M_A9TL DLY2_X0P5M_A9TR DLY2_X1M_A9TR DLY2_X2M_A9TR DLY2_X4M_A9TR DLY4_X1M_A9TR DLY4_X0P5M_A9TR DLY4_X2M_A9TR DLY4_X4M_A9TR
+[01/30 18:01:51     47s] Total number of identified usable delay cells: 64
+[01/30 18:01:51     47s] List of identified unusable delay cells: FRICG_X0P5B_A9TH FRICG_X0P6B_A9TH FRICG_X0P8B_A9TH FRICG_X0P7B_A9TH FRICG_X11B_A9TH FRICG_X13B_A9TH FRICG_X16B_A9TH FRICG_X1B_A9TH FRICG_X1P2B_A9TH FRICG_X1P4B_A9TH FRICG_X2B_A9TH FRICG_X1P7B_A9TH FRICG_X3B_A9TH FRICG_X2P5B_A9TH FRICG_X4B_A9TH FRICG_X3P5B_A9TH FRICG_X5B_A9TH FRICG_X6B_A9TH FRICG_X7P5B_A9TH FRICG_X9B_A9TH
+[01/30 18:01:51     47s] Total number of identified unusable delay cells: 20
+[01/30 18:01:51     47s] 
+[01/30 18:01:51     47s] TimeStamp Deleting Cell Server Begin ...
+[01/30 18:01:51     47s] 
+[01/30 18:01:51     47s] TimeStamp Deleting Cell Server End ...
+[01/30 18:01:51     47s] Ending "Cell type marking" (total cpu=0:00:00.0, real=0:00:00.0, peak res=1754.2M, current mem=1754.1M)
+[01/30 18:01:51     47s] 
+[01/30 18:01:51     47s] TimeStamp Creating Cell Server ...(0, 0, 0, 0) Begin ...
+[01/30 18:01:51     47s] Summary for sequential cells identification: 
+[01/30 18:01:51     47s]   Identified SBFF number: 444
+[01/30 18:01:51     47s]   Identified MBFF number: 0
+[01/30 18:01:51     47s]   Identified SB Latch number: 0
+[01/30 18:01:51     47s]   Identified MB Latch number: 0
+[01/30 18:01:51     47s]   Not identified SBFF number: 0
+[01/30 18:01:51     47s]   Not identified MBFF number: 0
+[01/30 18:01:51     47s]   Not identified SB Latch number: 0
+[01/30 18:01:51     47s]   Not identified MB Latch number: 0
+[01/30 18:01:51     47s]   Number of sequential cells which are not FFs: 318
+[01/30 18:01:51     47s]  Visiting view : wc_analysis_view
+[01/30 18:01:51     47s]    : PowerDomain = none : Weighted F : unweighted  = 29.00 (1.000) with rcCorner = 0
+[01/30 18:01:51     47s]    : PowerDomain = none : Weighted F : unweighted  = 26.40 (1.000) with rcCorner = -1
+[01/30 18:01:51     47s]  Visiting view : bc_analysis_view
+[01/30 18:01:51     47s]    : PowerDomain = none : Weighted F : unweighted  = 9.70 (1.000) with rcCorner = 1
+[01/30 18:01:51     47s]    : PowerDomain = none : Weighted F : unweighted  = 8.50 (1.000) with rcCorner = -1
+[01/30 18:01:51     47s] TLC MultiMap info (StdDelay):
+[01/30 18:01:51     47s]   : bc_dly_corner + bc_libset + 1 + no RcCorner := 8.5ps
+[01/30 18:01:51     47s]   : wc_dly_corner + wc_libset + 1 + no RcCorner := 26.4ps
+[01/30 18:01:51     47s]   : bc_dly_corner + bc_libset + 1 + bc_rc_corner := 9.7ps
+[01/30 18:01:51     47s]   : wc_dly_corner + wc_libset + 1 + wc_rc_corner := 29ps
+[01/30 18:01:51     47s]  Setting StdDelay to: 29ps
+[01/30 18:01:51     47s] 
+[01/30 18:01:51     47s] TimeStamp Creating Cell Server ...(0, 0, 0, 0) End ...
+[01/30 18:01:51     47s] 
+[01/30 18:01:51     47s] TimeStamp Deleting Cell Server Begin ...
+[01/30 18:01:51     47s] 
+[01/30 18:01:51     47s] TimeStamp Deleting Cell Server End ...
+[01/30 18:01:51     47s] @innovus 50> 
+
+[01/30 18:01:51     47s] @innovus 50> gui_select -point {4787.09300 305.54300}
+[01/30 18:02:11     49s] @innovus 51> gui_select -point {3912.25800 983.98600}
+[01/30 18:02:13     49s] @innovus 52> gui_select -point {67.74700 73.44400}
+[01/30 18:02:31     51s] @innovus 53> gui_select -point {2198.29700 165.68850}
+[01/30 18:03:08     53s] @innovus 54> update_floorplan_obj -obj 0x7fb75c5cdef0 -rects {129.544 1288.447 1339.374 1603.812}
+[01/30 18:03:18     55s] @innovus 55> update_floorplan_obj -obj 0x7fb75c5cdef0 -rects {126.5695 1342.006 1336.3995 1657.371}
+[01/30 18:03:22     55s] @innovus 56> update_floorplan_obj -obj 0x7fb75c5cdef0 -rects {263.4485 1166.443 1473.2785 1481.808}
+[01/30 18:03:31     57s] @innovus 57> flip_or_rotate_obj -rotate R180
+[01/30 18:03:41     58s] @innovus 58> gui_select -point {844.38600 1329.15900}
+[01/30 18:03:45     58s] @innovus 59> gui_select -point {63.28400 80.38700}
+[01/30 18:03:56     60s] @innovus 60> update_floorplan_obj -obj 0x7fb75c5ba150 -rects {351.1245 187.4645 471.1245 307.4645}
+[01/30 18:04:02     61s] @innovus 61> update_floorplan_obj -obj 0x7fb75c5ba150 -rects {1631.6365 2.9755 1751.6365 122.9755}
+[01/30 18:04:09     63s] @innovus 62> gui_deselect -all 
+[01/30 18:04:16     64s] @innovus 63> **ERROR: (IMPFP-60):	Io Inst new lower left location is outside of headbox, it would not be moved.
+[01/30 18:04:23     65s] update_floorplan_obj -obj 0x7fb75c5ba0e0 -rects {1891.5075 1132.226 2011.5075 1252.226}
+[01/30 18:04:23     65s] @innovus 64> update_floorplan_obj -obj 0x7fb75c5ba0e0 -rects {1627.173 1644.5305 1747.173 1764.5305}
+[01/30 18:04:31     68s] @innovus 65> update_floorplan_obj -obj 0x7fb75c5ba0e0 -rects {15.4955 1618.8485 135.4955 1738.8485}
+[01/30 18:04:42     70s] @innovus 66> gui_deselect -all 
+[01/30 18:04:44     70s] @innovus 67> update_floorplan_obj -obj 0x7fb75c5ba070 -rects {1621.7175 1624.693 1741.7175 1744.693}
+[01/30 18:04:47     71s] @innovus 68> gui_deselect -all 
+[01/30 18:04:54     72s] @innovus 69> **ERROR: (IMPFP-60):	Io Inst new lower left location is outside of headbox, it would not be moved.
+[01/30 18:04:56     73s] update_floorplan_obj -obj 0x7fb75c5ba0e0 -rects {-2.976 3.083 117.024 123.083}
+[01/30 18:04:56     73s] @innovus 70> **ERROR: (IMPFP-60):	Io Inst new lower left location is outside of headbox, it would not be moved.
+[01/30 18:05:04     75s] update_floorplan_obj -obj 0x7fb75c5ba0e0 -rects {14.878 -5.844 134.878 114.156}
+[01/30 18:05:04     75s] @innovus 71> **ERROR: (IMPFP-60):	Io Inst new lower left location is outside of headbox, it would not be moved.
+[01/30 18:05:10     76s] update_floorplan_obj -obj 0x7fb75c5ba0e0 -rects {2.9755 -7.332 122.9755 112.668}
+[01/30 18:05:10     76s] @innovus 72> gui_deselect -all 
+[01/30 18:05:13     77s] @innovus 73> **ERROR: (IMPFP-58):	Cannot move corner cell to none corner area.
+[01/30 18:05:17     78s] update_floorplan_obj -obj 0x7fb75c5ba070 -rects {911.1595 1624.8 1031.1595 1744.8}
+[01/30 18:05:17     78s] @innovus 74> **ERROR: (IMPFP-58):	Cannot move corner cell to none corner area.
+[01/30 18:05:20     79s] update_floorplan_obj -obj 0x7fb75c5ba070 -rects {1372.3815 1624.8 1492.3815 1744.8}
+[01/30 18:05:20     79s] @innovus 75> gui_select -point {2414.03000 917.03450}
+[01/30 18:05:37     81s] @innovus 76> **ERROR: (IMPFP-60):	Io Inst new lower left location is outside of headbox, it would not be moved.
+[01/30 18:06:00     84s] update_floorplan_obj -obj 0x7fb75c5ba150 -rects {-2.3585 1620.2295 117.6415 1740.2295}
+[01/30 18:06:00     84s] @innovus 77> update_floorplan_obj -obj 0x7fb75c5ba150 -rects {3.593 1624.693 123.593 1744.693}
+[01/30 18:06:17     86s] @innovus 78> gui_deselect -all 
+[01/30 18:06:19     87s] @innovus 79> update_floorplan_obj -obj 0x7fb75c5ba0e0 -rects {1625.31 0.107 1745.31 120.107}
+[01/30 18:06:27     88s] @innovus 80> gui_deselect -all 
+[01/30 18:06:34     89s] @innovus 81> update_floorplan_obj -obj 0x7fb75c5ba150 -rects {1621.717 1633.727 1741.717 1753.727}
+[01/30 18:06:36     89s] @innovus 82> gui_deselect -all 
+[01/30 18:06:39     90s] @innovus 83> **ERROR: (IMPFP-60):	Io Inst new lower left location is outside of headbox, it would not be moved.
+[01/30 18:06:42     91s] update_floorplan_obj -obj 0x7fb75c5ba070 -rects {-5.9515 1636.595 114.0485 1756.595}
+[01/30 18:06:42     91s] @innovus 84> update_floorplan_obj -obj 0x7fb75c5ba070 -rects {2.9755 1621.717 122.9755 1741.717}
+[01/30 18:06:49     92s] @innovus 85> gui_deselect -all 
+[01/30 18:06:53     93s] @innovus 86> **ERROR: (IMPFP-60):	Io Inst new lower left location is outside of headbox, it would not be moved.
+[01/30 18:06:56     94s] update_floorplan_obj -obj 0x7fb75c5ba000 -rects {1624.6925 -2.976 1744.6925 117.024}
+[01/30 18:06:56     94s] @innovus 87> **ERROR: (IMPFP-60):	Io Inst new lower left location is outside of headbox, it would not be moved.
+[01/30 18:06:59     95s] update_floorplan_obj -obj 0x7fb75c5ba000 -rects {1618.7415 -2.9755 1738.7415 117.0245}
+[01/30 18:06:59     95s] @innovus 88> **ERROR: (IMPFP-60):	Io Inst new lower left location is outside of headbox, it would not be moved.
+[01/30 18:07:04     96s] update_floorplan_obj -obj 0x7fb75c5ba000 -rects {1624.693 -2.9755 1744.693 117.0245}
+[01/30 18:07:04     96s] @innovus 89> update_floorplan_obj -obj 0x7fb75c5ba000 -rects {0.0 1629.156 120.0 1749.156}
+[01/30 18:07:10     97s] @innovus 90> gui_deselect -all 
+[01/30 18:07:11     97s] @innovus 91> **ERROR: (IMPFP-60):	Io Inst new lower left location is outside of headbox, it would not be moved.
+[01/30 18:07:16     98s] update_floorplan_obj -obj 0x7fb75c5ba150 -rects {0.617 -4.356 120.617 115.644}
+[01/30 18:07:16     98s] @innovus 92> update_floorplan_obj -obj 0x7fb75c5ba150 -rects {0.617 0.107 120.617 120.107}
+[01/30 18:07:22    100s] @innovus 93> gui_deselect -all 
+[01/30 18:07:25    100s] @innovus 94> update_floorplan_obj -obj 0x7fb75c5ba070 -rects {1624.693 1621.8245 1744.693 1741.8245}
+[01/30 18:07:28    101s] @innovus 95> gui_deselect -all 
+[01/30 18:07:33    102s] @innovus 96> update_floorplan_obj -obj 0x7fb75c5ba000 -rects {1627.6685 1.595 1747.6685 121.595}
+[01/30 18:07:36    103s] @innovus 97> gui_deselect -all 
+[01/30 18:07:38    103s] @innovus 98> update_floorplan_obj -obj 0x7fb75c5ba070 -rects {0.617 1624.8 120.617 1744.8}
+[01/30 18:07:40    104s] @innovus 99> gui_deselect -all 
+[01/30 18:07:42    104s] @innovus 100> update_floorplan_obj -obj 0x7fb75c5ba0e0 -rects {1625.31 5.951 1745.31 125.951}
+[01/30 18:07:51    107s] @innovus 101> update_floorplan_obj -obj 0x7fb75c5ba0e0 -rects {1116.478 383.856 1236.478 503.856}
+[01/30 18:08:05    109s] @innovus 102> **ERROR: (IMPFP-60):	Io Inst new lower left location is outside of headbox, it would not be moved.
+[01/30 18:08:10    109s] update_floorplan_obj -obj 0x7fb75c5ba0e0 -rects {1342.6255 -5.9515 1462.6255 114.0485}
+[01/30 18:08:10    109s] @innovus 103> **ERROR: (IMPFP-60):	Io Inst new lower left location is outside of headbox, it would not be moved.
+[01/30 18:08:14    110s] update_floorplan_obj -obj 0x7fb75c5ba0e0 -rects {1533.0655 -252.9285 1653.0655 -132.9285}
+[01/30 18:08:14    110s] @innovus 104> gui_select -point {1705.83050 55.59000}
+[01/30 18:08:40    112s] @innovus 105> gui_select -rect {1711.78150 28.80950 1881.39250 46.66350}
+[01/30 18:08:43    113s] @innovus 106> update_floorplan_obj -obj 0x7fb75c5ba0e0 -rects {0.617 1621.717 120.617 1741.717}
+[01/30 18:08:54    115s] @innovus 107> gui_deselect -all 
+[01/30 18:08:57    116s] @innovus 108> update_floorplan_obj -obj 0x7fb75c5ba000 -rects {1622.3345 1627.668 1742.3345 1747.668}
+[01/30 18:09:01    117s] @innovus 109> gui_deselect -all 
+[01/30 18:09:05    117s] @innovus 110> **ERROR: (IMPFP-60):	Io Inst new lower left location is outside of headbox, it would not be moved.
+[01/30 18:09:10    118s] update_floorplan_obj -obj 0x7fb75c5ba0e0 -rects {1621.717 -2.8685 1741.717 117.1315}
+[01/30 18:09:10    118s] @innovus 111> update_floorplan_obj -obj 0x7fb75c5ba0e0 -rects {1624.693 0.107 1744.693 120.107}
+[01/30 18:09:20    120s] @innovus 112> **ERROR: (IMPFP-60):	Io Inst new lower left location is outside of headbox, it would not be moved.
+[01/30 18:09:31    122s] update_floorplan_obj -obj 0x7fb75c5ba0e0 -rects {2892.9275 -428.4905 3012.9275 -308.4905}
+[01/30 18:09:31    122s] @innovus 113> 
+@innovus 113> # Load general settings
+# Load general settings
+[01/30 18:09:53    123s] @innovus 114> source ../scripts/settingsource ../scripts/settings.tcl -quiet
+s.tcl -quiet
+[01/30 18:09:53    123s] AAE_INFO: switching -siAware from false to true ...
+[01/30 18:09:53    123s] AAE_INFO: The setting is changed from false to true in setDelayCalMode -SIAware
+[01/30 18:09:53    123s] 1 true
+[01/30 18:09:53    123s] @innovus 115> 
+
+[01/30 18:09:53    123s] @innovus 115> # Create cost# Create cost groups
+ groups
+[01/30 18:09:53    123s] @innovus 116> enics_default_cost_groups
+enics_default_cost_groups
+[01/30 18:09:54    123s] Created reg2reg path group
+[01/30 18:09:54    123s] Effort level <high> specified for reg2reg path_group
+[01/30 18:09:54    124s] Created reg2cgate path group
+[01/30 18:09:54    124s] Effort level <high> specified for reg2cgate path_group
+[01/30 18:09:54    124s] @innovus 117> 
+
+[01/30 18:09:54    124s] @innovus 117> # Connect Global Nets
+# Connect Global Nets
+[01/30 18:09:54    124s] @innovus 118> enics_message "Connecting Global Nets" medium
+enics_message "Connecting Global Nets" medium
+[01/30 18:09:54    124s] 
+[01/30 18:09:54    124s] ENICSINFO: Connecting Global Nets
+[01/30 18:09:54    124s] ---------------------------------
+[01/30 18:09:54    124s] @innovus 119> # Connect standard cells to VDD and GND
+# Connect standard cells to VDD and GND
+[01/30 18:09:54    124s] @innovus 120> connect_global_net $design(digital_gnd) -pin $tech(STANDARD_CELL_G [1GND) -all -verbose
+connect_global_net $design(digital_gnd) -pin $tech(STANDARD_CELL_GND) -all -verbose
+[01/30 18:09:54    124s] 26117 new gnd-pin connections were made to global net 'gnd'.
+connect_global_net $design(digital_vdd) -pin $tech(STANDARD_CELL_VDD) -all -verbose
+[01/30 18:09:54    124s] @innovus 121> connect_global_net $design(digital_vdd) -pin $tech(STANDARD_CELL_V [1GDD) -all -verbose
+[01/30 18:09:54    124s] 26117 new pwr-pin connections were made to global net 'vdd'.
+[01/30 18:09:54    124s] @innovus 122> # Connect tie cells
+# Connect tie cells
+[01/30 18:09:54    124s] @innovus 123> connect_global_net $design(digital_vdd) -type tiehi -all -verbose  [1G
+connect_global_net $design(digital_vdd) -type tiehi -all -verbose 
+[01/30 18:09:54    124s] @innovus 124> connect_global_net $design(digital_gnd) -type tielo -all -verbose  [1G
+connect_global_net $design(digital_gnd) -type tielo -all -verbose 
+[01/30 18:09:54    124s] @innovus 125> # connect_global_net $design(digital_vdd) -type tiehi -pin $tech(S [1GTANDARD_CELL_VDD) -all -verbose 
+# connect_global_net $design(digital_vdd) -type tiehi -pin $tech(STANDARD_CELL_VDD) -all -verbose 
+[01/30 18:09:54    124s] @innovus 126> # connect_global_net $design(digital_gnd) -type tielo -pin $tech(S [1GTANDARD_CELL_GND) -all -verbose 
+# connect_global_net $design(digital_gnd) -type tielo -pin $tech(STANDARD_CELL_GND) -all -verbose 
+[01/30 18:09:54    124s] @innovus 127> 
+
+[01/30 18:09:54    124s] @innovus 127> # Connect SRAM PG# Connect SRAM PG Pins
+ Pins
+[01/30 18:09:54    124s] @innovus 128> connect_global_net $design(digital_vdd) -pin $tech(SRAM_VDDCORE_PI [1GN)      -all -verbose 
+connect_global_net $design(digital_vdd) -pin $tech(SRAM_VDDCORE_PIN)      -all -verbose 
+[01/30 18:09:54    124s] 3 new pwr-pin connections were made to global net 'vdd'.
+[01/30 18:09:54    124s] @innovus 129> connect_global_net $design(digital_vdd) -pin $tech(SRAM_VDDPERIPHE [1GRY_PIN) -all -verbose 
+connect_global_net $design(digital_vdd) -pin $tech(SRAM_VDDPERIPHERY_PIN) -all -verbose 
+[01/30 18:09:54    124s] 3 new pwr-pin connections were made to global net 'vdd'.
+connect_global_net $design(digital_gnd) -pin $tech(SRAM_GND_PIN)          -all -verbose 
+[01/30 18:09:54    124s] @innovus 130> connect_global_net $design(digital_gnd) -pin $tech(SRAM_GND_PIN)   [1G        -all -verbose 
+[01/30 18:09:54    124s] 3 new gnd-pin connections were made to global net 'gnd'.
+[01/30 18:09:54    124s] @innovus 131> 
+
+[01/30 18:09:54    124s] @innovus 131> if {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
+[01/30 18:09:54    124s] +     # Connect pads to IO and CORE voltages
+[01/30 18:09:54    124s] +     #    -netlist_override is needed, since GENUS connects these pins to UNCON [1GNECTED during synthesis
+[01/30 18:09:54    124s] +     connect_global_net $design(io_vdd)      -pin $tech(IO_VDDIO)   -hinst i_${ [1Gdesign(IO_MODULE)} -netlist_override -verbose
+[01/30 18:09:54    124s] +     connect_global_net $design(io_gnd)      -pin $tech(IO_GNDIO)   -hinst i_${ [1Gdesign(IO_MODULE)} -netlist_override -verbose
+[01/30 18:09:54    124s] +     connect_global_net $design(digital_vdd) -pin $tech(IO_VDDCORE) -hinst i_${ [1Gdesign(IO_MODULE)} -netlist_override -verbose
+[01/30 18:09:54    124s] +     connect_global_net $design(digital_gnd) -pin $tech(IO_GNDCORE) -hinst i_${ [1Gdesign(IO_MODULE)} -netlist_override -verbose
+[01/30 18:09:54    124s] + }
+if {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
+    # Connect pads to IO and CORE voltages
+    #    -netlist_override is needed, since GENUS connects these pins to UNCONNECTED during synthesis
+    connect_global_net $design(io_vdd)      -pin $tech(IO_VDDIO)   -hinst i_${design(IO_MODULE)} -netlist_override -verbose
+    connect_global_net $design(io_gnd)      -pin $tech(IO_GNDIO)   -hinst i_${design(IO_MODULE)} -netlist_override -verbose
+    connect_global_net $design(digital_vdd) -pin $tech(IO_VDDCORE) -hinst i_${design(IO_MODULE)} -netlist_override -verbose
+    connect_global_net $design(digital_gnd) -pin $tech(IO_GNDCORE) -hinst i_${design(IO_MODULE)} -netlist_override -verbose
+}
+[01/30 18:09:54    124s] Override Verilog-defined PG connection...  Connect pwr pin VDDPST of i_ioring/i_VDDIO_4 to global net vddio.
+[01/30 18:09:54    124s] Override Verilog-defined PG connection...  Connect pwr pin VDDPST of i_ioring/i_VDDIO_12 to global net vddio.
+[01/30 18:09:54    124s] Override Verilog-defined PG connection...  Connect pwr pin VDDPST of i_ioring/i_VDDIO_20 to global net vddio.
+[01/30 18:09:54    124s] Override Verilog-defined PG connection...  Connect pwr pin VDDPST of i_ioring/i_VDDIO_28 to global net vddio.
+[01/30 18:09:54    124s] Override Verilog-defined PG connection...  Connect pwr pin VDDPST of i_ioring/i_VDDIO_36 to global net vddio.
+[01/30 18:09:54    124s] Override Verilog-defined PG connection...  Connect pwr pin VDDPST of i_ioring/i_VDDIO_44 to global net vddio.
+[01/30 18:09:54    124s] Override Verilog-defined PG connection...  Connect pwr pin VDDPST of i_ioring/i_VDDIO_52 to global net vddio.
+[01/30 18:09:54    124s] Override Verilog-defined PG connection...  Connect pwr pin VDDPST of i_ioring/i_VDDIO_60 to global net vddio.
+[01/30 18:09:54    124s] 8 new pwr-pin connections were made to global net 'vddio'.
+[01/30 18:09:54    124s] Override Verilog-defined PG connection...  Connect gnd pin VSS of i_ioring/i_VSSIO_3 to global net gnd.
+[01/30 18:09:54    124s] Override Verilog-defined PG connection...  Connect gnd pin VSS of i_ioring/i_VSSIO_13 to global net gnd.
+[01/30 18:09:54    124s] Override Verilog-defined PG connection...  Connect gnd pin VSS of i_ioring/i_VSSIO_19 to global net gnd.
+[01/30 18:09:54    124s] Override Verilog-defined PG connection...  Connect gnd pin VSS of i_ioring/i_VSSIO_27 to global net gnd.
+[01/30 18:09:54    124s] Override Verilog-defined PG connection...  Connect gnd pin VSS of i_ioring/i_VSSIO_35 to global net gnd.
+[01/30 18:09:54    124s] Override Verilog-defined PG connection...  Connect gnd pin VSS of i_ioring/i_VSSIO_43 to global net gnd.
+[01/30 18:09:54    124s] Override Verilog-defined PG connection...  Connect gnd pin VSS of i_ioring/i_VSSIO_51 to global net gnd.
+[01/30 18:09:54    124s] Override Verilog-defined PG connection...  Connect gnd pin VSS of i_ioring/i_VSSIO_59 to global net gnd.
+[01/30 18:09:54    124s] 8 new gnd-pin connections were made to global net 'gnd'.
+[01/30 18:09:54    124s] Override Verilog-defined PG connection...  Connect pwr pin VDD of i_ioring/i_VDDCORE_5 to global net vdd.
+[01/30 18:09:54    124s] Override Verilog-defined PG connection...  Connect pwr pin VDD of i_ioring/i_VDDCORE_11 to global net vdd.
+[01/30 18:09:54    124s] Override Verilog-defined PG connection...  Connect pwr pin VDD of i_ioring/i_VDDCORE_21 to global net vdd.
+[01/30 18:09:54    124s] Override Verilog-defined PG connection...  Connect pwr pin VDD of i_ioring/i_VDDCORE_29 to global net vdd.
+[01/30 18:09:54    124s] Override Verilog-defined PG connection...  Connect pwr pin VDD of i_ioring/i_VDDCORE_37 to global net vdd.
+[01/30 18:09:54    124s] Override Verilog-defined PG connection...  Connect pwr pin VDD of i_ioring/i_VDDCORE_45 to global net vdd.
+[01/30 18:09:54    124s] Override Verilog-defined PG connection...  Connect pwr pin VDD of i_ioring/i_VDDCORE_53 to global net vdd.
+[01/30 18:09:54    124s] Override Verilog-defined PG connection...  Connect pwr pin VDD of i_ioring/i_VDDCORE_61 to global net vdd.
+[01/30 18:09:54    124s] 8 new pwr-pin connections were made to global net 'vdd'.
+[01/30 18:09:54    124s] 0 new gnd-pin connection was made to global net 'gnd'.
+[01/30 18:09:54    124s] @innovus 132> 
+
+[01/30 18:09:54    124s] @innovus 132> # Power Intent
+# Power Intent
+[01/30 18:09:54    124s] @innovus 133> # read_power_intent -1801 $design(UPF_file)
+# read_power_intent -1801 $design(UPF_file)
+[01/30 18:09:54    124s] @innovus 134> # read_power_intent $design(CPF_file)
+# read_power_intent $design(CPF_file)
+[01/30 18:09:54    124s] @innovus 135> # commit_power_intent -verbose
+# commit_power_intent -verbose
+[01/30 18:09:54    124s] @innovus 136> 
+
+[01/30 18:09:54    124s] @innovus 136> # Don't Use and Size Only files# Don't Use and Size Only files
+
+[01/30 18:09:54    124s] @innovus 137> #    If Don't Use file exists
+#    If Don't Use file exists
+[01/30 18:09:54    124s] @innovus 138> # source $design(dont_use_file)
+# source $design(dont_use_file)
+[01/30 18:09:54    124s] @innovus 139> #    If Size Only file exists
+#    If Size Only file exists
+[01/30 18:09:54    124s] @innovus 140> # source $design(size_only_file)
+# source $design(size_only_file)
+[01/30 18:09:54    124s] @innovus 141> 
+
+[01/30 18:09:54    124s] @innovus 141> enics_create_stage_reports -save_db no -report_timing no -pop_snap [1Gshot yes
+enics_create_stage_reports -save_db no -report_timing no -pop_snapshot yes
+[01/30 18:09:54    124s] 
+[01/30 18:09:54    124s] ENICSINFO: Starting to create reports for stage: init_design
+[01/30 18:09:54    124s] ------------------------------------------------------------
+[01/30 18:09:54    124s] ENICSINFO: Reports directory is: /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../reports/init_design/ 
+[01/30 18:09:54    124s] ENICSINFO: Export directory is: /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../export/init_design/ 
+[01/30 18:09:54    124s] ENICSINFO: Export directory is: /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../export/init_design/ 
+[01/30 18:09:54    124s] ENICSINFO: Reporting Timing
+[01/30 18:09:55    124s] AAE_INFO: opIsDesignInPostRouteState() is 0
+[01/30 18:09:55    124s] AAE_WARNING: Waveform propagation feature is not supported in pre-route stage, it is turned off.
+[01/30 18:09:55    125s] **WARN: (IMPESI-3478):	Simulation based Equivalent Waveform Model without waveform propagation setting is not properly supported, using moment based EWM instead.
+[01/30 18:09:55    125s] AAE DB initialization (MEM=7971.43 CPU=0:00:00.0 REAL=0:00:00.0) 
+[01/30 18:09:55    125s] #################################################################################
+[01/30 18:09:55    125s] # Design Stage: PreRoute
+[01/30 18:09:55    125s] # Design Name: lp_riscv_top
+[01/30 18:09:55    125s] # Design Mode: 65nm
+[01/30 18:09:55    125s] # Analysis Mode: MMMC OCV 
+[01/30 18:09:55    125s] # Parasitics Mode: No SPEF/RCDB 
+[01/30 18:09:55    125s] # Signoff Settings: SI On (EWM)
+[01/30 18:09:55    125s] #################################################################################
+[01/30 18:09:55    125s] Calculate early delays in OCV mode...
+[01/30 18:09:55    125s] Calculate late delays in OCV mode...
+[01/30 18:09:56    125s] Topological Sorting (REAL = 0:00:01.0, MEM = 8050.5M, InitMEM = 8049.5M)
+[01/30 18:09:56    125s] Start delay calculation (fullDC) (1 T). (MEM=8050.46)
+[01/30 18:09:56    125s] Start AAE Lib Loading. (MEM=8070.19)
+[01/30 18:09:56    125s] End AAE Lib Loading. (MEM=8136.96 CPU=0:00:00.1 Real=0:00:00.0)
+[01/30 18:09:56    125s] End AAE Lib Interpolated Model. (MEM=8136.96 CPU Time=0:00:00.0, Real Time=0:00:00.0)
+[01/30 18:09:56    126s] **WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[7], driver i_ioring/i_IRAM_PROG_BYTE_7/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/g119685/A0 (cell AO22_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+[01/30 18:09:56    126s] Type 'man IMPMSMV-1810' for more detail.
+[01/30 18:09:56    126s] **WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[7], driver i_ioring/i_IRAM_PROG_BYTE_7/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[3][7]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+[01/30 18:09:56    126s] Type 'man IMPMSMV-1810' for more detail.
+[01/30 18:09:56    126s] **WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[7], driver i_ioring/i_IRAM_PROG_BYTE_7/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[2][7]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+[01/30 18:09:56    126s] Type 'man IMPMSMV-1810' for more detail.
+[01/30 18:09:56    126s] **WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[7], driver i_ioring/i_IRAM_PROG_BYTE_7/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[1][7]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+[01/30 18:09:56    126s] Type 'man IMPMSMV-1810' for more detail.
+[01/30 18:09:56    126s] **WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[7], driver i_ioring/i_IRAM_PROG_BYTE_7/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[0][7]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+[01/30 18:09:56    126s] Type 'man IMPMSMV-1810' for more detail.
+[01/30 18:09:56    126s] **WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[7], driver i_ioring/i_IRAM_PROG_BYTE_7/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_addr_reg[1][7]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+[01/30 18:09:56    126s] Type 'man IMPMSMV-1810' for more detail.
+[01/30 18:09:56    126s] **WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[6], driver i_ioring/i_IRAM_PROG_BYTE_6/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/g119682/A0 (cell AO22_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+[01/30 18:09:56    126s] Type 'man IMPMSMV-1810' for more detail.
+[01/30 18:09:56    126s] **WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[6], driver i_ioring/i_IRAM_PROG_BYTE_6/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[3][6]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+[01/30 18:09:56    126s] Type 'man IMPMSMV-1810' for more detail.
+[01/30 18:09:56    126s] **WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[6], driver i_ioring/i_IRAM_PROG_BYTE_6/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[2][6]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+[01/30 18:09:56    126s] Type 'man IMPMSMV-1810' for more detail.
+[01/30 18:09:56    126s] **WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[6], driver i_ioring/i_IRAM_PROG_BYTE_6/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[1][6]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+[01/30 18:09:56    126s] Type 'man IMPMSMV-1810' for more detail.
+[01/30 18:09:56    126s] **WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[6], driver i_ioring/i_IRAM_PROG_BYTE_6/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[0][6]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+[01/30 18:09:56    126s] Type 'man IMPMSMV-1810' for more detail.
+[01/30 18:09:56    126s] **WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[6], driver i_ioring/i_IRAM_PROG_BYTE_6/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_addr_reg[1][6]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+[01/30 18:09:56    126s] Type 'man IMPMSMV-1810' for more detail.
+[01/30 18:09:56    126s] **WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[5], driver i_ioring/i_IRAM_PROG_BYTE_5/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/g119687/A0 (cell AO22_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+[01/30 18:09:56    126s] Type 'man IMPMSMV-1810' for more detail.
+[01/30 18:09:56    126s] **WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[5], driver i_ioring/i_IRAM_PROG_BYTE_5/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[3][5]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+[01/30 18:09:56    126s] Type 'man IMPMSMV-1810' for more detail.
+[01/30 18:09:56    126s] **WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[5], driver i_ioring/i_IRAM_PROG_BYTE_5/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[2][5]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+[01/30 18:09:56    126s] Type 'man IMPMSMV-1810' for more detail.
+[01/30 18:09:56    126s] **WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[5], driver i_ioring/i_IRAM_PROG_BYTE_5/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[1][5]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+[01/30 18:09:56    126s] Type 'man IMPMSMV-1810' for more detail.
+[01/30 18:09:56    126s] **WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[5], driver i_ioring/i_IRAM_PROG_BYTE_5/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[0][5]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+[01/30 18:09:56    126s] Type 'man IMPMSMV-1810' for more detail.
+[01/30 18:09:56    126s] **WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[5], driver i_ioring/i_IRAM_PROG_BYTE_5/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_addr_reg[1][5]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+[01/30 18:09:56    126s] Type 'man IMPMSMV-1810' for more detail.
+[01/30 18:09:56    126s] **WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[4], driver i_ioring/i_IRAM_PROG_BYTE_4/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/g119684/A0 (cell AO22_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+[01/30 18:09:56    126s] Type 'man IMPMSMV-1810' for more detail.
+[01/30 18:09:56    126s] **WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[4], driver i_ioring/i_IRAM_PROG_BYTE_4/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[3][4]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+[01/30 18:09:56    126s] Type 'man IMPMSMV-1810' for more detail.
+[01/30 18:09:56    126s] **WARN: (EMS-27):	Message (IMPMSMV-1810) has exceeded the current message display limit of 20.
+[01/30 18:09:56    126s] To increase the message display limit, refer to the product command reference manual.
+[01/30 18:10:01    130s] Total number of fetched objects 26904
+[01/30 18:10:01    130s] AAE_INFO: Total number of nets for which stage creation was skipped for all views 0
+[01/30 18:10:01    130s] End Timing Check Calculation. (CPU Time=0:00:00.1, Real Time=0:00:00.0)
+[01/30 18:10:01    130s] End delay calculation. (MEM=8337.23 CPU=0:00:04.6 REAL=0:00:05.0)
+[01/30 18:10:01    130s] End delay calculation (fullDC). (MEM=8337.23 CPU=0:00:05.3 REAL=0:00:05.0)
+[01/30 18:10:01    130s] *** CDM Built up (cpu=0:00:05.8  real=0:00:06.0  mem= 8337.2M) ***
+[01/30 18:10:02    131s] ENICSINFO: Writing out Database
+[01/30 18:10:02    131s] report_message: '-start_cmd/-end_cmd' can not be nested. Interior calls do nothing. Ignore.
+[01/30 18:10:02    131s] #% Begin save design ... (date=01/30 18:10:02, mem=1976.0M)
+[01/30 18:10:02    131s] % Begin Save ccopt configuration ... (date=01/30 18:10:02, mem=1976.0M)
+[01/30 18:10:02    131s] % End Save ccopt configuration ... (date=01/30 18:10:02, total cpu=0:00:00.0, real=0:00:00.0, peak res=1977.2M, current mem=1977.2M)
+[01/30 18:10:02    131s] % Begin Save netlist data ... (date=01/30 18:10:02, mem=1977.7M)
+[01/30 18:10:02    131s] Writing Binary DB to /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../dbs/init_design.tmp/lp_riscv_top.v.bin in single-threaded mode...
+[01/30 18:10:02    131s] % End Save netlist data ... (date=01/30 18:10:02, total cpu=0:00:00.1, real=0:00:00.0, peak res=1977.8M, current mem=1977.8M)
+[01/30 18:10:02    131s] Writing Netlist "/data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../dbs/init_design.tmp/lp_riscv_top.v.gz" ...
+[01/30 18:10:02    131s] Saving symbol-table file ...
+[01/30 18:10:03    131s] Saving congestion map file /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../dbs/init_design.tmp/lp_riscv_top.route.congmap.gz ...
+[01/30 18:10:03    131s] % Begin Save AAE data ... (date=01/30 18:10:03, mem=1978.7M)
+[01/30 18:10:03    131s] Saving AAE Data ...
+[01/30 18:10:03    131s] % End Save AAE data ... (date=01/30 18:10:03, total cpu=0:00:00.0, real=0:00:00.0, peak res=1978.7M, current mem=1978.7M)
+[01/30 18:10:03    132s] Saving preference file /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../dbs/init_design.tmp/gui.pref.tcl ...
+[01/30 18:10:03    132s] Saving mode setting ...
+[01/30 18:10:03    132s] Saving root attributes to be loaded post write_db ...
+[01/30 18:10:03    132s] Saving global file ...
+[01/30 18:10:03    132s] Saving root attributes to be loaded previous write_db ...
+[01/30 18:10:04    132s] % Begin Save floorplan data ... (date=01/30 18:10:04, mem=1980.5M)
+[01/30 18:10:04    132s] Saving floorplan file ...
+[01/30 18:10:04    132s] % End Save floorplan data ... (date=01/30 18:10:04, total cpu=0:00:00.0, real=0:00:00.0, peak res=1982.2M, current mem=1982.2M)
+[01/30 18:10:04    132s] Saving PG file /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../dbs/init_design.tmp/lp_riscv_top.pg.gz, version#2, (Created by Innovus v21.15-s110_1 on Thu Jan 30 18:10:04 2025)
+[01/30 18:10:04    132s] *** Completed savePGFile (cpu=0:00:00.0 real=0:00:00.0 mem=8258.8M) ***
+[01/30 18:10:04    132s] Saving Drc markers ...
+[01/30 18:10:04    132s] ... No Drc file written since there is no markers found.
+[01/30 18:10:04    132s] % Begin Save placement data ... (date=01/30 18:10:04, mem=1982.4M)
+[01/30 18:10:04    132s] ** Saving stdCellPlacement_binary (version# 2) ...
+[01/30 18:10:04    132s] Save Adaptive View Pruning View Names to Binary file
+[01/30 18:10:04    132s] *** Completed savePlace (cpu=0:00:00.0 real=0:00:00.0 mem=8261.8M) ***
+[01/30 18:10:04    132s] % End Save placement data ... (date=01/30 18:10:04, total cpu=0:00:00.0, real=0:00:00.0, peak res=1982.6M, current mem=1982.6M)
+[01/30 18:10:04    132s] % Begin Save routing data ... (date=01/30 18:10:04, mem=1982.6M)
+[01/30 18:10:04    132s] Saving route file ...
+[01/30 18:10:04    132s] *** Completed saveRoute (cpu=0:00:00.0 real=0:00:00.0 mem=8258.8M) ***
+[01/30 18:10:04    132s] % End Save routing data ... (date=01/30 18:10:04, total cpu=0:00:00.1, real=0:00:00.0, peak res=1982.8M, current mem=1982.8M)
+[01/30 18:10:04    132s] Saving property file /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../dbs/init_design.tmp/lp_riscv_top.prop
+[01/30 18:10:04    132s] *** Completed saveProperty (cpu=0:00:00.0 real=0:00:00.0 mem=8261.8M) ***
+[01/30 18:10:05    132s] Saving preRoute extracted patterns in file '/data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../dbs/init_design.tmp/lp_riscv_top.techData.gz' ...
+[01/30 18:10:05    132s] Saving preRoute extraction data in directory '/data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../dbs/init_design.tmp/extraction/' ...
+[01/30 18:10:05    133s] Checksum of RCGrid density data::120
+[01/30 18:10:05    133s] % Begin Save power constraints data ... (date=01/30 18:10:05, mem=1984.8M)
+[01/30 18:10:05    133s] % End Save power constraints data ... (date=01/30 18:10:05, total cpu=0:00:00.0, real=0:00:00.0, peak res=1984.8M, current mem=1984.8M)
+[01/30 18:10:06    133s] Generated self-contained design init_design.tmp
+[01/30 18:10:06    133s] #% End save design ... (date=01/30 18:10:06, total cpu=0:00:01.6, real=0:00:04.0, peak res=1987.6M, current mem=1987.6M)
+[01/30 18:10:06    133s] report_message: '-start_cmd/-end_cmd' can not be nested. Interior calls do nothing. Ignore.
+[01/30 18:10:06    133s] *** Message Summary: 0 warning(s), 0 error(s)
+[01/30 18:10:06    133s] 
+[01/30 18:10:06    133s] @innovus 142> enics_start_stage "floorplan"
+*********************************************
+[01/30 18:11:21    137s] *********************************************
+[01/30 18:11:21    137s] **   ENICSINFO: Starting stage floorplan   **
+[01/30 18:11:21    137s] *********************************************
+[01/30 18:11:21    137s] *********************************************
+[01/30 18:11:21    137s] ENICSINFO: Current time is: 30/01/2025 18:11
+[01/30 18:11:21    137s] ENICSINFO: ----------------------------------
+[01/30 18:11:21    137s] @innovus 143> source ../inputs/$design(TOPLEVEL).floorplan.defines -quiet
+source ../inputs/$design(TOPLEVEL).floorplan.defines -quiet
+[01/30 18:11:21    137s] gnd vdd
+[01/30 18:11:21    137s] @innovus 144> 
+
+[01/30 18:11:21    137s] @innovus 144> # If Floorplan DEF is available:
+# If Floorplan DEF is available:
+[01/30 18:11:21    137s] @innovus 145> # read_def $design(floorplan_def)
+# read_def $design(floorplan_def)
+[01/30 18:11:21    137s] @innovus 146> 
+
+[01/30 18:11:21    137s] @innovus 146> # If SCAN DEF i# If SCAN DEF is available
+s available
+[01/30 18:11:21    137s] @innovus 147> # read_def $design(scan_def)
+# read_def $design(scan_def)
+[01/30 18:11:21    137s] @innovus 148> 
+
+[01/30 18:11:21    137s] @innovus 148>
+ 
+[01/30 18:11:21    137s] @innovus 148> # Specify Floorpan
+# Specify Floorpan
+[01/30 18:11:21    137s] @innovus 149> create_floorplan \
+[01/30 18:11:21    137s] +     -core_size [list 1300.0 1050.0 150.0 150.0 150.0 150.0] \
+[01/30 18:11:21    137s] +     -core_margins_by die \
+[01/30 18:11:21    137s] +     -flip s \
+[01/30 18:11:21    137s] +     -match_to_site
+create_floorplan \
+    -core_size [list 1300.0 1050.0 150.0 150.0 150.0 150.0] \
+    -core_margins_by die \
+    -flip s \
+    -match_to_site
+[01/30 18:11:21    137s] **WARN: (IMPFP-3300):	FPlan core utilization is greater than 1.
+[01/30 18:11:21    137s] Start create_tracks
+[01/30 18:11:21    137s] **WARN: (IMPFP-325):	Floorplan of the design is resized. All current create_floorplan objects are automatically derived based on specified new create_floorplan. This may change blocks, fixed standard cells, existing routes and blockages.
+[01/30 18:11:21    137s] @innovus 150> **ERROR: (IMPFP-60):	Io Inst new lower left location is outside of headbox, it would not be moved.
+[01/30 18:11:33    138s] update_floorplan_obj -obj 0x7fb75c5ba0e0 -rects {1474.0485 -944.7615 1594.0485 -824.7615}
+[01/30 18:11:33    138s] @innovus 151> gui_deselect -all 
+[01/30 18:11:43    140s] @innovus 152> update_floorplan_obj -obj 0x7fb75c5cde80 -rects {1614.878 8.927 2824.708 324.292}
+[01/30 18:11:47    141s] @innovus 153> gui_select -point {-519.93900 853.05850}
+[01/30 18:11:51    141s] @innovus 154> gui_select -point {884.55700 906.61950}
+[01/30 18:11:53    142s] @innovus 155> gui_select -point {1860.56300 966.13250}
+[01/30 18:11:58    142s] @innovus 156> gui_select -point {3116.27800 365.05550}
+[01/30 18:12:08    143s] @innovus 157> update_floorplan_obj -obj 0x7fb75c5cde10 -rects {197.2285 166.6355 1407.0585 775.2455}
+[01/30 18:12:21    144s] @innovus 158> 
+[01/30 18:12:48    146s] @innovus 158>  Specify Floorpan
+ Specify Floorpan
+[01/30 18:12:48    146s] invalid command name "Specify"
+[01/30 18:12:48    146s] invalid command name "Specify"
+[01/30 18:12:48    146s] @innovus 159> create_floorplan \
+[01/30 18:12:48    146s] +     -core_size [list 1350.0 1350.0 150.0 150.0 150.0 150.0] \
+[01/30 18:12:48    146s] +     -core_margins_by die \
+[01/30 18:12:48    146s] +     -flip s \
+[01/30 18:12:48    146s] +     -match_to_site
+create_floorplan \
+    -core_size [list 1350.0 1350.0 150.0 150.0 150.0 150.0] \
+    -core_margins_by die \
+    -flip s \
+    -match_to_site
+[01/30 18:12:48    146s] Start create_tracks
+[01/30 18:12:48    146s] **WARN: (IMPFP-325):	Floorplan of the design is resized. All current create_floorplan objects are automatically derived based on specified new create_floorplan. This may change blocks, fixed standard cells, existing routes and blockages.
+[01/30 18:12:48    146s] @innovus 160> 
+
+[01/30 18:12:48    146s] @innovus 160> # create_floorplan -site $tech(STANDARD_CELL_SITE) -match_to_site  [1G\
+[01/30 18:12:48    146s] + #     -core_density_size $design(floorplan_ratio) $design(floorplan_utilizatio [1Gn) {*}$design(floorplan_space_to_core)
+# create_floorplan -site $tech(STANDARD_CELL_SITE) -match_to_site \
+#     -core_density_size $design(floorplan_ratio) $design(floorplan_utilization) {*}$design(floorplan_space_to_core)
+[01/30 18:12:48    146s] @innovus 161> gui_figui_fit
+t
+[01/30 18:12:48    146s] @innovus 162> update_floorplan_obj -obj 0x7fb75c5cde10 -rects {-1047.443 242.6515 162.387 851.2615}
+[01/30 18:12:52    147s] @innovus 163> gui_select -point {2264.33700 1000.87200}
+[01/30 18:12:59    148s] @innovus 164> gui_select -point {2103.94200 170.75600}
+[01/30 18:13:04    148s] @innovus 165> gui_select -point {249.54650 466.22100}
+[01/30 18:13:07    148s] @innovus 166> gui_select -point {891.12800 989.61650}
+[01/30 18:13:09    149s] @innovus 167> gui_select -point {1355.43000 1110.61650}
+[01/30 18:13:13    149s] @innovus 168> gui_select -rect {1276.63950 1121.87200 1287.89550 1231.61650}
+[01/30 18:13:15    149s] @innovus 169> gui_select -point {2320.61650 736.36050}
+[01/30 18:13:16    150s] @innovus 170> update_floorplan_obj -obj 0x7fb75c5cdef0 -rects {252.252 1115.6255 1462.082 1430.9905}
+[01/30 18:13:28    151s] @innovus 171> gui_deselect -all 
+[01/30 18:13:29    151s] @innovus 172> update_floorplan_obj -obj 0x7fb75c5cde10 -rects {218.836 208.884 1428.666 817.494}
+[01/30 18:13:35    152s] @innovus 173> gui_deselect -all 
+[01/30 18:13:40    153s] @innovus 174> **ERROR: (IMPFP-60):	Io Inst new lower left location is outside of headbox, it would not be moved.
+[01/30 18:13:49    155s] update_floorplan_obj -obj 0x7fb75c5ba2a0 -rects {832.755 -0.7905 882.755 119.2095}
+[01/30 18:13:49    155s] @innovus 175> update_floorplan_obj -obj 0x7fb75c5ba2a0 -rects {925.616 2.0235 975.616 122.0235}
+[01/30 18:14:04    159s] @innovus 176> gui_select -point {2542.91850 778.57000}
+[01/30 18:14:18    160s] @innovus 177> 

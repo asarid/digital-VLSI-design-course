@@ -1,0 +1,770 @@
+#######################################################
+#                                                     
+#  Innovus Command Logging File                     
+#  Created on Tue Feb 11 00:29:19 2025                
+#                                                     
+#######################################################
+
+#@(#)CDS: Innovus v21.15-s110_1 (64bit) 09/23/2022 13:08 (Linux 3.10.0-693.el7.x86_64)
+#@(#)CDS: NanoRoute 21.15-s110_1 NR220912-2004/21_15-UB (database version 18.20.592) {superthreading v2.17}
+#@(#)CDS: AAE 21.15-s039 (64bit) 09/23/2022 (Linux 3.10.0-693.el7.x86_64)
+#@(#)CDS: CTE 21.15-s038_1 () Sep 20 2022 11:42:13 ( )
+#@(#)CDS: SYNTECH 21.15-s012_1 () Sep  5 2022 10:25:51 ( )
+#@(#)CDS: CPE v21.15-s076
+#@(#)CDS: IQuantus/TQuantus 21.1.1-s867 (64bit) Sun Jun 26 22:12:54 PDT 2022 (Linux 3.10.0-693.el7.x86_64)
+
+set design(TOPLEVEL) "lp_riscv_top"
+set runtype "pnr"
+set debug_file "debug.txt"
+source ../scripts/procedures.tcl -quiet
+enics_start_stage "start"
+source ../inputs/$design(TOPLEVEL).defines -quiet
+source $design(libraries_dir)/libraries.$TECHNOLOGY.tcl -quiet
+source $design(libraries_dir)/libraries.$SC_TECHNOLOGY.tcl -quiet
+source $design(libraries_dir)/libraries.$SRAM_TECHNOLOGY.tcl -quiet
+if {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
+    source $design(libraries_dir)/libraries.$IO_TECHNOLOGY.tcl -quiet
+}
+set_library_unit -time 1ns -cap 1pf
+set var_list {runtype}
+set dic_list {paths tech tech_files design}
+enics_print_debug_data w $debug_file "after everything was loaded" $var_list $dic_list
+enable_metrics -on
+enics_start_stage "init_design"
+set_db init_ground_nets $design(all_ground_nets)
+set_db init_power_nets $design(all_power_nets)
+enics_message "Suppressing the following messages that are reported due to the LIB definitions:" 
+enics_message "$tech(LIB_SUPPRESS_MESSAGES_INNOVUS)"
+set_message -suppress -id $tech(LIB_SUPPRESS_MESSAGES_INNOVUS) 
+enics_message "Reading MMMC File" medium
+read_mmmc $design(mmmc_view_file) 
+#@ Begin verbose source (pre): 
+create_constraint_mode \
+	-name functional_mode \
+	-sdc_files $design(functional_sdc)
+if {$runtype=="synthesis"} {...
+} else {
+set_message -suppress -id ENCEXT-6202 ;
+}
+create_rc_corner \
+	-name bc_rc_corner \
+	-temperature $tech(TEMPERATURE_BC) \
+    -qrc_tech $tech_files(QRCTECH_FILE_BC)
+create_rc_corner \
+	-name tc_rc_corner \
+	-temperature $tech(TEMPERATURE_TC) \
+	-qrc_tech $tech_files(QRCTECH_FILE_TC)
+create_rc_corner \
+	-name wc_rc_corner \
+	-temperature $tech(TEMPERATURE_WC) \
+    -qrc_tech $tech_files(QRCTECH_FILE_WC)
+create_library_set \
+	-name bc_libset \
+	-timing $tech_files(ALL_BC_LIBS)  
+create_library_set \
+	-name tc_libset \
+	-timing $tech_files(ALL_TC_LIBS)  
+create_library_set \
+	-name wc_libset \
+	-timing $tech_files(ALL_WC_LIBS)  
+create_timing_condition \
+   -name         bc_timing_condition \
+   -library_sets bc_libset
+create_timing_condition \
+   -name         tc_timing_condition \
+   -library_sets tc_libset
+create_timing_condition \
+   -name         wc_timing_condition \
+   -library_sets wc_libset
+create_delay_corner \
+	-name bc_dly_corner \
+	-timing_condition bc_timing_condition \
+	-rc_corner bc_rc_corner
+create_delay_corner \
+	-name tc_dly_corner \
+	-timing_condition tc_timing_condition \
+	-rc_corner tc_rc_corner
+create_delay_corner \
+	-name wc_dly_corner \
+	-timing_condition wc_timing_condition \
+	-rc_corner wc_rc_corner
+create_analysis_view \
+	-name bc_analysis_view \
+	-constraint_mode functional_mode \
+	-delay_corner bc_dly_corner
+create_analysis_view \
+    -name tc_analysis_view \
+	-constraint_mode functional_mode \
+	-delay_corner tc_dly_corner
+create_analysis_view \
+	-name wc_analysis_view \
+	-constraint_mode functional_mode \
+	-delay_corner wc_dly_corner
+set_analysis_view \
+	-setup $design(selected_setup_analysis_views) \
+	-hold  $design(selected_hold_analysis_views)
+#@ End verbose source: /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../inputs/lp_riscv_top.mmmc
+enics_message "Suppressing the following messages that are reported due to the LEF definitions:" 
+enics_message "$tech(LEF_SUPPRESS_MESSAGES_INNOVUS)"
+set_message -suppress -id $tech(LEF_SUPPRESS_MESSAGES_INNOVUS) 
+enics_message "Reading LEF abstracts"
+read_physical -lef $tech_files(ALL_LEFS)
+enics_message "Reading the Post Synthesis netlist at $design(postsyn_netlist)" medium
+read_netlist $design(postsyn_netlist)
+enics_message "Running init_design command" medium
+init_design
+source ../scripts/settings.tcl -quiet
+enics_default_cost_groups
+enics_message "Connecting Global Nets" medium
+connect_global_net $design(digital_gnd) -pin $tech(STANDARD_CELL_GND) -all -verbose
+connect_global_net $design(digital_vdd) -pin $tech(STANDARD_CELL_VDD) -all -verbose
+connect_global_net $design(digital_vdd) -type tiehi -all -verbose 
+connect_global_net $design(digital_gnd) -type tielo -all -verbose 
+connect_global_net $design(digital_vdd) -pin $tech(SRAM_VDDCORE_PIN)      -all -verbose 
+connect_global_net $design(digital_vdd) -pin $tech(SRAM_VDDPERIPHERY_PIN) -all -verbose 
+connect_global_net $design(digital_gnd) -pin $tech(SRAM_GND_PIN)          -all -verbose 
+if {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
+    # Connect pads to IO and CORE voltages
+    #    -netlist_override is needed, since GENUS connects these pins to UNCONNECTED during synthesis
+    connect_global_net $design(io_vdd)      -pin $tech(IO_VDDIO)   -hinst i_${design(IO_MODULE)} -netlist_override -verbose
+    connect_global_net $design(io_gnd)      -pin $tech(IO_GNDIO)   -hinst i_${design(IO_MODULE)} -netlist_override -verbose
+    connect_global_net $design(digital_vdd) -pin $tech(IO_VDDCORE) -hinst i_${design(IO_MODULE)} -netlist_override -verbose
+    connect_global_net $design(digital_gnd) -pin $tech(IO_GNDCORE) -hinst i_${design(IO_MODULE)} -netlist_override -verbose
+}
+enics_create_stage_reports -save_db no -report_timing no -pop_snapshot yes
+enics_start_stage "floorplan"
+source ../inputs/$design(TOPLEVEL).floorplan.defines -quiet
+create_floorplan \
+    -core_size [list 2000.0 1700.0 150.0 150.0 150.0 150.0] \
+    -core_margins_by die \
+    -flip s \
+    -match_to_site
+gui_fit
+if {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
+enics_message "Defining IO Ring" medium
+# Reload the IO file after resizing the floorplan
+read_io_file $design(io_file)
+# Add IO Fillers
+add_io_fillers -cells $tech(IO_FILLERS) -prefix IOFILLER
+# Connect Pad Rings
+#route_special -connect {pad_ring} \
+#-nets "$design(digital_gnd) $design(digital_vdd) $design(io_gnd) $design(io_vdd)"
+} elseif {$design(FULLCHIP_OR_MACRO)=="MACRO"} {
+enics_message "Spreading Pins around Macro" medium
+    # Spread pins
+set pins_to_spread  [get_db ports .name] ;#[get_object_name [get_ports]]
+#edit_pin -fix_overlap 1 -spread_direction clockwise -side Bottom -layer 4 -spread_type side 
+edit_pin -spread_type start -start {0 0} -spread_direction clockwise -layer {3 4}  \
+        -pin $pins_to_spread -fix_overlap 1 -spacing 6
+
+}
+gui_redraw
+check_legacy_design -all -out_dir $design(reports_dir)/$this_run(stage)
+enics_message "Placing Hard Macros" medium
+delete_relative_floorplan -all
+set imem0_name [get_db [get_db insts $design(imem0)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem0_name \
+    -horizontal_edge_separate {3  25  3} \
+    -vertical_edge_separate {1  25  1} -orient MX
+set imem1_name [get_db [get_db insts $design(imem1)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem1_name \
+         -horizontal_edge_separate { 1 -25 1 } \
+         -vertical_edge_separate { 0 25 0 } -orient R90
+set dmem0_name [get_db [get_db insts $design(dmem0)] .name]
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $dmem0_name \
+    -horizontal_edge_separate {1  -25  1} \
+    -vertical_edge_separate {2  -25  2} -orient R270
+enics_message "Adding Rings Around Hard Macros and creating Halos"
+deselect_obj -all
+select_obj $imem0_name
+add_rings -around selected -type block_rings -nets "$design(digital_gnd) $design(digital_vdd)" \
+-layer {bottom M1 top M1 right M2 left M2} -width 3 -spacing 0.5
+create_place_halo -halo_deltas {10 10 10 10} -insts $imem0_name -snap_to_site
+deselect_obj -all
+select_obj $imem1_name
+add_rings -around selected -type block_rings -nets "$design(digital_gnd) $design(digital_vdd)" \
+-layer {bottom M1 top M1 right M2 left M2} -width 3 -spacing 0.5
+create_place_halo -halo_deltas {10 10 10 10} -insts $imem1_name -snap_to_site
+deselect_obj -all
+select_obj $dmem0_name
+add_rings -around selected -type block_rings -nets "$design(digital_gnd) $design(digital_vdd)" \
+-layer {bottom M1 top M1 right M2 left M2} -width 3 -spacing 0.5
+create_place_halo -halo_deltas {10 10 10 10} -insts $dmem0_name -snap_to_site
+enics_message "Connecting Block Pins of hard macros to Power/Ground"
+route_special -connect {block_pin} -nets "$design(digital_gnd) $design(digital_vdd)" \
+    -block_pin_layer_range {1 4} \
+    -block_pin on_boundary \
+    -detailed_log
+enics_message "Creating Core Rings" medium
+add_rings -type core_rings -nets $design(core_ring_nets) -center 1 -follow core \
+-layer $design(core_ring_layers) -width $design(core_ring_width) -spacing $design(core_ring_spacing) 
+enics_message "Routing Follow Pins" medium
+route_special -connect { core_pin } -nets  "$design(digital_gnd) $design(digital_vdd)" -detailed_log
+if {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
+    # Connect pads to the rings
+    enics_message "Connecting PG Pads to Core Ring" medium
+    route_special -connect {pad_pin} -nets $design(core_ring_nets) -pad_pin_port_connect all_geom -detailed_log
+}
+if {$tech(LIBRARY_HAS_ENDCAPS)=="YES"} {
+    # get_db -category add_endcaps *
+    enics_message "Adding End Caps" medium
+    add_endcaps  
+}
+enics_message "Adding Well Taps" medium
+add_well_taps -cell $tech(WELLTAP)  -checker_board -prefix $design(well_tap_prefix) \
+    -cell_interval [expr 2 * $tech(WELLTAP_RULE)] 
+check_well_taps -max_distance $tech(WELLTAP_RULE)
+enics_message "Creating Power Grid" high
+check_drc
+add_stripes -layer [lindex [get_db layers .name] 1] -direction vertical -nets $design(M2_stripe_nets) \
+    -width $design(M2_stripes_width) -spacing $design(M2_stripes_spacing) \
+    -start_from left -start_offset $design(M2_stripes_from_left) \
+    -set_to_set_distance $design(M2_stripes_interval) -create_pins true \
+    #-max_same_layer_jog_length 10.0 \
+    -block_ring_bottom_layer_limit M2
+add_stripes -layer [lindex [get_db layers .name] 1] -direction vertical -nets $design(M2_stripe_nets) \
+    -width $design(M2_stripes_width) -spacing $design(M2_stripes_spacing) \
+    -start_from left -start_offset $design(M2_stripes_from_left) \
+    -set_to_set_distance $design(M2_stripes_interval) -create_pins true \
+    -block_ring_bottom_layer_limit M2
+check_drc
+gui_select -point {936.56600 1477.48650}
+gui_select -point {935.26200 1477.49700}
+check_drc
+enics_create_stage_reports -pop_snapshot yes 
+write_def -floorplan -no_std_cells "$design(floorplan_def)"
+enics_start_stage "placement"
+enics_message "Creating M2 blockage around stripes"
+deselect_obj -all
+deselect_routes
+foreach stripe [get_db selected] {
+    create_route_blockage -name M2_pwr_stripe_route_blk \
+-layers "M1 M2" \
+-spacing 0.2 \
+-area [get_db $stripe .rect]
+}
+deselect_routes
+gui_select -point {937.53600 1475.90100}
+gui_select -point {1144.68150 1606.68500}
+select_routes -shapes stripe -layer M2 -nets $design(M2_stripe_nets)
+foreach stripe [get_db selected] {
+    create_route_blockage -name M2_pwr_stripe_route_blk \
+-layers "M1 M2" \
+-spacing 0.2 \
+-area [get_db $stripe .rect]
+}
+gui_select -point {917.59100 1642.69300}
+gui_select -point {916.65800 1643.08450}
+gui_select -point {918.35100 1642.86550}
+enics_message "Starting place_opt_design" medium
+set_db place_global_cong_effort auto
+place_opt_design -report_dir "$design(reports_dir)/placement/place_opt_design" 
+gui_select -point {919.19200 1641.50650}
+gui_select -point {1799.97250 1526.50050}
+set_layer_preference node_layer -is_visible 0
+gui_select -point {364.90800 1246.94250}
+gui_select -point {1804.63150 1167.73450}
+gui_select -point {1245.51550 1079.20800}
+gui_select -point {1180.28550 315.08250}
+gui_select -point {1180.28550 343.03850}
+gui_select -point {1636.89700 412.92800}
+gui_select -point {1799.97250 878.85800}
+gui_select -point {919.36450 184.62200}
+gui_select -point {290.35900 1326.15050}
+gui_select -point {62.05350 1629.00500}
+gui_select -point {877.43100 1922.54100}
+gui_select -point {62.05350 1540.47850}
+gui_select -point {52.73500 1423.99600}
+gui_select -point {66.71250 1563.77500}
+gui_select -point {57.39400 827.60550}
+gui_select -point {48.07550 725.10100}
+gui_select -point {48.07550 506.11400}
+gui_select -rect {-59.08850 1950.49700 127.28350 133.37000}
+gui_select -point {1599.62250 -85.61750}
+gui_select -point {1767.35750 1274.89850}
+gui_select -point {411.50100 981.36250}
+gui_select -point {38.75700 822.94600}
+set_layer_preference node_layer -is_visible 1
+gui_select -point {66.71250 911.47300}
+gui_select -point {71.37200 776.35300}
+gui_select -point {71.37200 827.60550}
+set_layer_preference node_layer -is_visible 0
+chec
+check_drc
+set_layer_preference violation -is_visible 0
+set_layer_preference violation -is_visible 1
+set_layer_preference violation -color magenta
+set_layer_preference violation -color white
+gui_select -point {2497.23800 1789.90500}
+set_layer_preference block -is_visible 0
+set_layer_preference block -is_visible 1
+set_layer_preference stdCell -is_visible 0
+set_layer_preference stdCell -is_visible 1
+set_layer_preference io -is_visible 0
+set_layer_preference io -is_visible 1
+set_layer_preference blackBox -is_visible 0
+set_layer_preference blackBox -is_visible 1
+set_layer_preference layoutObj -is_visible 1
+set_layer_preference layoutObj -is_visible 0
+set_layer_preference overlapGuide -is_visible 1
+set_layer_preference overlapGuide -is_visible 0
+set_layer_preference overlapMacro -is_visible 1
+set_layer_preference overlapMacro -is_visible 0
+set_db check_drc_disable_rules {}
+set_db check_drc_ndr_spacing auto
+set_db check_drc_check_only default
+set_db check_drc_inside_via_def true
+set_db check_drc_exclude_pg_net false
+set_db check_drc_ignore_trial_route false
+set_db check_drc_ignore_cell_blockage false
+set_db check_drc_use_min_spacing_on_block_obs auto
+set_db check_drc_report lp_riscv_top.drc.rpt
+set_db check_drc_limit 1000
+check_drc
+set_db check_drc_area {0 0 0 0}
+gui_select -point {2019.52350 1320.57150}
+gui_select -point {343.33300 1316.38100}
+gui_select -point {712.09500 331.61900}
+set_layer_preference node_layer -is_visible 1
+set_layer_preference M1 -is_visible 0
+set_layer_preference M1 -is_visible 1
+gui_select -point {1353.23800 1081.71450}
+gui_select -point {1286.19000 1144.57150}
+gui_select -point {1361.61850 1002.09500}
+gui_select -point {1261.27150 1129.82300}
+set_layer_preference RV -is_visible 0
+set_layer_preference RV -is_visible 1
+set_layer_preference AP -is_visible 0
+set_layer_preference AP -is_visible 1
+set_layer_preference node_bump -is_visible 0
+set_layer_preference node_bump -is_visible 1
+set_layer_preference node_layer -is_visible 0
+set_layer_preference node_route -is_visible 0
+set_layer_preference node_route -is_visible 1
+gui_select -point {1270.60750 1127.91550}
+gui_select -point {1263.37950 1128.31700}
+gui_select -point {1296.40750 1117.87650}
+gui_select -point {1282.35300 1116.97300}
+gui_select -point {1289.98250 1116.17000}
+gui_select -point {1296.90950 1118.67950}
+set_layer_preference node_track -is_visible 1
+set_layer_preference node_track -is_visible 0
+set_layer_preference netRect -is_visible 1
+set_layer_preference netRect -is_visible 0
+set_layer_preference substrateNoise -is_visible 1
+set_layer_preference substrateNoise -is_visible 0
+set_layer_preference pwrdm -is_visible 0
+set_layer_preference pwrdm -is_visible 1
+set_layer_preference pwrdm -is_visible 0
+set_layer_preference pwrdm -is_visible 1
+set_layer_preference M1 -is_visible 1
+set_layer_preference M1 -is_visible 0
+set_layer_preference M1 -is_visible 1
+gui_select -rect {953.04750 1953.33350 1062.00000 1760.57150}
+gui_select -point {902.76150 1903.04750}
+gui_select -rect {957.23800 1936.57150 1049.42850 1831.80950}
+gui_select -point {986.31950 1853.43250}
+set_layer_preference VIA1 -is_visible 1
+gui_select -rect {991.87500 1852.28300 996.85550 1848.64350}
+gui_select -point {993.21600 1851.90000}
+gui_select -rect {993.12000 1851.03800 995.51450 1848.93050}
+set_layer_preference M2 -is_visible 1
+gui_select -point {155.63600 1007.24350}
+gui_select -point {156.58700 1000.56650}
+gui_select -point {155.62900 1000.51850}
+gui_select -point {155.46500 999.77250}
+gui_select -point {155.48550 999.80000}
+gui_select -point {156.36800 1000.52550}
+gui_select -point {155.84100 1000.34750}
+gui_select -point {156.79200 1000.53900}
+gui_select -point {156.79200 1000.53900}
+gui_select -point {155.56750 1000.36800}
+set_layer_preference VIA2 -is_visible 1
+set_layer_preference M3 -is_visible 1
+gui_select -point {74.64850 914.02150}
+gui_select -point {2181.37150 1862.43600}
+gui_select -point {2180.98850 1864.73450}
+gui_select -point {2177.92350 1863.20200}
+gui_select -point {2182.90400 1863.20200}
+gui_select -point {2178.30650 1862.81900}
+gui_select -point {2181.02550 1863.64450}
+set_layer_preference M3 -is_visible 0
+set_layer_preference M3 -is_visible 1
+set_layer_preference VIA2 -is_visible 0
+set_layer_preference VIA2 -is_visible 1
+gui_select -point {2178.32650 1862.20600}
+delete_selected_from_floorplan
+gui_select -rect {153.65750 175.88650 158.22650 150.80100}
+gui_select -point {155.52150 153.64600}
+gui_select -point {156.67450 153.66800}
+gui_select -point {156.69650 151.80600}
+gui_select -point {155.49950 149.98800}
+gui_select -point {156.67450 149.98800}
+gui_select -point {158.64750 152.42650}
+view_next
+view_next
+gui_select -rect {899.60500 185.12000 890.21850 155.78650}
+gui_select -point {901.27300 165.90300}
+gui_select -point {873.78250 172.48400}
+gui_select -point {873.76600 172.49450}
+gui_select -point {876.72800 164.34900}
+gui_select -point {716.63900 160.86750}
+gui_select -point {715.50050 160.80200}
+gui_select -point {716.65200 169.69200}
+set_layer_preference obstruct -is_visible 0
+set_layer_preference obstruct -is_visible 1
+set_layer_preference macroOnly -is_visible 0
+set_layer_preference macroOnly -is_visible 1
+set_layer_preference blockHalo -is_visible 0
+set_layer_preference blockHalo -is_visible 1
+set_layer_preference routingHalo -is_visible 0
+set_layer_preference routingHalo -is_visible 1
+set_layer_preference lithoHalo -is_visible 0
+set_layer_preference lithoHalo -is_visible 1
+set_layer_preference blkLink -is_visible 0
+set_layer_preference blkLink -is_visible 1
+set_layer_preference routingHalo -is_visible 0
+set_layer_preference routingHalo -is_visible 1
+gui_select -point {715.20050 161.07350}
+gui_select -point {715.56300 161.07350}
+gui_select -point {736.79150 158.26150}
+set_db check_drc_disable_rules {}
+set_db check_drc_ndr_spacing auto
+set_db check_drc_check_only default
+set_db check_drc_inside_via_def true
+set_db check_drc_exclude_pg_net false
+set_db check_drc_ignore_trial_route false
+set_db check_drc_ignore_cell_blockage true
+set_db check_drc_use_min_spacing_on_block_obs auto
+set_db check_drc_report lp_riscv_top.drc.rpt
+set_db check_drc_limit 1000
+check_drc
+set_db check_drc_area {0 0 0 0}
+set_db check_drc_disable_rules {}
+set_db check_drc_ndr_spacing auto
+set_db check_drc_check_only default
+set_db check_drc_inside_via_def true
+set_db check_drc_exclude_pg_net false
+set_db check_drc_ignore_trial_route false
+set_db check_drc_ignore_cell_blockage true
+set_db check_drc_use_min_spacing_on_block_obs auto
+set_db check_drc_report lp_riscv_top.drc.rpt
+set_db check_drc_limit 1000
+check_drc
+set_db check_drc_area {0 0 0 0}
+set_db check_drc_disable_rules {}
+set_db check_drc_ndr_spacing auto
+set_db check_drc_check_only default
+set_db check_drc_inside_via_def true
+set_db check_drc_exclude_pg_net false
+set_db check_drc_ignore_trial_route true
+set_db check_drc_ignore_cell_blockage true
+set_db check_drc_use_min_spacing_on_block_obs auto
+set_db check_drc_report lp_riscv_top.drc.rpt
+set_db check_drc_limit 1000
+check_drc
+set_db check_drc_area {0 0 0 0}
+set_db check_drc_disable_rules {}
+set_db check_drc_ndr_spacing auto
+set_db check_drc_check_only default
+set_db check_drc_inside_via_def true
+set_db check_drc_exclude_pg_net false
+set_db check_drc_ignore_trial_route true
+set_db check_drc_ignore_cell_blockage true
+set_db check_drc_use_min_spacing_on_block_obs auto
+set_db check_drc_report lp_riscv_top.drc.rpt
+set_db check_drc_limit 1000
+check_drc
+set_db check_drc_area {0 0 0 0}
+set_db check_drc_disable_rules {}
+set_db check_drc_ndr_spacing auto
+set_db check_drc_check_only default
+set_db check_drc_inside_via_def true
+set_db check_drc_exclude_pg_net false
+set_db check_drc_ignore_trial_route true
+set_db check_drc_ignore_cell_blockage true
+set_db check_drc_use_min_spacing_on_block_obs auto
+set_db check_drc_report lp_riscv_top.drc.rpt
+set_db check_drc_limit 1000
+check_drc
+set_db check_drc_area {0 0 0 0}
+set_db check_drc_disable_rules {}
+set_db check_drc_ndr_spacing auto
+set_db check_drc_check_only default
+set_db check_drc_inside_via_def true
+set_db check_drc_exclude_pg_net false
+set_db check_drc_ignore_trial_route true
+set_db check_drc_ignore_cell_blockage true
+set_db check_drc_use_min_spacing_on_block_obs auto
+set_db check_drc_report lp_riscv_top.drc.rpt
+set_db check_drc_limit 1000
+check_drc
+set_db check_drc_area {0 0 0 0}
+set_db check_drc_disable_rules {}
+set_db check_drc_ndr_spacing auto
+set_db check_drc_check_only regular
+set_db check_drc_inside_via_def true
+set_db check_drc_exclude_pg_net false
+set_db check_drc_ignore_trial_route false
+set_db check_drc_ignore_cell_blockage false
+set_db check_drc_use_min_spacing_on_block_obs auto
+set_db check_drc_report lp_riscv_top.drc.rpt
+set_db check_drc_limit 1000
+check_drc
+set_db check_drc_area {0 0 0 0}
+gui_select -point {1615.14250 545.33350}
+gui_select -point {214.04850 490.22250}
+gui_select -point {214.06050 490.20400}
+gui_select -point {214.06400 490.20400}
+gui_select -point {214.77750 490.64850}
+gui_select -point {214.04850 490.17950}
+gui_select -point {214.06700 490.16900}
+gui_select -point {214.17250 490.28250}
+gui_select -point {1367.90450 1056.57150}
+gui_select -point {701.61900 583.04750}
+gui_select -point {2599.90450 817.71450}
+gui_select -point {2181.73050 1864.18400}
+gui_select -point {2182.59250 1862.74700}
+gui_select -point {2181.02150 1863.66650}
+gui_select -point {2182.61150 1862.82400}
+gui_select -point {763.90300 163.50350}
+gui_select -point {763.90150 163.47650}
+gui_select -point {763.90450 163.48950}
+set_layer_preference VIA3 -is_visible 1
+set_layer_preference VIA3 -is_visible 0
+set_layer_preference VIA3 -is_visible 1
+set_layer_preference M4 -is_visible 1
+set_layer_preference VIA4 -is_visible 1
+set_layer_preference M5 -is_visible 1
+set_layer_preference M5 -is_visible 0
+set_layer_preference VIA4 -is_visible 0
+set_layer_preference M4 -is_visible 0
+set_layer_preference VIA3 -is_visible 0
+set_layer_preference VIA3 -is_visible 1
+set_layer_preference M4 -is_visible 1
+set_layer_preference VIA4 -is_visible 1
+set_layer_preference M5 -is_visible 1
+set_layer_preference VIA5 -is_visible 1
+set_layer_preference M6 -is_visible 1
+set_layer_preference VIA6 -is_visible 1
+set_layer_preference M7 -is_visible 1
+set_layer_preference VIA7 -is_visible 1
+set_layer_preference M8 -is_visible 1
+gui_select -point {470.07750 509.71250}
+gui_select -point {470.09650 509.68400}
+gui_select -point {468.16450 508.96650}
+set_db check_drc_disable_rules {}
+set_db check_drc_ndr_spacing auto
+set_db check_drc_check_only regular
+set_db check_drc_inside_via_def true
+set_db check_drc_exclude_pg_net false
+set_db check_drc_ignore_trial_route false
+set_db check_drc_ignore_cell_blockage false
+set_db check_drc_use_min_spacing_on_block_obs auto
+set_db check_drc_report lp_riscv_top.drc.rpt
+check_drc
+set_db check_drc_area {0 0 0 0}
+set_db check_drc_disable_rules {}
+set_db check_drc_ndr_spacing auto
+set_db check_drc_check_only default
+set_db check_drc_inside_via_def true
+set_db check_drc_exclude_pg_net false
+set_db check_drc_ignore_trial_route false
+set_db check_drc_ignore_cell_blockage false
+set_db check_drc_use_min_spacing_on_block_obs auto
+set_db check_drc_report lp_riscv_top.drc.rpt
+check_drc
+set_db check_drc_area {0 0 0 0}
+set_db check_drc_disable_rules {}
+set_db check_drc_ndr_spacing auto
+set_db check_drc_check_only default
+set_db check_drc_inside_via_def true
+set_db check_drc_exclude_pg_net false
+set_db check_drc_ignore_trial_route false
+set_db check_drc_ignore_cell_blockage false
+set_db check_drc_use_min_spacing_on_block_obs auto
+set_db check_drc_report lp_riscv_top.drc.rpt
+set_db check_drc_limit 1000000
+check_drc
+set_db check_drc_area {0 0 0 0}
+gui_select -point {1112.28550 1173.90500}
+gui_select -point {1015.17300 1194.01800}
+gui_select -point {1016.66500 1194.00550}
+gui_select -point {1016.70550 1194.00150}
+gui_select -point {1015.50050 1194.01350}
+gui_select -point {1015.49250 1194.00150}
+gui_select -point {1015.50850 1193.98950}
+set_layer_preference violation -is_visible 1
+gui_select -point {1016.69750 1194.00550}
+gui_select -point {1016.69350 1194.01350}
+gui_select -point {1017.44150 1193.51250}
+gui_select -point {1016.03400 1193.91650}
+gui_select -point {1970.89050 1846.32200}
+gui_select -point {1970.91100 1846.29550}
+gui_select -point {1970.90050 1846.28950}
+gui_select -point {1970.70550 1845.90050}
+gui_select -point {1386.79200 1344.47000}
+set_layer_preference violation -is_visible 0
+set_layer_preference violation -is_visible 1
+set_layer_preference violation -is_visible 0
+set_layer_preference violation -is_visible 1
+gui_select -point {1115.50000 1397.40400}
+gui_select -point {1113.89650 1400.35750}
+gui_select -point {1114.21300 1400.36800}
+set_layer_preference VIA8 -is_visible 1
+set_layer_preference M9 -is_visible 1
+set_layer_preference RV -is_visible 1
+check
+check_design 
+check_design -type place 
+check_design -type place opt
+check_design -type opt
+check_connectivity 
+set_db check_drc_disable_rules {}
+set_db check_drc_ndr_spacing auto
+set_db check_drc_check_only default
+set_db check_drc_inside_via_def true
+set_db check_drc_exclude_pg_net false
+set_db check_drc_ignore_trial_route false
+set_db check_drc_ignore_cell_blockage false
+set_db check_drc_use_min_spacing_on_block_obs auto
+set_db check_drc_report lp_riscv_top.drc.rpt
+set_db check_drc_limit 1000
+check_drc
+set_db check_drc_area {0 0 0 0}
+set_layer_preference violation -is_visible 0
+set_layer_preference violation -is_visible 1
+set_layer_preference AP -is_visible 1
+gui_select -point {236.47600 205.90500}
+gui_select -point {131.71400 122.09500}
+man check_connectivity 
+man check_drc
+set_db check_drc_disable_rules {}
+set_db check_drc_ndr_spacing auto
+set_db check_drc_check_only regular
+set_db check_drc_inside_via_def true
+set_db check_drc_exclude_pg_net false
+set_db check_drc_ignore_trial_route false
+set_db check_drc_ignore_cell_blockage false
+set_db check_drc_use_min_spacing_on_block_obs auto
+set_db check_drc_report lp_riscv_top.drc.rpt
+set_db check_drc_limit 10000
+check_drc
+set_db check_drc_area {0 0 0 0}
+gui_select -point {1636.09500 461.52400}
+set_layer_preference violation -is_visible 0
+set_layer_preference violation -is_visible 1
+gui_select -point {232.28550 120.13650}
+gui_select -point {224.08700 141.08850}
+gui_select -point {1227.89050 858.59200}
+gui_select -point {2465.80950 1069.14300}
+set_db check_drc_disable_rules {}
+set_db check_drc_ndr_spacing auto
+set_db check_drc_check_only regular
+set_db check_drc_inside_via_def true
+set_db check_drc_exclude_pg_net false
+set_db check_drc_ignore_trial_route false
+set_db check_drc_ignore_cell_blockage false
+set_db check_drc_use_min_spacing_on_block_obs auto
+set_db check_drc_report lp_riscv_top.drc.rpt
+set_db check_drc_limit 100000
+check_drc
+set_db check_drc_area {0 0 0 0}
+set_layer_preference violation -is_visible 0
+set_layer_preference violation -is_visible 1
+gui_select -point {2654.38100 369.33350}
+gui_select -point {2499.33300 210.09500}
+gui_select -rect {441.80950 1697.71450 471.14250 1643.23800}
+gui_select -point {502.69900 721.70150}
+set_layer_preference node_layer -is_visible 0
+set_layer_preference node_layer -is_visible 1
+set_layer_preference node_layer -is_visible 0
+set_layer_preference violation -is_visible 0
+set_layer_preference violation -is_visible 1
+gui_select -point {860.85700 914.09500}
+set_layer_preference violation -is_visible 0
+set_layer_preference violation -is_visible 1
+set_layer_preference violation -is_visible 0
+set_layer_preference violation -is_visible 1
+set_layer_preference node_layer -is_visible 1
+set_layer_preference node_layer -is_visible 0
+gui_select -point {1228.07000 914.52250}
+gui_select -point {1227.84950 914.09650}
+gui_select -point {1231.18400 914.51500}
+gui_select -point {1229.81800 914.93400}
+gui_select -point {1229.32600 915.72700}
+gui_select -point {3429.61900 960.19050}
+set_layer_preference violation -is_visible 0
+set_layer_preference violation -is_visible 1
+set_layer_preference node_layer -is_visible 1
+gui_select -point {2918.38100 780.00000}
+set_db check_drc_disable_rules {}
+set_db check_drc_ndr_spacing auto
+set_db check_drc_check_only regular
+set_db check_drc_inside_via_def true
+set_db check_drc_exclude_pg_net false
+set_db check_drc_ignore_trial_route false
+set_db check_drc_ignore_cell_blockage false
+set_db check_drc_use_min_spacing_on_block_obs auto
+set_db check_drc_report lp_riscv_top.drc.rpt
+set_db check_drc_limit 300000
+check_drc
+set_db check_drc_area {0 0 0 0}
+set_db check_drc_disable_rules {}
+set_db check_drc_ndr_spacing auto
+set_db check_drc_check_only regular
+set_db check_drc_inside_via_def true
+set_db check_drc_exclude_pg_net false
+set_db check_drc_ignore_trial_route false
+set_db check_drc_ignore_cell_blockage false
+set_db check_drc_use_min_spacing_on_block_obs auto
+set_db check_drc_report lp_riscv_top.drc.rpt
+set_db check_drc_limit 300000
+check_drc
+set_db check_drc_area {0 0 0 0}
+set_layer_preference violation -is_visible 0
+set_layer_preference violation -is_visible 1
+gui_select -point {1516.14900 717.13300}
+gui_select -point {1517.51950 717.02250}
+gui_select -point {1516.53650 717.25250}
+gui_select -point {1517.36200 717.20550}
+gui_select -rect {159.81400 1047.25700 164.22000 1040.55200}
+gui_select -rect {157.70650 1046.68200 164.22000 1040.93500}
+gui_select -rect {160.38850 1048.40600 162.11250 1046.49050}
+gui_select -point {161.72300 1044.01200}
+gui_select -point {162.09650 1043.46350}
+gui_select -point {2754.95200 239.42850}
+gui_select -point {1312.08900 490.29950}
+gui_select -point {1312.08900 490.29950}
+set_layer_preference violation -is_visible 1
+set_db check_drc_disable_rules {}
+set_db check_drc_ndr_spacing auto
+set_db check_drc_check_only regular
+set_db check_drc_inside_via_def true
+set_db check_drc_exclude_pg_net false
+set_db check_drc_ignore_trial_route false
+set_db check_drc_ignore_cell_blockage false
+set_db check_drc_use_min_spacing_on_block_obs auto
+set_db check_drc_report lp_riscv_top.drc.rpt
+set_db check_drc_limit 1000000
+check_drc
+set_db check_drc_area {0 0 0 0}
+gui_select -point {3105.06750 499.32900}
+gui_select -point {3101.76750 444.05400}
+gui_select -point {2142.61150 1858.74050}
+gui_select -point {2150.43350 1871.25600}
+gui_select -point {2174.41250 1863.73700}
+gui_select -point {2154.00650 1872.89150}
+set_layer_preference M1 -is_visible 0
+set_layer_preference VIA1 -is_visible 0
+set_layer_preference M2 -is_visible 0
+set_layer_preference M2 -is_visible 1
+set_layer_preference VIA2 -is_visible 0
+set_layer_preference VIA2 -is_visible 1
+set_layer_preference M3 -is_visible 0
+set_layer_preference M3 -is_visible 1
+set_layer_preference M1 -is_visible 1
+gui_select -point {2166.35500 1877.80200}
+gui_select -point {-446.57150 935.04750}
+delete_markers_drc
+delete_drc_markers 

@@ -1,0 +1,234 @@
+#######################################################
+#                                                     
+#  Innovus Command Logging File                     
+#  Created on Thu Jan 30 17:58:23 2025                
+#                                                     
+#######################################################
+
+#@(#)CDS: Innovus v21.15-s110_1 (64bit) 09/23/2022 13:08 (Linux 3.10.0-693.el7.x86_64)
+#@(#)CDS: NanoRoute 21.15-s110_1 NR220912-2004/21_15-UB (database version 18.20.592) {superthreading v2.17}
+#@(#)CDS: AAE 21.15-s039 (64bit) 09/23/2022 (Linux 3.10.0-693.el7.x86_64)
+#@(#)CDS: CTE 21.15-s038_1 () Sep 20 2022 11:42:13 ( )
+#@(#)CDS: SYNTECH 21.15-s012_1 () Sep  5 2022 10:25:51 ( )
+#@(#)CDS: CPE v21.15-s076
+#@(#)CDS: IQuantus/TQuantus 21.1.1-s867 (64bit) Sun Jun 26 22:12:54 PDT 2022 (Linux 3.10.0-693.el7.x86_64)
+
+set design(TOPLEVEL) "lp_riscv_top"
+set runtype "pnr"
+set debug_file "debug.txt"
+source ../scripts/procedures.tcl -quiet
+enics_start_stage "start"
+source ../inputs/$design(TOPLEVEL).defines -quiet
+source $design(libraries_dir)/libraries.$TECHNOLOGY.tcl -quiet
+source $design(libraries_dir)/libraries.$SC_TECHNOLOGY.tcl -quiet
+source $design(libraries_dir)/libraries.$SRAM_TECHNOLOGY.tcl -quiet
+if {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
+    source $design(libraries_dir)/libraries.$IO_TECHNOLOGY.tcl -quiet
+}
+set_library_unit -time 1ns -cap 1pf
+set var_list {runtype}
+set dic_list {paths tech tech_files design}
+enics_print_debug_data w $debug_file "after everything was loaded" $var_list $dic_list
+enable_metrics -on
+enics_start_stage "init_design"
+set_db init_ground_nets $design(all_ground_nets)
+set_db init_power_nets $design(all_power_nets)
+enics_message "Suppressing the following messages that are reported due to the LIB definitions:" 
+enics_message "$tech(LIB_SUPPRESS_MESSAGES_INNOVUS)"
+set_message -suppress -id $tech(LIB_SUPPRESS_MESSAGES_INNOVUS) 
+enics_message "Reading MMMC File" medium
+read_mmmc $design(mmmc_view_file) 
+#@ Begin verbose source (pre): 
+create_constraint_mode \
+	-name functional_mode \
+	-sdc_files $design(functional_sdc)
+if {$runtype=="synthesis"} {...
+} else {
+set_message -suppress -id ENCEXT-6202 ;
+}
+create_rc_corner \
+	-name bc_rc_corner \
+	-temperature $tech(TEMPERATURE_BC) \
+    -qrc_tech $tech_files(QRCTECH_FILE_BC)
+create_rc_corner \
+	-name tc_rc_corner \
+	-temperature $tech(TEMPERATURE_TC) \
+	-qrc_tech $tech_files(QRCTECH_FILE_TC)
+create_rc_corner \
+	-name wc_rc_corner \
+	-temperature $tech(TEMPERATURE_WC) \
+    -qrc_tech $tech_files(QRCTECH_FILE_WC)
+create_library_set \
+	-name bc_libset \
+	-timing $tech_files(ALL_BC_LIBS)  
+create_library_set \
+	-name tc_libset \
+	-timing $tech_files(ALL_TC_LIBS)  
+create_library_set \
+	-name wc_libset \
+	-timing $tech_files(ALL_WC_LIBS)  
+create_timing_condition \
+   -name         bc_timing_condition \
+   -library_sets bc_libset
+create_timing_condition \
+   -name         tc_timing_condition \
+   -library_sets tc_libset
+create_timing_condition \
+   -name         wc_timing_condition \
+   -library_sets wc_libset
+create_delay_corner \
+	-name bc_dly_corner \
+	-timing_condition bc_timing_condition \
+	-rc_corner bc_rc_corner
+create_delay_corner \
+	-name tc_dly_corner \
+	-timing_condition tc_timing_condition \
+	-rc_corner tc_rc_corner
+create_delay_corner \
+	-name wc_dly_corner \
+	-timing_condition wc_timing_condition \
+	-rc_corner wc_rc_corner
+create_analysis_view \
+	-name bc_analysis_view \
+	-constraint_mode functional_mode \
+	-delay_corner bc_dly_corner
+create_analysis_view \
+    -name tc_analysis_view \
+	-constraint_mode functional_mode \
+	-delay_corner tc_dly_corner
+create_analysis_view \
+	-name wc_analysis_view \
+	-constraint_mode functional_mode \
+	-delay_corner wc_dly_corner
+set_analysis_view \
+	-setup $design(selected_setup_analysis_views) \
+	-hold  $design(selected_hold_analysis_views)
+#@ End verbose source: /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../inputs/lp_riscv_top.mmmc
+enics_message "Suppressing the following messages that are reported due to the LEF definitions:" 
+enics_message "$tech(LEF_SUPPRESS_MESSAGES_INNOVUS)"
+set_message -suppress -id $tech(LEF_SUPPRESS_MESSAGES_INNOVUS) 
+enics_message "Reading LEF abstracts"
+read_physical -lef $tech_files(ALL_LEFS)
+enics_message "Reading the Post Synthesis netlist at $design(postsyn_netlist)" medium
+read_netlist $design(postsyn_netlist)
+enics_message "Running init_design command" medium
+init_design
+gui_select -point {4787.09300 305.54300}
+gui_select -point {3912.25800 983.98600}
+gui_select -point {67.74700 73.44400}
+gui_select -point {2198.29700 165.68850}
+update_floorplan_obj -obj 0x7fb75c5cdef0 -rects {129.544 1288.447 1339.374 1603.812}
+update_floorplan_obj -obj 0x7fb75c5cdef0 -rects {126.5695 1342.006 1336.3995 1657.371}
+update_floorplan_obj -obj 0x7fb75c5cdef0 -rects {263.4485 1166.443 1473.2785 1481.808}
+flip_or_rotate_obj -rotate R180
+gui_select -point {844.38600 1329.15900}
+gui_select -point {63.28400 80.38700}
+update_floorplan_obj -obj 0x7fb75c5ba150 -rects {351.1245 187.4645 471.1245 307.4645}
+update_floorplan_obj -obj 0x7fb75c5ba150 -rects {1631.6365 2.9755 1751.6365 122.9755}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fb75c5ba0e0 -rects {1891.5075 1132.226 2011.5075 1252.226}
+update_floorplan_obj -obj 0x7fb75c5ba0e0 -rects {1627.173 1644.5305 1747.173 1764.5305}
+update_floorplan_obj -obj 0x7fb75c5ba0e0 -rects {15.4955 1618.8485 135.4955 1738.8485}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fb75c5ba070 -rects {1621.7175 1624.693 1741.7175 1744.693}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fb75c5ba0e0 -rects {-2.976 3.083 117.024 123.083}
+update_floorplan_obj -obj 0x7fb75c5ba0e0 -rects {14.878 -5.844 134.878 114.156}
+update_floorplan_obj -obj 0x7fb75c5ba0e0 -rects {2.9755 -7.332 122.9755 112.668}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fb75c5ba070 -rects {911.1595 1624.8 1031.1595 1744.8}
+update_floorplan_obj -obj 0x7fb75c5ba070 -rects {1372.3815 1624.8 1492.3815 1744.8}
+gui_select -point {2414.03000 917.03450}
+update_floorplan_obj -obj 0x7fb75c5ba150 -rects {-2.3585 1620.2295 117.6415 1740.2295}
+update_floorplan_obj -obj 0x7fb75c5ba150 -rects {3.593 1624.693 123.593 1744.693}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fb75c5ba0e0 -rects {1625.31 0.107 1745.31 120.107}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fb75c5ba150 -rects {1621.717 1633.727 1741.717 1753.727}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fb75c5ba070 -rects {-5.9515 1636.595 114.0485 1756.595}
+update_floorplan_obj -obj 0x7fb75c5ba070 -rects {2.9755 1621.717 122.9755 1741.717}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fb75c5ba000 -rects {1624.6925 -2.976 1744.6925 117.024}
+update_floorplan_obj -obj 0x7fb75c5ba000 -rects {1618.7415 -2.9755 1738.7415 117.0245}
+update_floorplan_obj -obj 0x7fb75c5ba000 -rects {1624.693 -2.9755 1744.693 117.0245}
+update_floorplan_obj -obj 0x7fb75c5ba000 -rects {0.0 1629.156 120.0 1749.156}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fb75c5ba150 -rects {0.617 -4.356 120.617 115.644}
+update_floorplan_obj -obj 0x7fb75c5ba150 -rects {0.617 0.107 120.617 120.107}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fb75c5ba070 -rects {1624.693 1621.8245 1744.693 1741.8245}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fb75c5ba000 -rects {1627.6685 1.595 1747.6685 121.595}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fb75c5ba070 -rects {0.617 1624.8 120.617 1744.8}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fb75c5ba0e0 -rects {1625.31 5.951 1745.31 125.951}
+update_floorplan_obj -obj 0x7fb75c5ba0e0 -rects {1116.478 383.856 1236.478 503.856}
+update_floorplan_obj -obj 0x7fb75c5ba0e0 -rects {1342.6255 -5.9515 1462.6255 114.0485}
+update_floorplan_obj -obj 0x7fb75c5ba0e0 -rects {1533.0655 -252.9285 1653.0655 -132.9285}
+gui_select -point {1705.83050 55.59000}
+gui_select -rect {1711.78150 28.80950 1881.39250 46.66350}
+update_floorplan_obj -obj 0x7fb75c5ba0e0 -rects {0.617 1621.717 120.617 1741.717}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fb75c5ba000 -rects {1622.3345 1627.668 1742.3345 1747.668}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fb75c5ba0e0 -rects {1621.717 -2.8685 1741.717 117.1315}
+update_floorplan_obj -obj 0x7fb75c5ba0e0 -rects {1624.693 0.107 1744.693 120.107}
+update_floorplan_obj -obj 0x7fb75c5ba0e0 -rects {2892.9275 -428.4905 3012.9275 -308.4905}
+source ../scripts/settings.tcl -quiet
+enics_default_cost_groups
+enics_message "Connecting Global Nets" medium
+connect_global_net $design(digital_gnd) -pin $tech(STANDARD_CELL_GND) -all -verbose
+connect_global_net $design(digital_vdd) -pin $tech(STANDARD_CELL_VDD) -all -verbose
+connect_global_net $design(digital_vdd) -type tiehi -all -verbose 
+connect_global_net $design(digital_gnd) -type tielo -all -verbose 
+connect_global_net $design(digital_vdd) -pin $tech(SRAM_VDDCORE_PIN)      -all -verbose 
+connect_global_net $design(digital_vdd) -pin $tech(SRAM_VDDPERIPHERY_PIN) -all -verbose 
+connect_global_net $design(digital_gnd) -pin $tech(SRAM_GND_PIN)          -all -verbose 
+if {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
+    # Connect pads to IO and CORE voltages
+    #    -netlist_override is needed, since GENUS connects these pins to UNCONNECTED during synthesis
+    connect_global_net $design(io_vdd)      -pin $tech(IO_VDDIO)   -hinst i_${design(IO_MODULE)} -netlist_override -verbose
+    connect_global_net $design(io_gnd)      -pin $tech(IO_GNDIO)   -hinst i_${design(IO_MODULE)} -netlist_override -verbose
+    connect_global_net $design(digital_vdd) -pin $tech(IO_VDDCORE) -hinst i_${design(IO_MODULE)} -netlist_override -verbose
+    connect_global_net $design(digital_gnd) -pin $tech(IO_GNDCORE) -hinst i_${design(IO_MODULE)} -netlist_override -verbose
+}
+enics_create_stage_reports -save_db no -report_timing no -pop_snapshot yes
+enics_start_stage "floorplan"
+source ../inputs/$design(TOPLEVEL).floorplan.defines -quiet
+create_floorplan \
+    -core_size [list 1300.0 1050.0 150.0 150.0 150.0 150.0] \
+    -core_margins_by die \
+    -flip s \
+    -match_to_site
+update_floorplan_obj -obj 0x7fb75c5ba0e0 -rects {1474.0485 -944.7615 1594.0485 -824.7615}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fb75c5cde80 -rects {1614.878 8.927 2824.708 324.292}
+gui_select -point {-519.93900 853.05850}
+gui_select -point {884.55700 906.61950}
+gui_select -point {1860.56300 966.13250}
+gui_select -point {3116.27800 365.05550}
+update_floorplan_obj -obj 0x7fb75c5cde10 -rects {197.2285 166.6355 1407.0585 775.2455}
+Specify Floorpan
+create_floorplan \
+    -core_size [list 1350.0 1350.0 150.0 150.0 150.0 150.0] \
+    -core_margins_by die \
+    -flip s \
+    -match_to_site
+gui_fit
+update_floorplan_obj -obj 0x7fb75c5cde10 -rects {-1047.443 242.6515 162.387 851.2615}
+gui_select -point {2264.33700 1000.87200}
+gui_select -point {2103.94200 170.75600}
+gui_select -point {249.54650 466.22100}
+gui_select -point {891.12800 989.61650}
+gui_select -point {1355.43000 1110.61650}
+gui_select -rect {1276.63950 1121.87200 1287.89550 1231.61650}
+gui_select -point {2320.61650 736.36050}
+update_floorplan_obj -obj 0x7fb75c5cdef0 -rects {252.252 1115.6255 1462.082 1430.9905}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fb75c5cde10 -rects {218.836 208.884 1428.666 817.494}
+gui_deselect -all
+update_floorplan_obj -obj 0x7fb75c5ba2a0 -rects {832.755 -0.7905 882.755 119.2095}
+update_floorplan_obj -obj 0x7fb75c5ba2a0 -rects {925.616 2.0235 975.616 122.0235}
+gui_select -point {2542.91850 778.57000}

@@ -1,0 +1,440 @@
+[02/10 23:45:24      0s] 
+[02/10 23:45:24      0s] Cadence Innovus(TM) Implementation System.
+[02/10 23:45:24      0s] Copyright 2021 Cadence Design Systems, Inc. All rights reserved worldwide.
+[02/10 23:45:24      0s] 
+[02/10 23:45:24      0s] Version:	v21.15-s110_1, built Fri Sep 23 13:08:12 PDT 2022
+[02/10 23:45:24      0s] Options:	-stylus 
+[02/10 23:45:24      0s] Date:		Mon Feb 10 23:45:24 2025
+[02/10 23:45:24      0s] Host:		ip-10-70-166-58.il-central-1.compute.internal (x86_64 w/Linux 4.14.355-275.570.amzn2.x86_64) (1core*2cpus*Intel(R) Xeon(R) Platinum 8375C CPU @ 2.90GHz 55296KB)
+[02/10 23:45:24      0s] OS:		CentOS Linux release 7.9.2009 (Core)
+[02/10 23:45:24      0s] 
+[02/10 23:45:24      0s] License:
+[02/10 23:45:24      0s] 		[23:45:24.019873] Configured Lic search path (21.01-s002): 5280@ip-10-70-133-150.il-central-1.compute.internal
+[02/10 23:45:24      0s] 
+[02/10 23:45:24      0s] 		invs	Innovus Implementation System	21.1	checkout succeeded
+[02/10 23:45:24      0s] 		8 CPU jobs allowed with the current license(s). Use set_multi_cpu_usage to set your required CPU count.
+[02/10 23:45:33      7s] 
+[02/10 23:45:33      7s] 
+[02/10 23:45:39     11s] Reset Parastics called with the command setExtractRCMode -reset@(#)CDS: Innovus v21.15-s110_1 (64bit) 09/23/2022 13:08 (Linux 3.10.0-693.el7.x86_64)
+[02/10 23:45:42     14s] @(#)CDS: NanoRoute 21.15-s110_1 NR220912-2004/21_15-UB (database version 18.20.592) {superthreading v2.17}
+[02/10 23:45:42     14s] @(#)CDS: AAE 21.15-s039 (64bit) 09/23/2022 (Linux 3.10.0-693.el7.x86_64)
+[02/10 23:45:42     14s] @(#)CDS: CTE 21.15-s038_1 () Sep 20 2022 11:42:13 ( )
+[02/10 23:45:42     14s] @(#)CDS: SYNTECH 21.15-s012_1 () Sep  5 2022 10:25:51 ( )
+[02/10 23:45:42     14s] @(#)CDS: CPE v21.15-s076
+[02/10 23:45:42     14s] @(#)CDS: IQuantus/TQuantus 21.1.1-s867 (64bit) Sun Jun 26 22:12:54 PDT 2022 (Linux 3.10.0-693.el7.x86_64)
+[02/10 23:45:42     14s] @(#)CDS: OA 22.60-p076 Wed May 18 13:45:29 2022
+[02/10 23:45:42     14s] @(#)CDS: SGN 20.10-d001 (01-Jun-2020) (64 bit executable, Qt5.9.0)
+[02/10 23:45:42     14s] @(#)CDS: RCDB 11.15.0
+[02/10 23:45:42     14s] @(#)CDS: STYLUS 21.12-s013_1 (08/15/2022 08:25 PDT)
+[02/10 23:45:42     14s] @(#)CDS: SystemPlanner-21.15Rel-8720 (21.15) (2022-08-22 18:31:54+0800)
+[02/10 23:45:42     14s] Create and set the environment variable TMPDIR to /tmp/innovus_temp_18152_ip-10-70-166-58.il-central-1.compute.internal_saridav_KK6C71.
+
+[02/10 23:45:42     14s] Create and set the environment variable TMPDIR to /tmp/innovus_temp_18152_ip-10-70-166-58.il-central-1.compute.internal_saridav_KK6C71.
+[02/10 23:45:42     14s] 
+[02/10 23:45:42     14s] The soft stacksize limit is either up to the hard limit or larger than 0.2% of RAM. No change is needed.
+[02/10 23:45:44     14s] [INFO] Loading PVS 23.11 fill procedures
+[02/10 23:45:46     16s] 
+[02/10 23:45:46     16s] **INFO:  MMMC transition support version v31-84 
+[02/10 23:45:46     16s] 
+[02/10 23:45:49     19s] @innovus 1> set design(TOPLEVEL) "lp_riscv_top"
+lp_riscv_top
+[02/10 23:46:40     21s] @innovus 2> set runtype "pnrset runtype "pnr"
+"
+[02/10 23:46:40     21s] pnr
+[02/10 23:46:40     21s] @innovus 3> set debug_file "debug.txt"
+set debug_file "debug.txt"
+[02/10 23:46:40     21s] debug.txt
+[02/10 23:46:40     21s] @innovus 4> 
+
+[02/10 23:46:40     21s] @innovus 4> # Load general procedures
+# Load general procedures
+[02/10 23:46:40     21s] @innovus 5> source ../scripts/procedures.tcl -quiet
+source ../scripts/procedures.tcl -quiet
+[02/10 23:46:40     21s] @innovus 6> 
+
+[02/10 23:46:40     21s] @innovus 6> ###############################################
+###############################################
+[02/10 23:46:40     21s] @innovus 7> # Starting Stage - Load defines and technology
+# Starting Stage - Load defines and technology
+[02/10 23:46:40     21s] @innovus 8> ###############################################
+###############################################
+[02/10 23:46:40     21s] @innovus 9> enics_start_stage "start"
+enics_start_stage "start"
+[02/10 23:46:40     21s] *****************************************
+[02/10 23:46:40     21s] *****************************************
+[02/10 23:46:40     21s] **   ENICSINFO: Starting stage start   **
+[02/10 23:46:40     21s] *****************************************
+[02/10 23:46:40     21s] *****************************************
+[02/10 23:46:40     21s] ENICSINFO: Current time is: 10/02/2025 23:46
+[02/10 23:46:40     21s] ENICSINFO: This session is running on Hostname : ip-10-70-166-58.il-central-1.compute.internal
+[02/10 23:46:40     21s] ENICSINFO: The log file is innovus.log14 and the command file is innovus.cmd14
+[02/10 23:46:40     21s] ENICSINFO: ----------------------------------
+[02/10 23:46:40     21s] @innovus 10> 
+
+[02/10 23:46:40     21s] @innovus 10> 
+
+[02/10 23:46:40     21s] @innovus 10> # Load the specific definitions for this project
+# Load the specific definitions for this project
+[02/10 23:46:40     21s] @innovus 11> source ../inputs/$design(TOPLEVEL).defines -quiet
+source ../inputs/$design(TOPLEVEL).defines -quiet
+[02/10 23:46:40     21s] @innovus 12> 
+
+[02/10 23:46:40     21s] @innovus 12> 
+
+[02/10 23:46:40     21s] @innovus 12> 
+
+[02/10 23:46:40     21s] @innovus 12> # Load the library paths and definitions for this technology
+# Load the library paths and definitions for this technology
+[02/10 23:46:40     21s] @innovus 13> source $design(libraries_dir)/libraries.$TECHNOLOGY.tcl -quiet
+source $design(libraries_dir)/libraries.$TECHNOLOGY.tcl -quiet
+[02/10 23:46:40     21s] ##  Process: 65            (User Set)               
+[02/10 23:46:40     21s] ##     Node: (not set)                           
+[02/10 23:46:40     21s] 
+[02/10 23:46:40     21s] ##  Check design process and node:  
+[02/10 23:46:40     21s] ##  Design tech node is not set.
+[02/10 23:46:40     21s] 
+[02/10 23:46:40     21s] Applying the recommended capacitance filtering threshold values for 65nm process node: total_c_th=0, relative_c_th=1 and coupling_c_th=0.1.
+[02/10 23:46:40     21s] 	These values will be used by all post-route extraction engines, including TQuantus, IQuantus and Quantus QRC extraction.
+[02/10 23:46:40     21s] 	Capacitance filtering mode(extract_rc_cap_filter_mode option of the set_db) is 'relative_and_coupling' for all engines.
+[02/10 23:46:40     21s] 	The accuracy mode for post_route extract_rc_effort_level low extraction will be set to 'high'.
+[02/10 23:46:40     21s] 	Default value for EffortLevel(extract_rc_effort_level option of the set_db) in post_route extraction mode will be 'medium' if Quantus QRC technology file is specified else 'low'.
+[02/10 23:46:40     21s] @innovus 14> source $design(libraries_dir)/libraries.$SC_TECHNOLOGY.tcl -quiet
+source $design(libraries_dir)/libraries.$SC_TECHNOLOGY.tcl -quiet
+[02/10 23:46:40     21s] @innovus 15> source $design(libraries_dir)/libraries.$SRAM_TECHNOLOGY.tcl -quiet [1G
+source $design(libraries_dir)/libraries.$SRAM_TECHNOLOGY.tcl -quiet
+[02/10 23:46:40     21s] @innovus 16> if {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
+[02/10 23:46:40     21s] +     source $design(libraries_dir)/libraries.$IO_TECHNOLOGY.tcl -quiet
+[02/10 23:46:40     21s] + }
+if {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
+    source $design(libraries_dir)/libraries.$IO_TECHNOLOGY.tcl -quiet
+}
+[02/10 23:46:40     21s] @innovus 17> set_library_unit -time 1ns -cap 1pf
+set_library_unit -time 1ns -cap 1pf
+[02/10 23:46:40     21s] @innovus 18> 
+
+[02/10 23:46:40     21s] @innovus 18> #############################################
+#############################################
+[02/10 23:46:40     21s] @innovus 19> #       Print values to debug file
+#       Print values to debug file
+[02/10 23:46:40     21s] @innovus 20> #############################################
+#############################################
+[02/10 23:46:40     21s] @innovus 21> set var_list {runtype}
+set var_list {runtype}
+[02/10 23:46:40     21s] runtype
+[02/10 23:46:40     21s] @innovus 22> set dic_list {paths tech tech_files design}
+set dic_list {paths tech tech_files design}
+[02/10 23:46:40     21s] paths tech tech_files design
+[02/10 23:46:40     21s] @innovus 23> enics_print_debug_data w $debug_file "after everything was loaded"  [1G$var_list $dic_list
+enics_print_debug_data w $debug_file "after everything was loaded" $var_list $dic_list
+[02/10 23:46:40     21s] @innovus 24> 
+
+[02/10 23:46:40     21s] @innovus 24> 
+
+[02/10 23:46:40     21s] @innovus 24> ############################################
+############################################
+[02/10 23:46:40     21s] @innovus 25> # Init Design
+# Init Design
+[02/10 23:46:40     21s] @innovus 26> ############################################
+############################################
+[02/10 23:46:40     21s] @innovus 27> enable_metrics -on
+enable_metrics -on
+[02/10 23:46:40     21s] @innovus 28> enics_start_stage "init_design"
+enics_start_stage "init_design"
+[02/10 23:46:40     21s] ***********************************************
+[02/10 23:46:40     21s] ***********************************************
+[02/10 23:46:40     21s] **   ENICSINFO: Starting stage init_design   **
+[02/10 23:46:40     21s] ***********************************************
+[02/10 23:46:40     21s] ***********************************************
+[02/10 23:46:40     21s] ENICSINFO: Current time is: 10/02/2025 23:46
+[02/10 23:46:40     21s] ENICSINFO: ----------------------------------
+[02/10 23:46:40     21s] @innovus 29>
+ 
+[02/10 23:46:40     21s] @innovus 29> # Global Nets
+# Global Nets
+[02/10 23:46:40     21s] @innovus 30> set_db init_ground_nets $design(all_ground_nets)
+set_db init_ground_nets $design(all_ground_nets)
+[02/10 23:46:40     21s] 1 gnd
+[02/10 23:46:40     21s] @innovus 31> set_db init_power_nets $design(all_power_nets)
+set_db init_power_nets $design(all_power_nets)
+[02/10 23:46:40     21s] 1 {vdd vddio}
+[02/10 23:46:40     21s] @innovus 32>
+ 
+[02/10 23:46:40     21s] @innovus 32> # MMM# MMMC
+C
+[02/10 23:46:40     21s] @innovus 33> enics_message "Suppressing the following messages that are reported [1G due to the LIB definitions:" 
+enics_message "Suppressing the following messages that are reported due to the LIB definitions:" 
+[02/10 23:46:40     21s] ENICSINFO: Suppressing the following messages that are reported due to the LIB definitions:
+[02/10 23:46:40     21s] @innovus 34> enics_message "$tech(LIB_SUPPRESS_MESSAGES_INNOVUS)"
+enics_message "$tech(LIB_SUPPRESS_MESSAGES_INNOVUS)"
+[02/10 23:46:40     21s] ENICSINFO: TECHLIB-436 TECHLIB-1318 TECHLIB-302 IMPCTE-337 IMPTS-282
+[02/10 23:46:40     21s] @innovus 35> set_message -suppress -id $tech(LIB_SUPPRESS_MESSAGES_INNOVUS) 
+set_message -suppress -id $tech(LIB_SUPPRESS_MESSAGES_INNOVUS) 
+[02/10 23:46:40     21s] @innovus 36> enics_message "Reading MMMC File" medium
+enics_message "Reading MMMC File" medium
+[02/10 23:46:40     21s] 
+[02/10 23:46:40     21s] ENICSINFO: Reading MMMC File
+[02/10 23:46:40     21s] ----------------------------
+[02/10 23:46:40     21s] @innovus 37> read_mmmc $design(mmmc_view_file) 
+read_mmmc $design(mmmc_view_file) 
+[02/10 23:46:40     21s] #@ Begin verbose source (pre): 
+[02/10 23:46:40     21s] @file 1: #  Version:1.0 MMMC View Definition File
+[02/10 23:46:40     21s] @file 2: # Do Not Remove Above Line
+[02/10 23:46:40     21s] @file 3:
+[02/10 23:46:40     21s] @file 4: ############# MMMC Hierarchy ########################################################################################
+[02/10 23:46:40     21s] @file 5: #                                                                                                                   #
+[02/10 23:46:40     21s] @file 6: #   Setup Analysis View |                   |--> Constraint Corner --> SDC File                                     #
+[02/10 23:46:40     21s] @file 7: #                       |--> Analysis View  |                                                                       #
+[02/10 23:46:40     21s] @file 8: #    Hold Analysis View |                   |                 |--> Timing Condition --> Library Set --> LIB File    #
+[02/10 23:46:40     21s] @file 9: #                                           |--> Delay Corner |                                                     #
+[02/10 23:46:40     21s] @file 10: #                                                             |--> RC Corner --> QRCTech File                       #
+[02/10 23:46:40     21s] @file 11: #####################################################################################################################
+[02/10 23:46:40     21s] @file 12:
+[02/10 23:46:40     21s] @file 13: # Constraint Modes #
+[02/10 23:46:40     21s] @file 14: # ---------------- #
+[02/10 23:46:40     21s] @@file 15: create_constraint_mode \
+[02/10 23:46:40     21s] 	-name functional_mode \
+[02/10 23:46:40     21s] 	-sdc_files $design(functional_sdc)
+[02/10 23:46:40     21s] @file 18:
+[02/10 23:46:40     21s] @file 19: # RC Corners #
+[02/10 23:46:40     21s] @file 20: # ---------- #
+[02/10 23:46:40     21s] @file 21: if {$runtype=="synthesis"} {...
+[02/10 23:46:40     21s] @file 24: } else {
+[02/10 23:46:40     21s] @@file 25: set_message -suppress -id ENCEXT-6202 ;
+[02/10 23:46:40     21s] @file 25: # In addition to the technology file, capacitance table file is specified for all RC corners.
+[02/10 23:46:40     21s] @file 26: }
+[02/10 23:46:40     21s] @file 27:
+[02/10 23:46:40     21s] @@file 28: create_rc_corner \
+[02/10 23:46:40     21s] 	-name bc_rc_corner \
+[02/10 23:46:40     21s] 	-temperature $tech(TEMPERATURE_BC) \
+[02/10 23:46:40     21s]     -qrc_tech $tech_files(QRCTECH_FILE_BC)
+[02/10 23:46:40     21s] @file 32: #	-cap_table $tech_files(CAPTABLE_BC) \
+[02/10 23:46:40     21s] @file 33:
+[02/10 23:46:40     21s] @@file 34: create_rc_corner \
+[02/10 23:46:40     21s] 	-name tc_rc_corner \
+[02/10 23:46:40     21s] 	-temperature $tech(TEMPERATURE_TC) \
+[02/10 23:46:40     21s] 	-qrc_tech $tech_files(QRCTECH_FILE_TC)
+[02/10 23:46:40     21s] @file 38: #	-cap_table $tech_files(CAPTABLE_TC) \
+[02/10 23:46:40     21s] @file 39:
+[02/10 23:46:40     21s] @@file 40: create_rc_corner \
+[02/10 23:46:40     21s] 	-name wc_rc_corner \
+[02/10 23:46:40     21s] 	-temperature $tech(TEMPERATURE_WC) \
+[02/10 23:46:40     21s]     -qrc_tech $tech_files(QRCTECH_FILE_WC)
+[02/10 23:46:40     21s] @file 44: #	-cap_table $tech_files(CAPTABLE_WC) \
+[02/10 23:46:40     21s] @file 45:
+[02/10 23:46:40     21s] @file 46: # Library Sets #
+[02/10 23:46:40     21s] @file 47: # ------------ #
+[02/10 23:46:40     21s] @@file 48: create_library_set \
+[02/10 23:46:40     21s] 	-name bc_libset \
+[02/10 23:46:40     21s] 	-timing $tech_files(ALL_BC_LIBS)  
+[02/10 23:46:40     21s] @file 51: # -aocv $tech_files(ALL_BC_AOCV_LIBS)
+[02/10 23:46:40     21s] @file 52:
+[02/10 23:46:40     21s] @@file 53: create_library_set \
+[02/10 23:46:40     21s] 	-name tc_libset \
+[02/10 23:46:40     21s] 	-timing $tech_files(ALL_TC_LIBS)  
+[02/10 23:46:40     21s] @file 56: # -aocv $tech_files(ALL_TC_AOCV_LIBS)
+[02/10 23:46:40     21s] @file 57:     
+[02/10 23:46:40     21s] @@file 58: create_library_set \
+[02/10 23:46:40     21s] 	-name wc_libset \
+[02/10 23:46:40     21s] 	-timing $tech_files(ALL_WC_LIBS)  
+[02/10 23:46:40     21s] @file 61: # -aocv $tech_files(ALL_WC_AOCV_LIBS)
+[02/10 23:46:40     21s] @file 62:
+[02/10 23:46:40     21s] @file 63: # Timing Conditions #
+[02/10 23:46:40     21s] @file 64: # ----------------- #
+[02/10 23:46:40     21s] @@file 65: create_timing_condition \
+[02/10 23:46:40     21s]    -name         bc_timing_condition \
+[02/10 23:46:40     21s]    -library_sets bc_libset
+[02/10 23:46:40     21s] @file 68:
+[02/10 23:46:40     21s] @@file 69: create_timing_condition \
+[02/10 23:46:40     21s]    -name         tc_timing_condition \
+[02/10 23:46:40     21s]    -library_sets tc_libset
+[02/10 23:46:40     21s] @file 72:
+[02/10 23:46:40     21s] @@file 73: create_timing_condition \
+[02/10 23:46:40     21s]    -name         wc_timing_condition \
+[02/10 23:46:40     21s]    -library_sets wc_libset
+[02/10 23:46:40     21s] @file 76:
+[02/10 23:46:40     21s] @file 77: # Delay Corners #
+[02/10 23:46:40     21s] @file 78: # ------------- #
+[02/10 23:46:40     21s] @@file 79: create_delay_corner \
+[02/10 23:46:40     21s] 	-name bc_dly_corner \
+[02/10 23:46:40     21s] 	-timing_condition bc_timing_condition \
+[02/10 23:46:40     21s] 	-rc_corner bc_rc_corner
+[02/10 23:46:40     21s] @file 83:
+[02/10 23:46:40     21s] @@file 84: create_delay_corner \
+[02/10 23:46:40     21s] 	-name tc_dly_corner \
+[02/10 23:46:40     21s] 	-timing_condition tc_timing_condition \
+[02/10 23:46:40     21s] 	-rc_corner tc_rc_corner
+[02/10 23:46:40     21s] @file 88:
+[02/10 23:46:40     21s] @@file 89: create_delay_corner \
+[02/10 23:46:40     21s] 	-name wc_dly_corner \
+[02/10 23:46:40     21s] 	-timing_condition wc_timing_condition \
+[02/10 23:46:40     21s] 	-rc_corner wc_rc_corner
+[02/10 23:46:40     21s] @file 93:
+[02/10 23:46:40     21s] @file 94: # Analysis Views #
+[02/10 23:46:40     21s] @file 95: # -------------- #
+[02/10 23:46:40     21s] @@file 96: create_analysis_view \
+[02/10 23:46:40     21s] 	-name bc_analysis_view \
+[02/10 23:46:40     21s] 	-constraint_mode functional_mode \
+[02/10 23:46:40     21s] 	-delay_corner bc_dly_corner
+[02/10 23:46:40     21s] @file 100:
+[02/10 23:46:40     21s] @@file 101: create_analysis_view \
+[02/10 23:46:40     21s]     -name tc_analysis_view \
+[02/10 23:46:40     21s] 	-constraint_mode functional_mode \
+[02/10 23:46:40     21s] 	-delay_corner tc_dly_corner
+[02/10 23:46:40     21s] @file 105:
+[02/10 23:46:40     21s] @@file 106: create_analysis_view \
+[02/10 23:46:40     21s] 	-name wc_analysis_view \
+[02/10 23:46:40     21s] 	-constraint_mode functional_mode \
+[02/10 23:46:40     21s] 	-delay_corner wc_dly_corner
+[02/10 23:46:40     21s] @file 110:
+[02/10 23:46:40     21s] @file 111: # Selected Analysis Views #
+[02/10 23:46:40     21s] @file 112: # ----------------------- #
+[02/10 23:46:40     21s] @@file 113: set_analysis_view \
+[02/10 23:46:40     21s] 	-setup $design(selected_setup_analysis_views) \
+[02/10 23:46:40     21s] 	-hold  $design(selected_hold_analysis_views)
+[02/10 23:46:40     21s] @file 116: # -leakage $design(selected_leakage_analysis_views)
+[02/10 23:46:40     21s] @file 117:     # -dynamic $design(selected_dynamic_power_analysis_views)
+[02/10 23:46:40     21s] @file 118:
+[02/10 23:46:40     21s] @file 119:
+[02/10 23:46:40     21s] #@ End verbose source: /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../inputs/lp_riscv_top.mmmc
+[02/10 23:46:40     21s] Reading wc_libset timing library '/tech/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp/sc9_base_rvt/r0p0/lib/sc9_cln65lp_base_rvt_ss_typical_max_0p90v_125c.lib' ...
+[02/10 23:46:42     23s] Read 949 cells in library 'sc9_cln65lp_base_rvt_ss_typical_max_0p90v_125c' 
+[02/10 23:46:42     23s] Reading wc_libset timing library '/tech/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp/sc9_base_lvt/r0p0/lib/sc9_cln65lp_base_lvt_ss_typical_max_0p90v_125c.lib' ...
+[02/10 23:46:43     25s] Read 949 cells in library 'sc9_cln65lp_base_lvt_ss_typical_max_0p90v_125c' 
+[02/10 23:46:43     25s] Reading wc_libset timing library '/tech/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp/sc9_base_hvt/r0p0/lib/sc9_cln65lp_base_hvt_ss_typical_max_0p90v_125c.lib' ...
+[02/10 23:46:45     27s] Read 949 cells in library 'sc9_cln65lp_base_hvt_ss_typical_max_0p90v_125c' 
+[02/10 23:46:45     27s] Reading wc_libset timing library '/project/tsmc65/users/saridav/ws/DVD25/hw7/mem_gen/SP_32768X32/M32/sp_hde_32768_m32_ss_1p08v_1p08v_125c.lib' ...
+[02/10 23:46:45     27s] Read 1 cells in library 'USERLIB_ss_1p08v_1p08v_125c' 
+[02/10 23:46:45     27s] Reading wc_libset timing library '/project/tsmc65/users/saridav/ws/DVD25/hw7/mem_gen/SP_16384X32/M32/sp_hde_16384_m32_ss_1p08v_1p08v_125c.lib' ...
+[02/10 23:46:45     27s] **WARN: (TECHLIB-459):	Appending library 'USERLIB_ss_1p08v_1p08v_125c' to the previously read library of the same name and nominal PVT. Cell definitions from the previously read library will not be overridden. (File /project/tsmc65/users/saridav/ws/DVD25/hw7/mem_gen/SP_16384X32/M32/sp_hde_16384_m32_ss_1p08v_1p08v_125c.lib)
+[02/10 23:46:46     27s] Read 1 cells in library 'USERLIB_ss_1p08v_1p08v_125c' 
+[02/10 23:46:46     27s] Reading wc_libset timing library '/tech/tsmc/65LP/dig_libs/ARM_FEONLY/TSMCHOME_fe/digital/Front_End/timing_power_noise/NLDM/tpdn65lpnv2od3_200a/tpdn65lpnv2od3wc.lib' ...
+[02/10 23:46:46     27s] Read 47 cells in library 'tpdn65lpnv2od3wc' 
+[02/10 23:46:46     27s] Reading bc_libset timing library '/tech/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp/sc9_base_rvt/r0p0/lib/sc9_cln65lp_base_rvt_ff_typical_min_1p32v_m40c.lib' ...
+[02/10 23:46:47     29s] Read 949 cells in library 'sc9_cln65lp_base_rvt_ff_typical_min_1p32v_m40c' 
+[02/10 23:46:47     29s] Reading bc_libset timing library '/tech/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp/sc9_base_lvt/r0p0/lib/sc9_cln65lp_base_lvt_ff_typical_min_1p32v_m40c.lib' ...
+[02/10 23:46:49     30s] Read 949 cells in library 'sc9_cln65lp_base_lvt_ff_typical_min_1p32v_m40c' 
+[02/10 23:46:49     30s] Reading bc_libset timing library '/tech/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp/sc9_base_hvt/r0p0/lib/sc9_cln65lp_base_hvt_ff_typical_min_1p32v_m40c.lib' ...
+[02/10 23:46:51     32s] Read 949 cells in library 'sc9_cln65lp_base_hvt_ff_typical_min_1p32v_m40c' 
+[02/10 23:46:51     32s] Reading bc_libset timing library '/project/tsmc65/users/saridav/ws/DVD25/hw7/mem_gen/SP_32768X32/M32/sp_hde_32768_m32_ff_1p32v_1p32v_m40c.lib' ...
+[02/10 23:46:51     32s] Read 1 cells in library 'USERLIB_ff_1p32v_1p32v_m40c' 
+[02/10 23:46:51     32s] Reading bc_libset timing library '/project/tsmc65/users/saridav/ws/DVD25/hw7/mem_gen/SP_16384X32/M32/sp_hde_16384_m32_ff_1p32v_1p32v_m40c.lib' ...
+[02/10 23:46:51     32s] **WARN: (TECHLIB-459):	Appending library 'USERLIB_ff_1p32v_1p32v_m40c' to the previously read library of the same name and nominal PVT. Cell definitions from the previously read library will not be overridden. (File /project/tsmc65/users/saridav/ws/DVD25/hw7/mem_gen/SP_16384X32/M32/sp_hde_16384_m32_ff_1p32v_1p32v_m40c.lib)
+[02/10 23:46:51     32s] Read 1 cells in library 'USERLIB_ff_1p32v_1p32v_m40c' 
+[02/10 23:46:51     32s] Reading bc_libset timing library '/tech/tsmc/65LP/dig_libs/ARM_FEONLY/TSMCHOME_fe/digital/Front_End/timing_power_noise/NLDM/tpdn65lpnv2od3_200a/tpdn65lpnv2od3bc.lib' ...
+[02/10 23:46:51     32s] Read 47 cells in library 'tpdn65lpnv2od3bc' 
+[02/10 23:46:51     33s] Ending "PreSetAnalysisView" (total cpu=0:00:11.2, real=0:00:11.0, peak res=1250.6M, current mem=1005.2M)
+[02/10 23:46:51     33s] timing_initialized
+
+[02/10 23:46:51     33s] @innovus 38> 
+# LEFs
+[02/10 23:46:51     33s] @innovus 38> # LEFs
+[02/10 23:46:51     33s] @innovus 39> enics_message "Suppressing the following messages that are reported [1G due to the LEF definitions:" 
+enics_message "Suppressing the following messages that are reported due to the LEF definitions:" 
+[02/10 23:46:51     33s] ENICSINFO: Suppressing the following messages that are reported due to the LEF definitions:
+[02/10 23:46:51     33s] @innovus 40> enics_message "$tech(LEF_SUPPRESS_MESSAGES_INNOVUS)"
+enics_message "$tech(LEF_SUPPRESS_MESSAGES_INNOVUS)"
+[02/10 23:46:51     33s] ENICSINFO: ENCEXT-6202 IMPLF-200 LEFPARS-2001 LEFPARS-2065 LEFPARS-2076 IMPLF-58 IMPFP-3961 IMPSR-4302
+[02/10 23:46:51     33s] @innovus 41> set_message -suppress -id $tech(LEF_SUPPRESS_MESSAGES_INNOVUS) 
+set_message -suppress -id $tech(LEF_SUPPRESS_MESSAGES_INNOVUS) 
+[02/10 23:46:51     33s] @innovus 42> enics_message "Reading LEF abstracts"
+enics_message "Reading LEF abstracts"
+[02/10 23:46:51     33s] ENICSINFO: Reading LEF abstracts
+[02/10 23:46:51     33s] @innovus 43> read_physical -lef $tech_files(ALL_LEFS)
+read_physical -lef $tech_files(ALL_LEFS)
+[02/10 23:46:51     33s] 
+[02/10 23:46:51     33s] Loading LEF file /data/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp//arm_tech/r2p0/lef/1p9m_6x2z/sc9_tech.lef ...
+[02/10 23:46:51     33s] 
+[02/10 23:46:51     33s] Loading LEF file /data/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp//sc9_base_rvt/r0p0/lef/sc9_cln65lp_base_rvt.lef ...
+[02/10 23:46:51     33s] Set DBUPerIGU to M2 pitch 400.
+[02/10 23:46:51     33s] 
+[02/10 23:46:51     33s] Loading LEF file /data/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp//sc9_base_lvt/r0p0/lef/sc9_cln65lp_base_lvt.lef ...
+[02/10 23:46:52     33s] 
+[02/10 23:46:52     33s] Loading LEF file /data/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp//sc9_base_hvt/r0p0/lef/sc9_cln65lp_base_hvt.lef ...
+[02/10 23:46:52     33s] 
+[02/10 23:46:52     33s] Loading LEF file ../mem_gen/SP_32768X32/M32/sp_hde_32768_m32.lef ...
+[02/10 23:46:52     33s] 
+[02/10 23:46:52     33s] Loading LEF file ../mem_gen/SP_16384X32/M32/sp_hde_16384_m32.lef ...
+[02/10 23:46:52     33s] 
+[02/10 23:46:52     33s] Loading LEF file /data/project/tsmc65/shared/modified_libraries/tpdn65lpnv2od3_9lm.lef ...
+[02/10 23:46:52     33s] WARNING (LEFPARS-2502): Message (LEFPARS-2065) has been suppressed from output. See file /data/project/tsmc65/shared/modified_libraries/tpdn65lpnv2od3_9lm.lef at line 12683.
+[02/10 23:46:52     33s] WARNING (LEFPARS-2502): Message (LEFPARS-2076) has been suppressed from output. See file /data/project/tsmc65/shared/modified_libraries/tpdn65lpnv2od3_9lm.lef at line 12686.
+[02/10 23:46:52     33s] WARNING (LEFPARS-2502): Message (LEFPARS-2001) has been suppressed from output. See file /data/project/tsmc65/shared/modified_libraries/tpdn65lpnv2od3_9lm.lef at line 13714.
+[02/10 23:46:52     33s] 
+[02/10 23:46:52     33s] Loading LEF file /data/tsmc/65LP/dig_libs/ARM_FEONLY/TSMCHOME_fe/digital/Back_End/lef/tpdn65lpnv2od3_140b/mt/9lm/lef//antenna_9lm.lef ...
+[02/10 23:46:52     33s] **WARN: (IMPLF-61):	43 duplicated MACRO definitions have been found in the LEF file(s). Their content except DENSITY and PIN ANTENNA* data, and certain properties, have been ignored.
+[02/10 23:46:52     33s] Review the LEF files specified in the init_lef_files variable and remove redundant definitions.
+[02/10 23:46:52     33s] Type 'man IMPLF-61' for more detail.
+[02/10 23:46:52     33s] 
+[02/10 23:46:52     33s] ##  Check design process and node:  
+[02/10 23:46:52     33s] ##  Design tech node is not set.
+[02/10 23:46:52     33s] 
+[02/10 23:46:52     33s] 0
+[02/10 23:46:52     33s] @innovus 44> 
+
+[02/10 23:46:52     33s] @innovus 44> # Post Synthesis Netlist
+# Post Synthesis Netlist
+[02/10 23:46:52     33s] @innovus 45> enics_message "Reading the Post Synthesis netlist at $design(postsy [1Gn_netlist)" medium
+enics_message "Reading the Post Synthesis netlist at $design(postsyn_netlist)" medium
+[02/10 23:46:52     33s] 
+[02/10 23:46:52     33s] ENICSINFO: Reading the Post Synthesis netlist at /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../export/lp_riscv_top.postsyn.v
+[02/10 23:46:52     33s] -------------------------------------------------------------------------------------------------------------------------------------------
+[02/10 23:46:52     33s] @innovus 46> read_netlist $design(postsyn_netlist)
+read_netlist $design(postsyn_netlist)
+[02/10 23:46:52     33s] #% Begin Load netlist data ... (date=02/10 23:46:52, mem=1022.0M)
+[02/10 23:46:52     33s] *** Begin netlist parsing (mem=1204.7M) ***
+[02/10 23:46:52     33s] Pin 'VSS' of cell 'PVSS3CDG' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+[02/10 23:46:52     33s] Pin 'VSSPST' of cell 'PVSS2CDG' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+[02/10 23:46:52     33s] Pin 'AVSS' of cell 'PVSS2ANA' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+[02/10 23:46:52     33s] Pin 'VSS' of cell 'PVSS1CDG' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+[02/10 23:46:52     33s] Pin 'AVSS' of cell 'PVSS1ANA' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+[02/10 23:46:52     33s] Pin 'VDDPST' of cell 'PVDD2POC' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+[02/10 23:46:52     33s] Pin 'VDDPST' of cell 'PVDD2CDG' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+[02/10 23:46:52     33s] Pin 'AVDD' of cell 'PVDD2ANA' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+[02/10 23:46:52     33s] Pin 'VDD' of cell 'PVDD1CDG' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+[02/10 23:46:52     33s] Pin 'AVDD' of cell 'PVDD1ANA' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+[02/10 23:46:52     33s] Created 2896 new cells from 10 timing libraries.
+[02/10 23:46:52     33s] Reading netlist ...
+[02/10 23:46:52     33s] Backslashed names will retain backslash and a trailing blank character.
+[02/10 23:46:52     33s] Reading verilog netlist '/data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../export/lp_riscv_top.postsyn.v'
+[02/10 23:46:52     33s] 
+[02/10 23:46:52     33s] *** Memory Usage v#1 (Current mem = 1209.688M, initial mem = 474.215M) ***
+[02/10 23:46:52     33s] *** End netlist parsing (cpu=0:00:00.2, real=0:00:00.0, mem=1209.7M) ***
+[02/10 23:46:52     33s] #% End Load netlist data ... (date=02/10 23:46:52, total cpu=0:00:00.3, real=0:00:00.0, peak res=1174.4M, current mem=1174.4M)
+[02/10 23:46:52     33s] Top level cell is lp_riscv_top.
+[02/10 23:46:53     34s] Hooked 5792 DB cells to tlib cells.
+[02/10 23:46:53     34s] Ending "BindLib:" (total cpu=0:00:00.7, real=0:00:00.0, peak res=1280.8M, current mem=1280.8M)
+[02/10 23:46:53     34s] Starting recursive module instantiation check.
+[02/10 23:46:53     34s] No recursion found.
+[02/10 23:46:53     34s] Building hierarchical netlist for Cell lp_riscv_top ...
+[02/10 23:46:53     34s] *** Netlist is unique.
+[02/10 23:46:53     34s] Setting Std. cell height to 3600 DBU (smallest netlist inst).
+[02/10 23:46:53     34s] ** info: there are 5914 modules.
+[02/10 23:46:53     34s] ** info: there are 26117 stdCell insts.
+[02/10 23:46:53     34s] ** info: there are 68 Pad insts.
+[02/10 23:46:53     34s] ** info: there are 3 macros.
+[02/10 23:46:53     35s] 
+[02/10 23:46:53     35s] *** Memory Usage v#1 (Current mem = 1328.102M, initial mem = 474.215M) ***
+[02/10 23:46:53     35s] 0
+[02/10 23:46:53     35s] @innovus 47> 
+
+[02/10 23:46:53     35s] @innovus 47> # Import and initialize design
+# Import and initialize design
+[02/10 23:46:53     35s] @innovus 48> enics_message "Running init_design command" mediumenics_message "Running init_design command" medium
+
+[02/10 23:46:53     35s] 
+[02/10 23:46:53     35s] ENICSINFO: Running init_design command
+[02/10 23:46:53     35s] --------------------------------------
+[02/10 23:46:53     35s] @innovus 49> init_designquit
+[02/10 23:47:08     35s] invalid command name "quit"
+invalid command name "quit"
+[02/10 23:47:08     35s] @innovus 50> exit
+
+[02/10 23:47:11     35s] *** Memory Usage v#1 (Current mem = 1330.336M, initial mem = 474.215M) ***
+[02/10 23:47:11     35s] 
+[02/10 23:47:11     35s] *** Summary of all messages that are not suppressed in this session:
+[02/10 23:47:11     35s] Severity  ID               Count  Summary                                  
+[02/10 23:47:11     35s] WARNING   IMPLF-61             1  %d duplicated MACRO definitions have bee...
+[02/10 23:47:11     35s] WARNING   TECHLIB-459          2  Appending library '%s' to the previously...
+[02/10 23:47:11     35s] *** Message Summary: 3 warning(s), 0 error(s)
+[02/10 23:47:11     35s] 
+[02/10 23:47:11     35s] --- Ending "Innovus" (totcpu=0:00:35.9, real=0:01:47, mem=1330.3M) ---

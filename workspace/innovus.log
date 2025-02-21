@@ -1,0 +1,1581 @@
+
+Cadence Innovus(TM) Implementation System.
+Copyright 2021 Cadence Design Systems, Inc. All rights reserved worldwide.
+
+Version:	v21.15-s110_1, built Fri Sep 23 13:08:12 PDT 2022
+Options:	-stylus 
+Date:		Tue Jan 28 14:01:00 2025
+Host:		ip-10-70-151-239.il-central-1.compute.internal (x86_64 w/Linux 4.14.355-275.570.amzn2.x86_64) (1core*2cpus*Intel(R) Xeon(R) Platinum 8375C CPU @ 2.90GHz 55296KB)
+OS:		CentOS Linux release 7.9.2009 (Core)
+
+License:
+		[14:01:01.019769] Configured Lic search path (21.01-s002): 5280@ip-10-70-133-150.il-central-1.compute.internal
+
+		invs	Innovus Implementation System	21.1	checkout succeeded
+		8 CPU jobs allowed with the current license(s). Use set_multi_cpu_usage to set your required CPU count.
+
+
+Create and set the environment variable TMPDIR to /tmp/innovus_temp_30015_ip-10-70-151-239.il-central-1.compute.internal_saridav_ZubAGb.
+
+The soft stacksize limit is either up to the hard limit or larger than 0.2% of RAM. No change is needed.
+[INFO] Loading PVS 23.11 fill procedures
+
+**INFO:  MMMC transition support version v31-84 
+
+@innovus 1> set design(TOPLEVEL) "lp_riscv_top"
+lp_riscv_top
+@innovus 2> set runtypset runtype "pnr"
+e "pnr"
+pnr
+@innovus 3> set debug_file "debug.txt"
+set debug_file "debug.txt"
+debug.txt
+@innovus 4> 
+
+@innovus 4> # Load general# Load general procedures
+ procedures
+@innovus 5> source ../scripts/procedures.tcl -quiet
+source ../scripts/procedures.tcl -quiet
+@innovus 6> enics_start_stage "start"
+*****************************************
+*****************************************
+**   ENICSINFO: Starting stage start   **
+*****************************************
+*****************************************
+ENICSINFO: Current time is: 28/01/2025 14:03
+ENICSINFO: This session is running on Hostname : ip-10-70-151-239.il-central-1.compute.internal
+ENICSINFO: The log file is innovus.log and the command file is innovus.cmd
+ENICSINFO: ----------------------------------
+@innovus 7> 
+
+@innovus 7> 
+
+@innovus 7> # Load the specific definitions for this project
+# Load the specific definitions for this project
+@innovus 8> source ../inputs/$design(TOPLEVEL).defines -quiet
+source ../inputs/$design(TOPLEVEL).defines -quiet
+@innovus 9> 
+
+@innovus 9> 
+
+@innovus 9> 
+
+@innovus 9> # Load the library paths and definitions for this technology
+# Load the library paths and definitions for this technology
+@innovus 10> source $design(libraries_dir)/libraries.$TECHNOLOGY.tcl -quiet
+source $design(libraries_dir)/libraries.$TECHNOLOGY.tcl -quiet
+##  Process: 65            (User Set)               
+##     Node: (not set)                           
+
+##  Check design process and node:  
+##  Design tech node is not set.
+
+Applying the recommended capacitance filtering threshold values for 65nm process node: total_c_th=0, relative_c_th=1 and coupling_c_th=0.1.
+	These values will be used by all post-route extraction engines, including TQuantus, IQuantus and Quantus QRC extraction.
+	Capacitance filtering mode(extract_rc_cap_filter_mode option of the set_db) is 'relative_and_coupling' for all engines.
+	The accuracy mode for post_route extract_rc_effort_level low extraction will be set to 'high'.
+	Default value for EffortLevel(extract_rc_effort_level option of the set_db) in post_route extraction mode will be 'medium' if Quantus QRC technology file is specified else 'low'.
+@innovus 11> source $design(libraries_dir)/libraries.$SC_TECHNOLOGY.tcl -quiet
+source $design(libraries_dir)/libraries.$SC_TECHNOLOGY.tcl -quiet
+@innovus 12> source $design(libraries_dir)/libraries.$SRAM_TECHNOLOGY.tcl -quiet
+source $design(libraries_dir)/libraries.$SRAM_TECHNOLOGY.tcl -quiet
+@innovus 13> if {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
++     source $design(libraries_dir)/libraries.$IO_TECHNOLOGY.tcl -quiet
++ }
+if {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
+    source $design(libraries_dir)/libraries.$IO_TECHNOLOGY.tcl -quiet
+}
+@innovus 14> set_library_unit set_library_unit -time 1ns -cap 1pf
+-time 1ns -cap 1pf
+@innovus 15> set var_list {runtype}
+runtype
+@innovus 16> set dic_list {paths tech tech_files design}
+set dic_list {paths tech tech_files design}
+paths tech tech_files design
+@innovus 17> enics_print_debug_data w $debug_file "after everything was loaded" $var_list $dic_list
+enics_print_debug_data w $debug_file "after everything was loaded" $var_list $dic_list
+@innovus 18> enable_metrics -on
+@innovus 19> enics_start_stage "init_design"
+enics_start_stage "init_design"
+***********************************************
+***********************************************
+**   ENICSINFO: Starting stage init_design   **
+***********************************************
+***********************************************
+ENICSINFO: Current time is: 28/01/2025 14:05
+ENICSINFO: ----------------------------------
+@innovus 20> 
+
+@innovus 20> # Global Net# Global Nets
+s
+@innovus 21> set_db init_ground_nets $design(all_grouset_db init_ground_nets $design(all_ground_nets)
+nd_nets)
+1 gnd
+@innovus 22> set_db init_power_nets $design(all_power_nets)
+set_db init_power_nets $design(all_power_nets)
+1 {vdd vddio}
+@innovus 23> gui_select -point {0.05900 0.04400}
+@innovus 24> gui_select -point {0.08300 0.06800}
+@innovus 25> # MMMC
+# MMMC
+@innovus 26> enics_message "Suppressing the following messages that are reported due to the LIB definitions:" 
+enics_message "Suppressing the following messages that are reported due to the LIB definitions:" 
+ENICSINFO: Suppressing the following messages that are reported due to the LIB definitions:
+@innovus 27> enics_message "$tech(LIB_SUPPRESS_MESSAGES_INNOVUS)"
+enics_message "$tech(LIB_SUPPRESS_MESSAGES_INNOVUS)"
+ENICSINFO: TECHLIB-436 TECHLIB-1318 TECHLIB-302 IMPCTE-337 IMPTS-282
+@innovus 28> set_message -suppress -id $tech(LIB_SUPPRESS_MESSAGES_INNOVUS) 
+set_message -suppress -id $tech(LIB_SUPPRESS_MESSAGES_INNOVUS) 
+@innovus 29> enics_message "Reading MMMC File" medium
+enics_message "Reading MMMC File" medium
+
+ENICSINFO: Reading MMMC File
+----------------------------
+@innovus 30> read_mmmc $design(mmmc_view_file) 
+read_mmmc $design(mmmc_view_file) 
+#@ Begin verbose source (pre): 
+@file 1: #  Version:1.0 MMMC View Definition File
+@file 2: # Do Not Remove Above Line
+@file 3:
+@file 4: ############# MMMC Hierarchy ########################################################################################
+@file 5: #                                                                                                                   #
+@file 6: #   Setup Analysis View |                   |--> Constraint Corner --> SDC File                                     #
+@file 7: #                       |--> Analysis View  |                                                                       #
+@file 8: #    Hold Analysis View |                   |                 |--> Timing Condition --> Library Set --> LIB File    #
+@file 9: #                                           |--> Delay Corner |                                                     #
+@file 10: #                                                             |--> RC Corner --> QRCTech File                       #
+@file 11: #####################################################################################################################
+@file 12:
+@file 13: # Constraint Modes #
+@file 14: # ---------------- #
+@@file 15: create_constraint_mode \
+	-name functional_mode \
+	-sdc_files $design(functional_sdc)
+@file 18:
+@file 19: # RC Corners #
+@file 20: # ---------- #
+@file 21: if {$runtype=="synthesis"} {...
+@file 24: } else {
+@@file 25: set_message -suppress -id ENCEXT-6202 ;
+@file 25: # In addition to the technology file, capacitance table file is specified for all RC corners.
+@file 26: }
+@file 27:
+@@file 28: create_rc_corner \
+	-name bc_rc_corner \
+	-temperature $tech(TEMPERATURE_BC) \
+    -qrc_tech $tech_files(QRCTECH_FILE_BC)
+@file 32: #	-cap_table $tech_files(CAPTABLE_BC) \
+@file 33:
+@@file 34: create_rc_corner \
+	-name tc_rc_corner \
+	-temperature $tech(TEMPERATURE_TC) \
+	-qrc_tech $tech_files(QRCTECH_FILE_TC)
+@file 38: #	-cap_table $tech_files(CAPTABLE_TC) \
+@file 39:
+@@file 40: create_rc_corner \
+	-name wc_rc_corner \
+	-temperature $tech(TEMPERATURE_WC) \
+    -qrc_tech $tech_files(QRCTECH_FILE_WC)
+@file 44: #	-cap_table $tech_files(CAPTABLE_WC) \
+@file 45:
+@file 46: # Library Sets #
+@file 47: # ------------ #
+@@file 48: create_library_set \
+	-name bc_libset \
+	-timing $tech_files(ALL_BC_LIBS)  
+@file 51: # -aocv $tech_files(ALL_BC_AOCV_LIBS)
+@file 52:
+@@file 53: create_library_set \
+	-name tc_libset \
+	-timing $tech_files(ALL_TC_LIBS)  
+@file 56: # -aocv $tech_files(ALL_TC_AOCV_LIBS)
+@file 57:     
+@@file 58: create_library_set \
+	-name wc_libset \
+	-timing $tech_files(ALL_WC_LIBS)  
+@file 61: # -aocv $tech_files(ALL_WC_AOCV_LIBS)
+@file 62:
+@file 63: # Timing Conditions #
+@file 64: # ----------------- #
+@@file 65: create_timing_condition \
+   -name         bc_timing_condition \
+   -library_sets bc_libset
+@file 68:
+@@file 69: create_timing_condition \
+   -name         tc_timing_condition \
+   -library_sets tc_libset
+@file 72:
+@@file 73: create_timing_condition \
+   -name         wc_timing_condition \
+   -library_sets wc_libset
+@file 76:
+@file 77: # Delay Corners #
+@file 78: # ------------- #
+@@file 79: create_delay_corner \
+	-name bc_dly_corner \
+	-timing_condition bc_timing_condition \
+	-rc_corner bc_rc_corner
+@file 83:
+@@file 84: create_delay_corner \
+	-name tc_dly_corner \
+	-timing_condition tc_timing_condition \
+	-rc_corner tc_rc_corner
+@file 88:
+@@file 89: create_delay_corner \
+	-name wc_dly_corner \
+	-timing_condition wc_timing_condition \
+	-rc_corner wc_rc_corner
+@file 93:
+@file 94: # Analysis Views #
+@file 95: # -------------- #
+@@file 96: create_analysis_view \
+	-name bc_analysis_view \
+	-constraint_mode functional_mode \
+	-delay_corner bc_dly_corner
+@file 100:
+@@file 101: create_analysis_view \
+    -name tc_analysis_view \
+	-constraint_mode functional_mode \
+	-delay_corner tc_dly_corner
+@file 105:
+@@file 106: create_analysis_view \
+	-name wc_analysis_view \
+	-constraint_mode functional_mode \
+	-delay_corner wc_dly_corner
+@file 110:
+@file 111: # Selected Analysis Views #
+@file 112: # ----------------------- #
+@@file 113: set_analysis_view \
+	-setup $design(selected_setup_analysis_views) \
+	-hold  $design(selected_hold_analysis_views)
+@file 116: # -leakage $design(selected_leakage_analysis_views)
+@file 117:     # -dynamic $design(selected_dynamic_power_analysis_views)
+@file 118:
+@file 119:
+#@ End verbose source: /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../inputs/lp_riscv_top.mmmc
+Reading wc_libset timing library '/tech/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp/sc9_base_rvt/r0p0/lib/sc9_cln65lp_base_rvt_ss_typical_max_0p90v_125c.lib' ...
+Read 949 cells in library 'sc9_cln65lp_base_rvt_ss_typical_max_0p90v_125c' 
+Reading wc_libset timing library '/tech/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp/sc9_base_lvt/r0p0/lib/sc9_cln65lp_base_lvt_ss_typical_max_0p90v_125c.lib' ...
+Read 949 cells in library 'sc9_cln65lp_base_lvt_ss_typical_max_0p90v_125c' 
+Reading wc_libset timing library '/tech/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp/sc9_base_hvt/r0p0/lib/sc9_cln65lp_base_hvt_ss_typical_max_0p90v_125c.lib' ...
+Read 949 cells in library 'sc9_cln65lp_base_hvt_ss_typical_max_0p90v_125c' 
+Reading wc_libset timing library '/project/tsmc65/users/saridav/ws/DVD25/hw7/mem_gen/SP_32768X32/M32/sp_hde_32768_m32_ss_1p08v_1p08v_125c.lib' ...
+Read 1 cells in library 'USERLIB_ss_1p08v_1p08v_125c' 
+Reading wc_libset timing library '/project/tsmc65/users/saridav/ws/DVD25/hw7/mem_gen/SP_16384X32/M32/sp_hde_16384_m32_ss_1p08v_1p08v_125c.lib' ...
+**WARN: (TECHLIB-459):	Appending library 'USERLIB_ss_1p08v_1p08v_125c' to the previously read library of the same name and nominal PVT. Cell definitions from the previously read library will not be overridden. (File /project/tsmc65/users/saridav/ws/DVD25/hw7/mem_gen/SP_16384X32/M32/sp_hde_16384_m32_ss_1p08v_1p08v_125c.lib)
+Read 1 cells in library 'USERLIB_ss_1p08v_1p08v_125c' 
+Reading wc_libset timing library '/tech/tsmc/65LP/dig_libs/ARM_FEONLY/TSMCHOME_fe/digital/Front_End/timing_power_noise/NLDM/tpdn65lpnv2od3_200a/tpdn65lpnv2od3wc.lib' ...
+Read 47 cells in library 'tpdn65lpnv2od3wc' 
+Reading bc_libset timing library '/tech/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp/sc9_base_rvt/r0p0/lib/sc9_cln65lp_base_rvt_ff_typical_min_1p32v_m40c.lib' ...
+Read 949 cells in library 'sc9_cln65lp_base_rvt_ff_typical_min_1p32v_m40c' 
+Reading bc_libset timing library '/tech/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp/sc9_base_lvt/r0p0/lib/sc9_cln65lp_base_lvt_ff_typical_min_1p32v_m40c.lib' ...
+Read 949 cells in library 'sc9_cln65lp_base_lvt_ff_typical_min_1p32v_m40c' 
+Reading bc_libset timing library '/tech/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp/sc9_base_hvt/r0p0/lib/sc9_cln65lp_base_hvt_ff_typical_min_1p32v_m40c.lib' ...
+Read 949 cells in library 'sc9_cln65lp_base_hvt_ff_typical_min_1p32v_m40c' 
+Reading bc_libset timing library '/project/tsmc65/users/saridav/ws/DVD25/hw7/mem_gen/SP_32768X32/M32/sp_hde_32768_m32_ff_1p32v_1p32v_m40c.lib' ...
+Read 1 cells in library 'USERLIB_ff_1p32v_1p32v_m40c' 
+Reading bc_libset timing library '/project/tsmc65/users/saridav/ws/DVD25/hw7/mem_gen/SP_16384X32/M32/sp_hde_16384_m32_ff_1p32v_1p32v_m40c.lib' ...
+**WARN: (TECHLIB-459):	Appending library 'USERLIB_ff_1p32v_1p32v_m40c' to the previously read library of the same name and nominal PVT. Cell definitions from the previously read library will not be overridden. (File /project/tsmc65/users/saridav/ws/DVD25/hw7/mem_gen/SP_16384X32/M32/sp_hde_16384_m32_ff_1p32v_1p32v_m40c.lib)
+Read 1 cells in library 'USERLIB_ff_1p32v_1p32v_m40c' 
+Reading bc_libset timing library '/tech/tsmc/65LP/dig_libs/ARM_FEONLY/TSMCHOME_fe/digital/Front_End/timing_power_noise/NLDM/tpdn65lpnv2od3_200a/tpdn65lpnv2od3bc.lib' ...
+Read 47 cells in library 'tpdn65lpnv2od3bc' 
+timing_initialized
+@innovus 31> # LEFs
+@innovus 32> enics_message "Suppressing the following messages that are reported due to the LEF definitions:" 
+enics_message "Suppressing the following messages that are reported due to the LEF definitions:" 
+ENICSINFO: Suppressing the following messages that are reported due to the LEF definitions:
+@innovus 33> enics_message "$tech(LEF_SUPPRESS_MESSAGES_INNOVUS)"
+enics_message "$tech(LEF_SUPPRESS_MESSAGES_INNOVUS)"
+ENICSINFO: ENCEXT-6202 IMPLF-200 LEFPARS-2001 LEFPARS-2065 LEFPARS-2076 IMPLF-58 IMPFP-3961 IMPSR-4302
+@innovus 34> set_message -suppress -id $tech(LEF_SUPPRESS_MESSAGES_INNOVUS) 
+set_message -suppress -id $tech(LEF_SUPPRESS_MESSAGES_INNOVUS) 
+@innovus 35> enics_message "Reading LEF abstracts"
+enics_message "Reading LEF abstracts"
+ENICSINFO: Reading LEF abstracts
+@innovus 36> read_physical -lef $tech_files(ALL_LEFS)
+read_physical -lef $tech_files(ALL_LEFS)
+
+Loading LEF file /data/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp//arm_tech/r2p0/lef/1p9m_6x2z/sc9_tech.lef ...
+
+Loading LEF file /data/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp//sc9_base_rvt/r0p0/lef/sc9_cln65lp_base_rvt.lef ...
+Set DBUPerIGU to M2 pitch 400.
+
+Loading LEF file /data/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp//sc9_base_lvt/r0p0/lef/sc9_cln65lp_base_lvt.lef ...
+
+Loading LEF file /data/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp//sc9_base_hvt/r0p0/lef/sc9_cln65lp_base_hvt.lef ...
+
+Loading LEF file ../mem_gen/SP_32768X32/M32/sp_hde_32768_m32.lef ...
+
+Loading LEF file ../mem_gen/SP_16384X32/M32/sp_hde_16384_m32.lef ...
+
+Loading LEF file /data/project/tsmc65/shared/modified_libraries/tpdn65lpnv2od3_9lm.lef ...
+WARNING (LEFPARS-2502): Message (LEFPARS-2065) has been suppressed from output. See file /data/project/tsmc65/shared/modified_libraries/tpdn65lpnv2od3_9lm.lef at line 12683.
+WARNING (LEFPARS-2502): Message (LEFPARS-2076) has been suppressed from output. See file /data/project/tsmc65/shared/modified_libraries/tpdn65lpnv2od3_9lm.lef at line 12686.
+WARNING (LEFPARS-2502): Message (LEFPARS-2001) has been suppressed from output. See file /data/project/tsmc65/shared/modified_libraries/tpdn65lpnv2od3_9lm.lef at line 13714.
+
+Loading LEF file /data/tsmc/65LP/dig_libs/ARM_FEONLY/TSMCHOME_fe/digital/Back_End/lef/tpdn65lpnv2od3_140b/mt/9lm/lef//antenna_9lm.lef ...
+**WARN: (IMPLF-61):	43 duplicated MACRO definitions have been found in the LEF file(s). Their content except DENSITY and PIN ANTENNA* data, and certain properties, have been ignored.
+Review the LEF files specified in the init_lef_files variable and remove redundant definitions.
+Type 'man IMPLF-61' for more detail.
+
+##  Check design process and node:  
+##  Design tech node is not set.
+
+0
+@innovus 37> # Post Synthesis Netlist
+@innovus 38> enics_message "Renics_message "Reading the Post Synthesis netlist at $design(postsyn_netlist)" medium
+eading the Post Synthesis netlist at $design(postsyn_netlist)" medium
+
+ENICSINFO: Reading the Post Synthesis netlist at /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../export/lp_riscv_top.postsyn.v
+-------------------------------------------------------------------------------------------------------------------------------------------
+@innovus 39> read_netlist $design(postsyn_netlist)read_netlist $design(postsyn_netlist)
+#% Begin Load netlist data ... (date=01/28 14:08:10, mem=1041.4M)
+*** Begin netlist parsing (mem=7340.8M) ***
+Pin 'VSS' of cell 'PVSS3CDG' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+Pin 'VSSPST' of cell 'PVSS2CDG' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+Pin 'AVSS' of cell 'PVSS2ANA' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+Pin 'VSS' of cell 'PVSS1CDG' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+Pin 'AVSS' of cell 'PVSS1ANA' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+Pin 'VDDPST' of cell 'PVDD2POC' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+Pin 'VDDPST' of cell 'PVDD2CDG' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+Pin 'AVDD' of cell 'PVDD2ANA' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+Pin 'VDD' of cell 'PVDD1CDG' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+Pin 'AVDD' of cell 'PVDD1ANA' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+Created 2896 new cells from 10 timing libraries.
+Reading netlist ...
+Backslashed names will retain backslash and a trailing blank character.
+Reading verilog netlist '/data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../export/lp_riscv_top.postsyn.v'
+**WARN: (IMPVL-346):	Module 'sp_hse_32768_m32' is instantiated in the netlist, but is not defined in the LEF files.  Since there is no real cell definition for such a cell, it will be treated as an empty module.
+Type 'man IMPVL-346' for more detail.
+
+*** Memory Usage v#1 (Current mem = 7350.773M, initial mem = 2004.215M) ***
+*** End netlist parsing (cpu=0:00:00.3, real=0:00:00.0, mem=7350.8M) ***
+#% End Load netlist data ... (date=01/28 14:08:10, total cpu=0:00:00.3, real=0:00:00.0, peak res=1193.8M, current mem=1193.8M)
+Top level cell is lp_riscv_top.
+Hooked 5792 DB cells to tlib cells.
+**WARN: (IMPDB-2504):	Unable to find netlist cell in the design data of the library or LEF. The 'sp_hse_32768_m32' cell is instantiated in the Verilog netlist, but not defined in the library or design data.  Its pin directions might be derived incorrectly. Include the cell definition or its pin information in the library or design data and reload the design to avoid potential issues.
+Type 'man IMPDB-2504' for more detail.
+1 empty module found.
+Starting recursive module instantiation check.
+No recursion found.
+Term dir updated for 0 vinsts of 1 cells.
+Building hierarchical netlist for Cell lp_riscv_top ...
+*** Netlist is unique.
+** info: there are 5917 modules.
+** info: there are 26266 stdCell insts.
+** info: there are 68 Pad insts.
+** info: there are 2 macros.
+
+*** Memory Usage v#1 (Current mem = 7467.188M, initial mem = 2004.215M) ***
+0
+@innovus 40> # Import and initialize design
+@innovus 41> enics_message "Running init_design command" medium
+enics_message "Running init_design command" medium
+
+ENICSINFO: Running init_design command
+--------------------------------------
+@innovus 42> init_designinit_design
+Pre-connect netlist-defined P/G connections...
+  Updated 24 instances.
+Initializing I/O assignment ...
+Start create_tracks
+Extraction setup Started 
+Initializing multi-corner RC extraction with 2 active RC Corners ...
+Captable file(s) not specified in multi-corner setup. PreRoute extraction will use technology file. For post_route extraction, default value for effort level would be 'medium' and effort level 'low' would not be allowed.
+Generating auto layer map file.
+Importing multi-corner technology file(s) for preRoute extraction...
+/data/tsmc/65LP/QRC/1.3a//rcworst/qrcTechFile
+Generating auto layer map file.
+/data/tsmc/65LP/QRC/1.3a//rcbest/qrcTechFile
+Generating auto layer map file.
+Completed (cpu: 0:00:04.3 real: 0:00:04.0)
+Set Shrink Factor to 1.00000
+Summary of Active RC-Corners : 
+ 
+ Analysis View: wc_analysis_view
+    RC-Corner Name        : wc_rc_corner
+    RC-Corner Index       : 0
+    RC-Corner Temperature : 125 Celsius
+    RC-Corner Cap Table   : ''
+    RC-Corner PreRoute Res Factor         : 1
+    RC-Corner PreRoute Cap Factor         : 1
+    RC-Corner PostRoute Res Factor        : 1 {1 1 1}
+    RC-Corner PostRoute Cap Factor        : 1 {1 1 1}
+    RC-Corner PostRoute XCap Factor       : 1 {1 1 1}
+    RC-Corner PreRoute Clock Res Factor   : 1	[Derived from postRoute_res (effortLevel low)]
+    RC-Corner PreRoute Clock Cap Factor   : 1	[Derived from postRoute_cap (effortLevel low)]
+    RC-Corner PostRoute Clock Cap Factor  : 1 {1 1 1} 	[Derived from postRoute_cap (effortLevel low)]
+    RC-Corner PostRoute Clock Res Factor  : 1 {1 1 1} 	[Derived from postRoute_res (effortLevel low)]
+    RC-Corner PostRoute Clock coupling capacitance Factor : 1 {1 1 1} 
+    RC-Corner Technology file: '/data/tsmc/65LP/QRC/1.3a//rcworst/qrcTechFile'
+ 
+ Analysis View: bc_analysis_view
+    RC-Corner Name        : bc_rc_corner
+    RC-Corner Index       : 1
+    RC-Corner Temperature : -40 Celsius
+    RC-Corner Cap Table   : ''
+    RC-Corner PreRoute Res Factor         : 1
+    RC-Corner PreRoute Cap Factor         : 1
+    RC-Corner PostRoute Res Factor        : 1 {1 1 1}
+    RC-Corner PostRoute Cap Factor        : 1 {1 1 1}
+    RC-Corner PostRoute XCap Factor       : 1 {1 1 1}
+    RC-Corner PreRoute Clock Res Factor   : 1	[Derived from postRoute_res (effortLevel low)]
+    RC-Corner PreRoute Clock Cap Factor   : 1	[Derived from postRoute_cap (effortLevel low)]
+    RC-Corner PostRoute Clock Cap Factor  : 1 {1 1 1} 	[Derived from postRoute_cap (effortLevel low)]
+    RC-Corner PostRoute Clock Res Factor  : 1 {1 1 1} 	[Derived from postRoute_res (effortLevel low)]
+    RC-Corner PostRoute Clock coupling capacitance Factor : 1 {1 1 1} 
+    RC-Corner Technology file: '/data/tsmc/65LP/QRC/1.3a//rcbest/qrcTechFile'
+Updating RC grid for preRoute extraction ...
+Initializing multi-corner resistance tables ...
+Default value for post_route extraction mode's extract_rc_effort_level (extract_rc_effort_level option of set_db) changed to 'medium'.
+*Info: initialize multi-corner CTS.
+Reading timing constraints file '/data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../inputs/lp_riscv_top.sdc' ...
+Current (total cpu=0:00:56.5, real=0:07:40, peak res=1710.0M, current mem=1710.0M)
+INFO (CTE): Constraints read successfully.
+Ending "Constraint file reading stats" (total cpu=0:00:00.1, real=0:00:00.0, peak res=1753.3M, current mem=1753.3M)
+Current (total cpu=0:00:56.5, real=0:07:40, peak res=1753.3M, current mem=1753.3M)
+Total number of combinational cells: 2058
+Total number of sequential cells: 762
+Total number of tristate cells: 27
+Total number of level shifter cells: 0
+Total number of power gating cells: 0
+Total number of isolation cells: 0
+Total number of power switch cells: 0
+Total number of pulse generator cells: 0
+Total number of always on buffers: 0
+Total number of retention cells: 0
+List of usable buffers: BUFH_X11M_A9TH BUFH_X13M_A9TH BUFH_X16M_A9TH BUFH_X2M_A9TH BUFH_X1P7M_A9TH BUFH_X4M_A9TH BUFH_X5M_A9TH BUFH_X6M_A9TH BUFH_X7P5M_A9TH BUFH_X9M_A9TH BUFH_X0P8M_A9TL BUFH_X0P7M_A9TL BUFH_X11M_A9TL BUFH_X13M_A9TL BUFH_X16M_A9TL BUFH_X1M_A9TL BUFH_X1P4M_A9TL BUFH_X1P2M_A9TL BUFH_X2M_A9TL BUFH_X1P7M_A9TL BUFH_X3M_A9TL BUFH_X2P5M_A9TL BUFH_X4M_A9TL BUFH_X3P5M_A9TL BUFH_X5M_A9TL BUFH_X6M_A9TL BUFH_X7P5M_A9TL BUFH_X9M_A9TL BUF_X0P7B_A9TL BUF_X0P7M_A9TL BUF_X0P8M_A9TL BUF_X0P8B_A9TL BUF_X11M_A9TL BUF_X11B_A9TL BUF_X13M_A9TL BUF_X13B_A9TL BUF_X16B_A9TL BUF_X16M_A9TL BUF_X1M_A9TL BUF_X1B_A9TL BUF_X1P2B_A9TL BUF_X1P2M_A9TL BUF_X1P4B_A9TL BUF_X1P4M_A9TL BUF_X1P7B_A9TL BUF_X1P7M_A9TL BUF_X2M_A9TL BUF_X2B_A9TL BUF_X2P5B_A9TL BUF_X2P5M_A9TL BUF_X3M_A9TL BUF_X3B_A9TL BUF_X3P5M_A9TL BUF_X3P5B_A9TL BUF_X4M_A9TL BUF_X4B_A9TL BUF_X5M_A9TL BUF_X5B_A9TL BUF_X6M_A9TL BUF_X6B_A9TL BUF_X7P5M_A9TL BUF_X7P5B_A9TL BUF_X9B_A9TL BUF_X9M_A9TL DLY2_X0P5M_A9TL DLY2_X1M_A9TL DLY2_X2M_A9TL DLY2_X4M_A9TL BUFH_X0P8M_A9TR BUFH_X0P7M_A9TR BUFH_X11M_A9TR BUFH_X13M_A9TR BUFH_X16M_A9TR BUFH_X1M_A9TR BUFH_X1P4M_A9TR BUFH_X1P2M_A9TR BUFH_X2M_A9TR BUFH_X1P7M_A9TR BUFH_X3M_A9TR BUFH_X2P5M_A9TR BUFH_X4M_A9TR BUFH_X3P5M_A9TR BUFH_X5M_A9TR BUFH_X6M_A9TR BUFH_X7P5M_A9TR BUFH_X9M_A9TR BUF_X0P7B_A9TR BUF_X0P7M_A9TR BUF_X0P8M_A9TR BUF_X0P8B_A9TR BUF_X11M_A9TR BUF_X11B_A9TR BUF_X13M_A9TR BUF_X13B_A9TR BUF_X16B_A9TR BUF_X16M_A9TR BUF_X1M_A9TR BUF_X1B_A9TR BUF_X1P2B_A9TR BUF_X1P2M_A9TR BUF_X1P4B_A9TR BUF_X1P4M_A9TR BUF_X1P7B_A9TR BUF_X1P7M_A9TR BUF_X2M_A9TR BUF_X2B_A9TR BUF_X2P5B_A9TR BUF_X2P5M_A9TR BUF_X3M_A9TR BUF_X3B_A9TR BUF_X3P5M_A9TR BUF_X3P5B_A9TR BUF_X4M_A9TR BUF_X4B_A9TR BUF_X5M_A9TR BUF_X5B_A9TR BUF_X6M_A9TR BUF_X6B_A9TR BUF_X7P5M_A9TR BUF_X7P5B_A9TR BUF_X9B_A9TR BUF_X9M_A9TR
+Total number of usable buffers: 122
+List of unusable buffers: FRICG_X0P5B_A9TL FRICG_X0P6B_A9TL FRICG_X0P8B_A9TL FRICG_X0P7B_A9TL FRICG_X11B_A9TL FRICG_X13B_A9TL FRICG_X16B_A9TL FRICG_X1B_A9TL FRICG_X1P2B_A9TL FRICG_X1P4B_A9TL FRICG_X2B_A9TL FRICG_X1P7B_A9TL FRICG_X3B_A9TL FRICG_X2P5B_A9TL FRICG_X4B_A9TL FRICG_X3P5B_A9TL FRICG_X5B_A9TL FRICG_X6B_A9TL FRICG_X7P5B_A9TL FRICG_X9B_A9TL FRICG_X0P5B_A9TR FRICG_X0P6B_A9TR FRICG_X0P8B_A9TR FRICG_X0P7B_A9TR FRICG_X11B_A9TR FRICG_X13B_A9TR FRICG_X16B_A9TR FRICG_X1B_A9TR FRICG_X1P2B_A9TR FRICG_X1P4B_A9TR FRICG_X2B_A9TR FRICG_X1P7B_A9TR FRICG_X3B_A9TR FRICG_X2P5B_A9TR FRICG_X4B_A9TR FRICG_X3P5B_A9TR FRICG_X5B_A9TR FRICG_X6B_A9TR FRICG_X7P5B_A9TR FRICG_X9B_A9TR
+Total number of unusable buffers: 40
+List of usable inverters: INV_X0P5B_A9TH INV_X0P5M_A9TH INV_X0P6B_A9TH INV_X0P6M_A9TH INV_X0P7B_A9TH INV_X0P7M_A9TH INV_X0P8M_A9TH INV_X0P8B_A9TH INV_X11M_A9TH INV_X11B_A9TH INV_X13M_A9TH INV_X13B_A9TH INV_X16B_A9TH INV_X16M_A9TH INV_X1M_A9TH INV_X1B_A9TH INV_X1P2B_A9TH INV_X1P2M_A9TH INV_X1P4B_A9TH INV_X1P4M_A9TH INV_X1P7B_A9TH INV_X1P7M_A9TH INV_X2M_A9TH INV_X2B_A9TH INV_X2P5B_A9TH INV_X2P5M_A9TH INV_X3M_A9TH INV_X3B_A9TH INV_X3P5B_A9TH INV_X3P5M_A9TH INV_X4M_A9TH INV_X4B_A9TH INV_X5M_A9TH INV_X5B_A9TH INV_X6M_A9TH INV_X6B_A9TH INV_X7P5M_A9TH INV_X7P5B_A9TH INV_X9B_A9TH INV_X9M_A9TH INV_X0P5B_A9TL INV_X0P5M_A9TL INV_X0P6B_A9TL INV_X0P6M_A9TL INV_X0P7B_A9TL INV_X0P7M_A9TL INV_X0P8M_A9TL INV_X0P8B_A9TL INV_X11M_A9TL INV_X11B_A9TL INV_X13M_A9TL INV_X13B_A9TL INV_X16B_A9TL INV_X16M_A9TL INV_X1M_A9TL INV_X1B_A9TL INV_X1P2B_A9TL INV_X1P2M_A9TL INV_X1P4B_A9TL INV_X1P4M_A9TL INV_X1P7B_A9TL INV_X1P7M_A9TL INV_X2M_A9TL INV_X2B_A9TL INV_X2P5B_A9TL INV_X2P5M_A9TL INV_X3M_A9TL INV_X3B_A9TL INV_X3P5B_A9TL INV_X3P5M_A9TL INV_X4M_A9TL INV_X4B_A9TL INV_X5M_A9TL INV_X5B_A9TL INV_X6M_A9TL INV_X6B_A9TL INV_X7P5M_A9TL INV_X7P5B_A9TL INV_X9B_A9TL INV_X9M_A9TL INV_X0P5B_A9TR INV_X0P5M_A9TR INV_X0P6B_A9TR INV_X0P6M_A9TR INV_X0P7B_A9TR INV_X0P7M_A9TR INV_X0P8M_A9TR INV_X0P8B_A9TR INV_X11M_A9TR INV_X11B_A9TR INV_X13M_A9TR INV_X13B_A9TR INV_X16B_A9TR INV_X16M_A9TR INV_X1M_A9TR INV_X1B_A9TR INV_X1P2B_A9TR INV_X1P2M_A9TR INV_X1P4B_A9TR INV_X1P4M_A9TR INV_X1P7B_A9TR INV_X1P7M_A9TR INV_X2M_A9TR INV_X2B_A9TR INV_X2P5B_A9TR INV_X2P5M_A9TR INV_X3M_A9TR INV_X3B_A9TR INV_X3P5B_A9TR INV_X3P5M_A9TR INV_X4M_A9TR INV_X4B_A9TR INV_X5M_A9TR INV_X5B_A9TR INV_X6M_A9TR INV_X6B_A9TR INV_X7P5M_A9TR INV_X7P5B_A9TR INV_X9M_A9TR INV_X9B_A9TR
+Total number of usable inverters: 120
+List of unusable inverters:
+Total number of unusable inverters: 0
+List of identified usable delay cells: BUFH_X0P8M_A9TH BUFH_X0P7M_A9TH BUFH_X1M_A9TH BUFH_X1P4M_A9TH BUFH_X1P2M_A9TH BUFH_X3M_A9TH BUFH_X2P5M_A9TH BUFH_X3P5M_A9TH BUF_X0P7B_A9TH BUF_X0P7M_A9TH BUF_X0P8M_A9TH BUF_X0P8B_A9TH BUF_X11M_A9TH BUF_X11B_A9TH BUF_X13M_A9TH BUF_X13B_A9TH BUF_X16B_A9TH BUF_X16M_A9TH BUF_X1M_A9TH BUF_X1B_A9TH BUF_X1P2B_A9TH BUF_X1P2M_A9TH BUF_X1P4B_A9TH BUF_X1P4M_A9TH BUF_X1P7B_A9TH BUF_X1P7M_A9TH BUF_X2M_A9TH BUF_X2B_A9TH BUF_X2P5B_A9TH BUF_X2P5M_A9TH BUF_X3M_A9TH BUF_X3B_A9TH BUF_X3P5M_A9TH BUF_X3P5B_A9TH BUF_X4M_A9TH BUF_X4B_A9TH BUF_X5M_A9TH BUF_X5B_A9TH BUF_X6M_A9TH BUF_X6B_A9TH BUF_X7P5M_A9TH BUF_X7P5B_A9TH BUF_X9B_A9TH BUF_X9M_A9TH DLY2_X0P5M_A9TH DLY2_X1M_A9TH DLY2_X2M_A9TH DLY2_X4M_A9TH DLY4_X1M_A9TH DLY4_X0P5M_A9TH DLY4_X2M_A9TH DLY4_X4M_A9TH DLY4_X1M_A9TL DLY4_X0P5M_A9TL DLY4_X2M_A9TL DLY4_X4M_A9TL DLY2_X0P5M_A9TR DLY2_X1M_A9TR DLY2_X2M_A9TR DLY2_X4M_A9TR DLY4_X1M_A9TR DLY4_X0P5M_A9TR DLY4_X2M_A9TR DLY4_X4M_A9TR
+Total number of identified usable delay cells: 64
+List of identified unusable delay cells: FRICG_X0P5B_A9TH FRICG_X0P6B_A9TH FRICG_X0P8B_A9TH FRICG_X0P7B_A9TH FRICG_X11B_A9TH FRICG_X13B_A9TH FRICG_X16B_A9TH FRICG_X1B_A9TH FRICG_X1P2B_A9TH FRICG_X1P4B_A9TH FRICG_X2B_A9TH FRICG_X1P7B_A9TH FRICG_X3B_A9TH FRICG_X2P5B_A9TH FRICG_X4B_A9TH FRICG_X3P5B_A9TH FRICG_X5B_A9TH FRICG_X6B_A9TH FRICG_X7P5B_A9TH FRICG_X9B_A9TH
+Total number of identified unusable delay cells: 20
+@innovus 43> gui_select -point {1528.91300 215.93450}
+@innovus 44> gui_select -point {1840.13000 190.21400}
+@innovus 45> gui_select -point {1580.35400 131.05700}
+@innovus 46> gui_select -point {1464.61200 239.08300}
+@innovus 47> gui_select -point {2804.64600 210.79050}
+@innovus 48> gui_select -point {2233.65300 195.35800}
+@innovus 49> gui_select -point {2827.79450 218.50650}
+@innovus 50> gui_select -point {1616.36250 303.38400}
+@innovus 51> gui_select -point {150.29750 1267.90050}
+@innovus 52> gui_select -rect {1107.09850 658.32600 1652.37200 185.06950}
+@innovus 53> gui_select -point {268.61150 1149.58650}
+@innovus 54> gui_select -point {1768.11400 118.19650}
+@innovus 55> gui_select -point {2012.45800 -5.26150}
+@innovus 56> gui_select -point {1994.45400 -5.26150}
+@innovus 57> gui_select -point {2012.45800 -2.68950}
+@innovus 58> gui_select -rect {-40.03350 1375.92650 278.90000 1157.30250}
+@innovus 59> gui_select -point {-122.33900 1370.78250}
+@innovus 60> gui_select -rect {201.73850 1370.78250 67.99200 1208.74350}
+@innovus 61> gui_select -point {-155.77550 1303.90900}
+@innovus 62> gui_select -rect {224.88700 1298.76500 183.73400 1324.48550}
+@innovus 63> gui_select -rect {163.15800 1324.48550 -510.71800 1530.24900}
+@innovus 64> gui_select -point {145.69900 1339.05600}
+@innovus 65> gui_select -point {112.08750 1357.15450}
+@innovus 66> gui_select -point {145.37600 1304.15150}
+@innovus 67> gui_select -point {221.97150 1275.71100}
+@innovus 68> gui_select -point {154.74850 1274.41850}
+@innovus 69> gui_select -point {308.26300 1282.49800}
+@innovus 70> gui_select -point {397.30100 1256.31950}
+@innovus 71> gui_select -point {163.47450 1269.57050}
+@innovus 72> gui_select -point {-832.10750 528.14350}
+@innovus 73> gui_select -point {-835.96450 789.80300}
+@innovus 74> Loading  (lp_riscv_top)
+Traverse HInst (lp_riscv_top)
+update_floorplan_obj -obj 0x7f17dc2f2150 -rects {7.7165 5.1445 127.7165 125.1445}
+@innovus 75> update_floorplan_obj -obj 0x7f17dc2f2150 -rects {1232.008 1221.72 1352.008 1341.72}
+@innovus 76> gui_deselect -all 
+@innovus 77> update_floorplan_obj -obj 0x7f17dc2f20e0 -rects {1201.144 10.2885 1321.144 130.2885}
+@innovus 78> gui_deselect -all 
+@innovus 79> update_floorplan_obj -obj 0x7f17dc2f2070 -rects {7.7165 1219.148 127.7165 1339.148}
+@innovus 80> gui_deselect -all 
+@innovus 81> **ERROR: (IMPFP-60):	Io Inst new lower left location is outside of headbox, it would not be moved.
+update_floorplan_obj -obj 0x7f17dc2f2150 -rects {1497.4835 671.955 1617.4835 791.955}
+@innovus 82> update_floorplan_obj -obj 0x7f17dc2f2150 -rects {751.5915 908.583 871.5915 1028.583}
+@innovus 83> **ERROR: (IMPFP-60):	Io Inst new lower left location is outside of headbox, it would not be moved.
+update_floorplan_obj -obj 0x7f17dc2f2150 -rects {-4.589 -32.7845 115.411 87.2155}
+@innovus 84> update_floorplan_obj -obj 0x7f17dc2f2150 -rects {5.699 0.652 125.699 120.652}
+@innovus 85> gui_select -point {49.98900 74.47200}
+@innovus 86> update_floorplan_obj -obj 0x7f17dc2f2150 -rects {1216.5755 10.288 1336.5755 130.288}
+@innovus 87> gui_deselect -all 
+@innovus 88> update_floorplan_obj -obj 0x7f17dc2f2000 -rects {1214.004 1221.72 1334.004 1341.72}
+@innovus 89> gui_deselect -all 
+@innovus 90> **ERROR: (IMPFP-60):	Io Inst new lower left location is outside of headbox, it would not be moved.
+update_floorplan_obj -obj 0x7f17dc2f2150 -rects {13.4155 -10.288 133.4155 109.712}
+@innovus 91> update_floorplan_obj -obj 0x7f17dc2f2150 -rects {8.271 5.144 128.271 125.144}
+@innovus 92> gui_deselect -all 
+@innovus 93> gui_select -point {67.99350 51.32400}
+@innovus 94> gui_select -point {1263.99300 77.04450}
+@innovus 95> gui_select -point {870.47050 408.83750}
+@innovus 96> gui_select -point {1554.63350 828.08050}
+@innovus 97> gui_select -point {1510.90900 1131.58150}
+@innovus 98> gui_select -point {1263.99300 1183.02250}
+@innovus 99> gui_select -point {1292.28550 1103.28900}
+@innovus 100> gui_select -point {1292.28550 1126.43750}
+@innovus 101> gui_select -point {873.04250 61.61200}
+@innovus 102> gui_select -point {55.13300 846.08500}
+@innovus 103> gui_select -point {47.41700 861.51700}
+@innovus 104> gui_select -point {57.70500 1175.30600}
+@innovus 105> gui_select -point {57.70500 1121.29350}
+@innovus 106> gui_select -point {52.56100 1044.13200}
+@innovus 107> gui_select -point {52.56100 977.25900}
+@innovus 108> gui_select -point {26.84050 565.73250}
+@innovus 109> gui_select -point {73.13750 612.02900}
+@innovus 110> gui_select -point {70.56550 658.32600}
+@innovus 111> gui_select -point {52.56100 756.06350}
+@innovus 112> gui_select -point {52.56100 804.93200}
+@innovus 113> gui_select -point {57.70500 861.51700}
+@innovus 114> gui_select -point {62.84950 941.25050}
+@innovus 115> gui_select -point {62.84950 1002.97950}
+@innovus 116> gui_select -point {49.98900 1062.13650}
+@innovus 117> gui_select -point {49.98900 1136.72550}
+@innovus 118> gui_select -point {67.99350 462.85050}
+@innovus 119> gui_select -point {60.27750 393.40550}
+@innovus 120> gui_select -point {62.84950 388.26150}
+@innovus 121> gui_select -point {52.56100 416.55400}
+@innovus 122> gui_select -point {52.56100 336.82050}
+@innovus 123> gui_select -point {52.56100 287.95150}
+@innovus 124> gui_select -point {65.42150 236.51100}
+@innovus 125> gui_select -point {85.99750 156.77750}
+@innovus 126> gui_select -point {55.13300 884.66550}
+@innovus 127> gui_select -point {1665.23150 1406.79000}
+@innovus 128> gui_select -point {1297.42950 1069.85250}
+@innovus 129> gui_select -point {1281.99700 1105.86100}
+@innovus 130> gui_select -point {1300.00150 1201.02650}
+@innovus 131> gui_select -point {1284.56950 1000.40750}
+@innovus 132> gui_select -point {1287.14150 918.10200}
+@innovus 133> gui_select -point {1287.14150 1185.59450}
+@innovus 134> update_floorplan_obj -obj 0x7f17dc2f3e30 -rects {3.127 485.637 123.127 535.637}
+@innovus 135> gui_deselect -all 
+@innovus 136> update_floorplan_obj -obj 0x7f17dc2f2b60 -rects {1208.86 1155.9765 1328.86 1205.9765}
+@innovus 137> gui_deselect -all 
+@innovus 138> update_floorplan_obj -obj 0x7f17dc2f3e30 -rects {2.5725 580.8005 122.5725 630.8005}
+@innovus 139> gui_deselect -all 
+@innovus 140> update_floorplan_obj -obj 0x7f17dc2f3ab0 -rects {3.127 495.7215 123.127 545.7215}
+@innovus 141> gui_deselect -all 
+@innovus 142> update_floorplan_obj -obj 0x7f17dc2f2bd0 -rects {1214.004 649.673 1334.004 699.673}
+@innovus 143> gui_deselect -all 
+@innovus 144> update_floorplan_obj -obj 0x7f17dc2f3ab0 -rects {0.0 637.182 120.0 687.182}
+@innovus 145> gui_deselect -all 
+@innovus 146> update_floorplan_obj -obj 0x7f17dc2f24d0 -rects {1288.91 360.738 1338.91 480.738}
+@innovus 147> gui_deselect -all 
+@innovus 148> update_floorplan_obj -obj 0x7f17dc2f3b90 -rects {530.3955 1264.808 650.3955 1314.808}
+@innovus 149> gui_select -point {34.55700 594.02450}
+@innovus 150> gui_select -point {1701.24000 627.46150}
+@innovus 151> # Load general settings
+@innovus 152> source ../scripts/settings.tcl -quiet
+source ../scripts/settings.tcl -quiet
+AAE_INFO: switching -siAware from false to true ...
+AAE_INFO: The setting is changed from false to true in setDelayCalMode -SIAware
+1 true
+
+@innovus 153> 
+@innovus 153> # Create cost groups
+# Create cost groups
+@innovus 154> enics_default_cost_groups
+enics_default_cost_groups
+Created reg2reg path group
+Effort level <high> specified for reg2reg path_group
+Created reg2cgate path group
+Effort level <high> specified for reg2cgate path_group
+@innovus 155> 
+
+@innovus 155> # Connect Global Nets
+# Connect Global Nets
+@innovus 156> enics_message "Connecting Global Nets" medium
+enics_message "Connecting Global Nets" medium
+
+ENICSINFO: Connecting Global Nets
+---------------------------------
+@innovus 157> # Connect standard cells to VDD and GND
+# Connect standard cells to VDD and GND
+@innovus 158> connect_global_net $design(digital_gnd) -pin $tech(STANDARD_CELL_GND) -all -verbose
+connect_global_net $design(digital_gnd) -pin $tech(STANDARD_CELL_GND) -all -verbose
+26266 new gnd-pin connections were made to global net 'gnd'.
+@innovus 159> connect_global_net $design(digital_vdd) -pin $tech(STANDARD_CELL_VDD) -all -verbose
+connect_global_net $design(digital_vdd) -pin $tech(STANDARD_CELL_VDD) -all -verbose
+# Connect tie cells
+26266 new pwr-pin connections were made to global net 'vdd'.
+@innovus 160> # Connect tie cells
+@innovus 161> connect_global_net $design(digital_vdd) -type tiehi -all -verbose 
+connect_global_net $design(digital_vdd) -type tiehi -all -verbose 
+@innovus 162> connect_global_net $design(digital_gnd) -type tielo -all -verbose 
+connect_global_net $design(digital_gnd) -type tielo -all -verbose 
+@innovus 163> # Connect SRAM PG Pins
+@innovus 164> connect_global_net $design(digital_vdd) -pin $tech(SRAM_VDDCORE_PIN)      -all -verbose 
+connect_global_net $design(digital_vdd) -pin $tech(SRAM_VDDCORE_PIN)      -all -verbose 
+2 new pwr-pin connections were made to global net 'vdd'.
+@innovus 165> connect_global_net $design(digital_vdd) -pin $tech(SRAM_VDDPERIPHERY_PIN) -all -verbose 
+connect_global_net $design(digital_vdd) -pin $tech(SRAM_VDDPERIPHERY_PIN) -all -verbose 
+2 new pwr-pin connections were made to global net 'vdd'.
+@innovus 166> connect_global_net $design(digital_gnd) -pin $tech(SRAM_GND_PIN)          -all -verbose 
+connect_global_net $design(digital_gnd) -pin $tech(SRAM_GND_PIN)          -all -verbose 
+2 new gnd-pin connections were made to global net 'gnd'.
+@innovus 167>
+ 
+@innovus 167> if {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
++     # Connect pads to IO and CORE voltages
++     #    -netlist_override is needed, since GENUS connects these pins to UNCONNECTED during synthesis
++     connect_global_net $design(io_vdd)      -pin $tech(IO_VDDIO)   -hinst i_${design(IO_MODULE)} -netlist_override -verbose
++     connect_global_net $design(io_gnd)      -pin $tech(IO_GNDIO)   -hinst i_${design(IO_MODULE)} -netlist_override -verbose
++  if {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
+    # Connect pads to IO and CORE voltages
+    #    -netlist_override is needed, since GENUS connects these pins to UNCONNECTED during synthesis
+    connect_global_net $design(io_vdd)      -pin $tech(IO_VDDIO)   -hinst i_${design(IO_MODULE)} -netlist_override -verbose
+    connect_global_net $design(io_gnd)      -pin $tech(IO_GNDIO)   -hinst i_${design(IO_MODULE)} -netlist_override -verbose
+    connect_global_net $design(digital_vdd) -pin $tech(IO_VDDCORE) -hinst i_${design(IO_MODULE)} -netlist_override -verbose
+    connect_global_net $design(digital_gnd) -pin $tech(IO_GNDCORE) -hinst i_${design(IO_MODULE)} -netlist_override -verbose
+}
+   connect_global_net $design(digital_vdd) -pin $tech(IO_VDDCORE) -hinst i_${design(IO_MODULE)} -netlist_override -verbose
++     connect_global_net $design(digital_gnd) -pin $tech(IO_GNDCORE) -hinst i_${design(IO_MODULE)} -netlist_override -verbose
++ }
+Override Verilog-defined PG connection...  Connect pwr pin VDDPST of i_ioring/i_VDDIO_4 to global net vddio.
+Override Verilog-defined PG connection...  Connect pwr pin VDDPST of i_ioring/i_VDDIO_12 to global net vddio.
+Override Verilog-defined PG connection...  Connect pwr pin VDDPST of i_ioring/i_VDDIO_20 to global net vddio.
+Override Verilog-defined PG connection...  Connect pwr pin VDDPST of i_ioring/i_VDDIO_28 to global net vddio.
+Override Verilog-defined PG connection...  Connect pwr pin VDDPST of i_ioring/i_VDDIO_36 to global net vddio.
+Override Verilog-defined PG connection...  Connect pwr pin VDDPST of i_ioring/i_VDDIO_44 to global net vddio.
+Override Verilog-defined PG connection...  Connect pwr pin VDDPST of i_ioring/i_VDDIO_52 to global net vddio.
+Override Verilog-defined PG connection...  Connect pwr pin VDDPST of i_ioring/i_VDDIO_60 to global net vddio.
+8 new pwr-pin connections were made to global net 'vddio'.
+Override Verilog-defined PG connection...  Connect gnd pin VSS of i_ioring/i_VSSIO_3 to global net gnd.
+Override Verilog-defined PG connection...  Connect gnd pin VSS of i_ioring/i_VSSIO_13 to global net gnd.
+Override Verilog-defined PG connection...  Connect gnd pin VSS of i_ioring/i_VSSIO_19 to global net gnd.
+Override Verilog-defined PG connection...  Connect gnd pin VSS of i_ioring/i_VSSIO_27 to global net gnd.
+Override Verilog-defined PG connection...  Connect gnd pin VSS of i_ioring/i_VSSIO_35 to global net gnd.
+Override Verilog-defined PG connection...  Connect gnd pin VSS of i_ioring/i_VSSIO_43 to global net gnd.
+Override Verilog-defined PG connection...  Connect gnd pin VSS of i_ioring/i_VSSIO_51 to global net gnd.
+Override Verilog-defined PG connection...  Connect gnd pin VSS of i_ioring/i_VSSIO_59 to global net gnd.
+8 new gnd-pin connections were made to global net 'gnd'.
+Override Verilog-defined PG connection...  Connect pwr pin VDD of i_ioring/i_VDDCORE_5 to global net vdd.
+Override Verilog-defined PG connection...  Connect pwr pin VDD of i_ioring/i_VDDCORE_11 to global net vdd.
+Override Verilog-defined PG connection...  Connect pwr pin VDD of i_ioring/i_VDDCORE_21 to global net vdd.
+Override Verilog-defined PG connection...  Connect pwr pin VDD of i_ioring/i_VDDCORE_29 to global net vdd.
+Override Verilog-defined PG connection...  Connect pwr pin VDD of i_ioring/i_VDDCORE_37 to global net vdd.
+Override Verilog-defined PG connection...  Connect pwr pin VDD of i_ioring/i_VDDCORE_45 to global net vdd.
+Override Verilog-defined PG connection...  Connect pwr pin VDD of i_ioring/i_VDDCORE_53 to global net vdd.
+Override Verilog-defined PG connection...  Connect pwr pin VDD of i_ioring/i_VDDCORE_61 to global net vdd.
+8 new pwr-pin connections were made to global net 'vdd'.
+0 new gnd-pin connection was made to global net 'gnd'.
+@innovus 168> 
+@innovus 168> enics_create_stage_reports -save_db nenics_create_stage_reports -save_db no -report_timing no -pop_snapshot yes
+o -report_timing no -pop_snapshot yes
+
+ENICSINFO: Starting to create reports for stage: init_design
+------------------------------------------------------------
+ENICSINFO: Reports directory is: /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../reports/init_design/ 
+ENICSINFO: Export directory is: /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../export/init_design/ 
+ENICSINFO: Export directory is: /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../export/init_design/ 
+ENICSINFO: Reporting Timing
+AAE_INFO: opIsDesignInPostRouteState() is 0
+AAE_WARNING: Waveform propagation feature is not supported in pre-route stage, it is turned off.
+**WARN: (IMPESI-3478):	Simulation based Equivalent Waveform Model without waveform propagation setting is not properly supported, using moment based EWM instead.
+AAE DB initialization (MEM=7981.09 CPU=0:00:00.0 REAL=0:00:00.0) 
+#################################################################################
+# Design Stage: PreRoute
+# Design Name: lp_riscv_top
+# Design Mode: 65nm
+# Analysis Mode: MMMC OCV 
+# Parasitics Mode: No SPEF/RCDB 
+# Signoff Settings: SI On (EWM)
+#################################################################################
+Start delay calculation (fullDC) (1 T). (MEM=8064.12)
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[7], driver i_ioring/i_IRAM_PROG_BYTE_7/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/g117711/A0 (cell AO22_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[7], driver i_ioring/i_IRAM_PROG_BYTE_7/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[3][7]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[7], driver i_ioring/i_IRAM_PROG_BYTE_7/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[2][7]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[7], driver i_ioring/i_IRAM_PROG_BYTE_7/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[1][7]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[7], driver i_ioring/i_IRAM_PROG_BYTE_7/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[0][7]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[7], driver i_ioring/i_IRAM_PROG_BYTE_7/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_addr_reg[1][7]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[6], driver i_ioring/i_IRAM_PROG_BYTE_6/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/g117712/A0 (cell AO22_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[6], driver i_ioring/i_IRAM_PROG_BYTE_6/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[3][6]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[6], driver i_ioring/i_IRAM_PROG_BYTE_6/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[2][6]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[6], driver i_ioring/i_IRAM_PROG_BYTE_6/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[1][6]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[6], driver i_ioring/i_IRAM_PROG_BYTE_6/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[0][6]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[6], driver i_ioring/i_IRAM_PROG_BYTE_6/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_addr_reg[1][6]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[5], driver i_ioring/i_IRAM_PROG_BYTE_5/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/g117708/A0 (cell AO22_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[5], driver i_ioring/i_IRAM_PROG_BYTE_5/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[3][5]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[5], driver i_ioring/i_IRAM_PROG_BYTE_5/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[2][5]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[5], driver i_ioring/i_IRAM_PROG_BYTE_5/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[1][5]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[5], driver i_ioring/i_IRAM_PROG_BYTE_5/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[0][5]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[5], driver i_ioring/i_IRAM_PROG_BYTE_5/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_addr_reg[1][5]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[4], driver i_ioring/i_IRAM_PROG_BYTE_4/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/g117709/A0 (cell AO22_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[4], driver i_ioring/i_IRAM_PROG_BYTE_4/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[3][4]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (EMS-27):	Message (IMPMSMV-1810) has exceeded the current message display limit of 20.
+To increase the message display limit, refer to the product command reference manual.
+Total number of fetched objects 26958
+AAE_INFO: Total number of nets for which stage creation was skipped for all views 0
+End delay calculation. (MEM=8351.89 CPU=0:00:04.3 REAL=0:00:05.0)
+End delay calculation (fullDC). (MEM=8351.89 CPU=0:00:05.1 REAL=0:00:05.0)
+ENICSINFO: Writing out Database
+wc_timing_condition bc_timing_condition tc_timing_condition
+#% Begin save design ... (date=01/28 14:29:52, mem=1992.1M)
+% Begin Save ccopt configuration ... (date=01/28 14:29:52, mem=1992.1M)
+% End Save ccopt configuration ... (date=01/28 14:29:52, total cpu=0:00:00.0, real=0:00:00.0, peak res=1993.3M, current mem=1993.3M)
+% Begin Save netlist data ... (date=01/28 14:29:52, mem=1993.9M)
+Writing Binary DB to /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../dbs/init_design.tmp/lp_riscv_top.v.bin in single-threaded mode...
+% End Save netlist data ... (date=01/28 14:29:52, total cpu=0:00:00.1, real=0:00:00.0, peak res=1994.0M, current mem=1994.0M)
+Writing Netlist "/data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../dbs/init_design.tmp/lp_riscv_top.v.gz" ...
+Saving symbol-table file ...
+Saving congestion map file /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../dbs/init_design.tmp/lp_riscv_top.route.congmap.gz ...
+% Begin Save AAE data ... (date=01/28 14:29:53, mem=1994.9M)
+Saving AAE Data ...
+% End Save AAE data ... (date=01/28 14:29:53, total cpu=0:00:00.0, real=0:00:00.0, peak res=1994.9M, current mem=1994.9M)
+Saving preference file /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../dbs/init_design.tmp/gui.pref.tcl ...
+Saving mode setting ...
+Saving root attributes to be loaded post write_db ...
+Saving global file ...
+Saving root attributes to be loaded previous write_db ...
+% Begin Save floorplan data ... (date=01/28 14:29:54, mem=1996.6M)
+Saving floorplan file ...
+% End Save floorplan data ... (date=01/28 14:29:54, total cpu=0:00:00.0, real=0:00:00.0, peak res=1998.4M, current mem=1998.4M)
+Saving PG file /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../dbs/init_design.tmp/lp_riscv_top.pg.gz, version#2, (Created by Innovus v21.15-s110_1 on Tue Jan 28 14:29:54 2025)
+*** Completed savePGFile (cpu=0:00:00.0 real=0:00:00.0 mem=8272.4M) ***
+Saving Drc markers ...
+... No Drc file written since there is no markers found.
+% Begin Save placement data ... (date=01/28 14:29:54, mem=1998.6M)
+** Saving stdCellPlacement_binary (version# 2) ...
+Save Adaptive View Pruning View Names to Binary file
+% End Save placement data ... (date=01/28 14:29:54, total cpu=0:00:00.0, real=0:00:00.0, peak res=1998.8M, current mem=1998.8M)
+% Begin Save routing data ... (date=01/28 14:29:54, mem=1998.8M)
+Saving route file ...
+*** Completed saveRoute (cpu=0:00:00.0 real=0:00:01.0 mem=8272.4M) ***
+% End Save routing data ... (date=01/28 14:29:55, total cpu=0:00:00.0, real=0:00:01.0, peak res=1999.0M, current mem=1999.0M)
+Saving property file /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../dbs/init_design.tmp/lp_riscv_top.prop
+*** Completed saveProperty (cpu=0:00:00.0 real=0:00:00.0 mem=8275.4M) ***
+Saving preRoute extracted patterns in file '/data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../dbs/init_design.tmp/lp_riscv_top.techData.gz' ...
+Saving preRoute extraction data in directory '/data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../dbs/init_design.tmp/extraction/' ...
+% Begin Save power constraints data ... (date=01/28 14:29:55, mem=2000.8M)
+% End Save power constraints data ... (date=01/28 14:29:55, total cpu=0:00:00.0, real=0:00:00.0, peak res=2001.2M, current mem=2001.2M)
+tc_rc_corner bc_rc_corner wc_rc_corner
+tc_rc_corner bc_rc_corner wc_rc_corner
+tc_rc_corner bc_rc_corner wc_rc_corner
+tc_rc_corner bc_rc_corner wc_rc_corner
+tc_rc_corner bc_rc_corner wc_rc_corner
+tc_rc_corner bc_rc_corner wc_rc_corner
+tc_rc_corner bc_rc_corner wc_rc_corner
+Generated self-contained design init_design.tmp
+#% End save design ... (date=01/28 14:29:56, total cpu=0:00:01.5, real=0:00:04.0, peak res=2003.7M, current mem=2003.7M)
+*** Message Summary: 0 warning(s), 0 error(s)
+
+@innovus 169> @innovus 169> gui_select -point {2168.06600 241.65500}
+@innovus 170> gui_select -point {187.59350 1255.03950}
+@innovus 171> gui_select -point {197.88150 1262.75550}
+@innovus 172> gui_select -point {167.01700 1278.18800}
+@innovus 173> gui_select -point {1481.33050 249.37100}
+@innovus 174> gui_select -point {2991.11950 95.04850}
+@innovus 175> gui_select -point {2240.08300 105.33700}
+@innovus 176> gui_select -point {149.01300 1260.18350}
+@innovus 177> gui_select -point {1568.78000 161.92150}
+@innovus 178> gui_select -point {2705.62250 285.37950}
+@innovus 179> gui_select -point {2286.38000 105.33700}
+@innovus 180> gui_select -point {159.30100 1252.46750}
+@innovus 181> gui_select -point {1316.72000 666.04200}
+@innovus 182> gui_select -point {1278.13950 735.48700}
+@innovus 183> gui_select -point {1285.85550 1121.29350}
+@innovus 184> gui_select -point {1288.42750 1085.28500}
+@innovus 185> gui_select -point {1283.28350 1002.97950}
+@innovus 186> gui_select -point {1288.42750 930.96200}
+@innovus 187> gui_select -point {1293.57150 861.51700}
+@innovus 188> gui_select -point {1272.99500 776.63950}
+@innovus 189> gui_select -point {1272.99500 730.34300}
+@innovus 190> gui_select -point {1285.85550 1167.59000}
+@innovus 191> gui_select -point {1278.13950 1170.16200}
+@innovus 192> gui_select -point {-79.89900 750.91950}
+@innovus 193> gui_select -rect {-683.04300 689.19050 -541.58050 807.50400}
+@innovus 194> gui_select -point {-510.71600 756.06350}
+@innovus 195> gui_select -point {1307.71750 30.74750}
+@innovus 196> gui_select -point {1253.70500 1296.19200}
+@innovus 197> gui_select -point {1207.40800 1291.04800}
+@innovus 198> gui_select -point {1135.39100 1273.04400}
+@innovus 199> gui_select -point {-294.66450 789.50000}
+@innovus 200> gui_select -point {168.30300 547.72800}
+@innovus 201> gui_select -point {93.71400 532.29550}
+@innovus 202> gui_select -point {85.99750 596.59700}
+@innovus 203> gui_select -point {70.56550 663.47000}
+@innovus 204> gui_select -point {67.99350 743.20300}
+@innovus 205> gui_select -point {62.84950 802.36000}
+@innovus 206> gui_select -point {75.70950 861.51700}
+@innovus 207> gui_select -point {65.42150 1008.12350}
+@innovus 208> gui_select -point {78.28150 1049.27600}
+@innovus 209> gui_select -point {67.99350 1005.55150}
+@innovus 210> gui_select -point {88.56950 1098.14500}
+@innovus 211> gui_select -point {88.56950 1126.43750}
+@innovus 212> gui_select -point {85.99750 1177.87850}
+@innovus 213> gui_select -point {-112.04950 586.30850}
+@innovus 214> gui_select -point {753.44250 529.72350}
+@innovus 215> gui_select -point {-95.33100 776.63950}
+@innovus 216> update_floorplan_obj -obj 0x7f17dc5f24a0 -rects {122.239 110.598 1224.292 1210.619}
+@innovus 217> update_floorplan_obj -obj 0x7f17dc5f24a0 -rects {119.628 113.572 1221.628 1213.372}
+@innovus 218> gui_select -point {694.28600 59.04000}
+@innovus 219> gui_select -point {619.69650 51.32400}
+@innovus 220> gui_select -point {249.32250 889.80950}
+@innovus 221> gui_select -point {35.84300 540.01200}
+@innovus 222> gui_select -point {64.13550 504.00350}
+@innovus 223> gui_select -point {82.14000 534.86800}
+@innovus 224> gui_select -point {76.99550 401.12150}
+@innovus 225> gui_select -point {64.13550 344.53650}
+@innovus 226> gui_select -point {46.13100 298.24000}
+@innovus 227> gui_select -point {33.27100 192.78600}
+@innovus 228> gui_select -point {53.84750 177.35400}
+@innovus 229> gui_select -point {69.27950 223.65050}
+@innovus 230> gui_select -point {58.99150 930.96200}
+@innovus 231> gui_select -point {241.60650 1306.48050}
+@innovus 232> gui_select -point {318.76750 1288.47600}
+@innovus 233> gui_select -point {583.68800 1280.76000}
+@innovus 234> gui_select -point {761.15900 1270.47200}
+@innovus 235> gui_select -point {1198.40600 1280.76000}
+@innovus 236> gui_select -point {748.29850 82.18850}
+@innovus 237> gui_select -point {683.99750 74.47200}
+@innovus 238> gui_select -point {599.12000 53.89600}
+@innovus 239> gui_select -point {552.82350 43.60750}
+@innovus 240> gui_select -point {496.23850 41.03550}
+@innovus 241> gui_select -point {444.79750 43.60750}
+@innovus 242> gui_select -point {437.08150 43.60750}
+@innovus 243> gui_select -point {40.98700 599.16900}
+@innovus 244> gui_select -point {286.08700 977.41050}
+@innovus 245> gui_select -point {2340.69500 220.92750}
+@innovus 246> update_floorplan_obj -obj 0x7f17dc305f60 -rects {1360.431 -9.0775 2570.261 306.2875}
+@innovus 247> gui_select -point {2334.64300 169.48650}
+@innovus 248> gui_select -point {2310.43550 226.97900}
+@innovus 249> gui_select -point {2325.56550 190.66800}
+@innovus 250> gui_select -point {2370.95450 166.46050}
+@innovus 251> gui_select -point {2897.46650 124.09750}
+@innovus 252> gui_select -point {1684.06750 148.30500}
+@innovus 253> gui_select -point {2948.90750 145.27900}
+@innovus 254> gui_select -point {313.32050 723.23200}
+@innovus 255> gui_select -point {-175.36750 699.02450}
+@innovus 256> gui_select -point {2094.08150 136.20100}
+@innovus 257> enics_start_stage "floorplan"
+*********************************************
+*********************************************
+**   ENICSINFO: Starting stage floorplan   **
+*********************************************
+*********************************************
+ENICSINFO: Current time is: 28/01/2025 14:54
+ENICSINFO: ----------------------------------
+@innovus 258> source ../inputs/$design(TOPLEVEL).floorplan.defines -quiet
+source ../inputs/$design(TOPLEVEL).floorplan.defines -quiet
+gnd vdd
+@innovus 259> # Specify Floorpan
+@innovus 260> create_floorplan \
++     -core_size [list 2500.0 1500.0 150.0 150.0 150.0 150.0] \
++     -core_margins_by die \
++     -flip s \
++     -match_to_site
+create_floorplan \
+    -core_size [list 2500.0 1500.0 150.0 150.0 150.0 150.0] \
+    -core_margins_by die \
+    -flip s \
+    -match_to_site
+Start create_tracks
+**WARN: (IMPFP-325):	Floorplan of the design is resized. All current create_floorplan objects are automatically derived based on specified new create_floorplan. This may change blocks, fixed standard cells, existing routes and blockages.
+@innovus 261> gui_select -rect {2403.82200 227.90600 2358.90050 431.78000}
+@innovus 262> gui_fit
+@innovus 263> gui_select -point {1740.36650 1115.96850}
+@innovus 264> gui_select -point {2092.82750 1008.84800}
+@innovus 265> gui_select -point {-284.55500 1357.85350}
+@innovus 266> gui_select -point {1571.04700 376.49200}
+@innovus 267> gui_select -point {-567.90550 1157.43450}
+@innovus 268> gui_select -point {492.93200 556.17800}
+@innovus 269> gui_select -point {1781.83250 652.93200}
+@innovus 270> gui_select -point {3036.17800 338.48150}
+@innovus 271> gui_select -point {3008.53400 227.90600}
+@innovus 272> gui_select -point {3005.07850 234.81700}
+@innovus 273> gui_fit
+@innovus 274> gui_select -rect {1837.12050 189.89550 223.40300 1178.16750}
+@innovus 275> gui_select -rect {309.79050 1019.21450 375.44500 1050.31400}
+@innovus 276> gui_select -point {-308.74350 1316.38750}
+@innovus 277> gui_select -point {368.53400 1029.58100}
+@innovus 278> update_floorplan_obj -obj 0x7f17dc5f24a0 -rects {789.9665 347.7735 1891.9665 1447.5735}
+@innovus 279> gui_deselect -all 
+@innovus 280> update_floorplan_obj -obj 0x7f17dc305f60 -rects {-211.8215 543.7995 998.0085 859.1645}
+@innovus 281> flip_or_rotate_obj -rotate R90
+@innovus 282> update_floorplan_obj -obj 0x7f17dc305f60 -rects {171.7405 443.5905 487.1055 1653.4205}
+@innovus 283> update_floorplan_obj -obj 0x7f17dc305f60 -rects {154.4625 436.679 469.8275 1646.509}
+@innovus 284> gui_deselect -all 
+@innovus 285> update_floorplan_obj -obj 0x7f17dc305ef0 -rects {650.6805 1292.356 1860.5105 1607.721}
+@innovus 286> gui_deselect -all 
+@innovus 287> update_floorplan_obj -obj 0x7f17dc5f24a0 -rects {786.5445 171.7695 1888.5445 1271.5695}
+@innovus 288> gui_deselect -all 
+@innovus 289> update_floorplan_obj -obj 0x7f17dc305f60 -rects {192.4705 388.303 507.8355 1598.133}
+@innovus 290> gui_deselect -all 
+@innovus 291> gui_deselect -all 
+@innovus 292> flip_or_rotate_obj -flip MX
+@innovus 293> flip_or_rotate_obj -flip MX
+@innovus 294> flip_or_rotate_obj -flip MY
+@innovus 295> update_floorplan_obj -obj 0x7f17dc305f60 -rects {1001.0565 422.86 1316.4215 1632.69}
+@innovus 296> update_floorplan_obj -obj 0x7f17dc305f60 -rects {-833.813 930.4725 -518.448 2140.3025}
+@innovus 297> gui_deselect -all 
+@innovus 298> update_floorplan_obj -obj 0x7f17dc305ef0 -rects {567.748 687.6425 1777.578 1003.0075}
+@innovus 299> gui_select -point {1101.09950 825.36150}
+@innovus 300> gui_select -point {2089.37200 821.90600}
+@innovus 301> gui_select -point {838.48200 1461.17300}
+@innovus 302> gui_select -point {368.53400 1205.81150}
+@innovus 303> gui_select -point {1204.76450 1423.50800}
+@innovus 304> gui_select -point {1173.66500 1485.70700}
+@innovus 305> gui_select -point {313.24600 1185.07850}
+@innovus 306> gui_select -rect {292.51300 1067.59150 316.70150 967.38200}
+@innovus 307> gui_select -point {316.70150 967.38200}
+@innovus 308> gui_select -point {358.16750 1098.69100}
+@innovus 309> update_floorplan_obj -obj 0x7f17dc305f60 -rects {216.6585 364.1165 532.0235 1573.9465}
+@innovus 310> gui_deselect -all 
+@innovus 311> update_floorplan_obj -obj 0x7f17dc305ef0 -rects {685.235 1313.088 1895.065 1628.453}
+@innovus 312> gui_deselect -all 
+@innovus 313> update_floorplan_obj -obj 0x7f17dc5f24a0 -rects {765.867 188.8775 1867.867 1288.6775}
+@innovus 314> gui_select -point {1184.03150 1496.07350}
+@innovus 315> gui_select -point {950.24250 1322.68350}
+@innovus 316> gui_select -point {264.86900 842.98450}
+@innovus 317> gui_select -point {316.70150 1174.71200}
+@innovus 318> gui_select -point {320.15700 929.37150}
+@innovus 319> gui_select -rect {178.48200 1741.41350 64.45050 1620.47100}
+@innovus 320> gui_select -point {-167.06800 1475.34050}
+@innovus 321> gui_select -point {171.57100 1727.59150}
+@innovus 322> gui_select -point {-229.26700 1361.30900}
+@innovus 323> gui_select -point {271.78000 1368.22000}
+@innovus 324> gui_select -point {195.75900 1731.04700}
+@innovus 325> gui_select -point {392.72250 1354.39800}
+@innovus 326> gui_select -point {990.52350 974.29300}
+@innovus 327> gui_select -rect {185.39300 1717.22500 161.20450 1686.12550}
+@innovus 328> gui_select -point {185.39300 1734.50250}
+@innovus 329> gui_select -rect {123.19400 1872.72250 223.40300 1651.57050}
+@innovus 330> gui_select -point {-160.15700 1468.42950}
+@innovus 331> gui_select -point {949.05750 72.40850}
+@innovus 332> gui_select -point {821.20450 55.13100}
+@innovus 333> gui_select -point {81.72800 1122.87950}
+@innovus 334> gui_select -point {81.72800 1160.89000}
+@innovus 335> gui_select -point {178.48200 1713.76950}
+@innovus 336> gui_select -point {261.41350 1779.42400}
+@innovus 337> gui_select -point {375.44500 1706.85850}
+@innovus 338> gui_select -point {2759.73850 1112.51300}
+@innovus 339> gui_select -point {2739.00550 1053.76950}
+@innovus 340> gui_select -point {2749.37200 1095.23550}
+@innovus 341> gui_select -point {2745.91650 1157.43450}
+@innovus 342> gui_select -point {2742.46100 1233.45550}
+@innovus 343> gui_select -point {2732.09450 1333.66500}
+@innovus 344> gui_select -point {2728.63900 1406.23050}
+@innovus 345> gui_select -point {2742.46100 1319.84300}
+@innovus 346> gui_select -point {181.93750 1769.05750}
+@innovus 347> update_floorplan_obj -obj 0x7f17dc5f24a0 -rects {-1342.0535 338.1865 -240.0535 1437.9865}
+@innovus 348> gui_select -point {-422.77500 2000.57550}
+@innovus 349> gui_select -point {399.63350 981.20400}
+@innovus 350> gui_select -point {1170.20950 1430.41850}
+@innovus 351> gui_select -point {420.36650 846.43950}
+@innovus 352> gui_select -point {952.51300 1451.15150}
+@innovus 353> gui_select -point {309.79050 756.59650}
+@innovus 354> gui_select -point {1412.09450 1375.13050}
+@innovus 355> gui_select -point {403.08900 811.88450}
+@innovus 356> gui_select -point {1142.56550 2045.49700}
+@innovus 357> gui_select -point {181.93750 1706.85850}
+@innovus 358> gui_select -point {178.38350 1764.34100}
+@innovus 359> gui_select -point {163.80450 1762.52150}
+@innovus 360> update_floorplan_obj -obj 0x7f17dc2f22a0 -rects {1494.8685 1680.0 1544.8685 1800.0}
+@innovus 361> gui_deselect -all 
+@innovus 362> update_floorplan_obj -obj 0x7f17dc2f3d50 -rects {1707.151 1749.314 1827.151 1799.314}
+@innovus 363> update_floorplan_obj -obj 0x7f17dc2f3d50 -rects {1715.8365 1680.0 1765.8365 1800.0}
+@innovus 364> gui_deselect -all 
+@innovus 365> update_floorplan_obj -obj 0x7f17dc2f3ce0 -rects {0.6115 1062.2995 120.6115 1112.2995}
+@innovus 366> gui_deselect -all 
+@innovus 367> update_floorplan_obj -obj 0x7f17dc2f3e30 -rects {0.0 1526.5035 120.0 1576.5035}
+@innovus 368> gui_deselect -all 
+@innovus 369> update_floorplan_obj -obj 0x7f17dc2f2d90 -rects {2.773 1332.03 122.773 1382.03}
+@innovus 370> update_floorplan_obj -obj 0x7f17dc2f2d90 -rects {1.703 1332.03 121.703 1382.03}
+@innovus 371> gui_deselect -all 
+@innovus 372> **ERROR: (IMPFP-60):	Io Inst new lower left location is outside of headbox, it would not be moved.
+update_floorplan_obj -obj 0x7f17dc2f3e30 -rects {-1.7035 1528.208 118.2965 1578.208}
+@innovus 373> gui_deselect -all 
+@innovus 374> update_floorplan_obj -obj 0x7f17dc2f3b20 -rects {1121.942 3.6955 1241.942 53.6955}
+@innovus 375> update_floorplan_obj -obj 0x7f17dc2f3b20 -rects {1149.191 0.0 1199.191 120.0}
+@innovus 376> gui_deselect -all 
+@innovus 377> gui_deselect -all 
+@innovus 378> gui_deselect -all 
+@innovus 379> update_floorplan_obj -obj 0x7f17dc2f3b90 -rects {2680.0 731.8375 2800.0 781.8375}
+@innovus 380> gui_deselect -all 
+@innovus 381> update_floorplan_obj -obj 0x7f17dc2f3c00 -rects {2678.297 856.94 2798.297 906.94}
+@innovus 382> gui_deselect -all 
+@innovus 383> update_floorplan_obj -obj 0x7f17dc2f39d0 -rects {2678.297 945.302 2798.297 995.302}
+@innovus 384> gui_deselect -all 
+@innovus 385> update_floorplan_obj -obj 0x7f17dc2f3c70 -rects {2681.7035 1237.5125 2801.7035 1287.5125}
+@innovus 386> gui_deselect -all 
+@innovus 387> update_floorplan_obj -obj 0x7f17dc2f2b60 -rects {2680.0 1140.6465 2800.0 1190.6465}
+@innovus 388> gui_deselect -all 
+@innovus 389> gui_deselect -all 
+@innovus 390> update_floorplan_obj -obj 0x7f17dc2f39d0 -rects {1159.2415 1749.195 1279.2415 1799.195}
+@innovus 391> update_floorplan_obj -obj 0x7f17dc2f39d0 -rects {1219.285 1680.217 1269.285 1800.217}
+@innovus 392> gui_select -point {1255.73350 1444.13700}
+@innovus 393> gui_select -point {843.20000 1741.16100}
+@innovus 394> gui_select -point {411.80800 1092.89450}
+@innovus 395> gui_select -point {447.16800 918.45200}
+@innovus 396> gui_deselect -all 
+@innovus 397> update_floorplan_obj -obj 0x7f17dc2f3b20 -rects {1298.3015 1.775 1348.3015 121.775}
+@innovus 398> gui_deselect -all 
+@innovus 399> gui_deselect -all 
+@innovus 400> update_floorplan_obj -obj 0x7f17dc2f3420 -rects {1638.373 0.0 1688.373 120.0}
+@innovus 401> gui_deselect -all 
+@innovus 402> update_floorplan_obj -obj 0x7f17dc2f3960 -rects {1653.9715 5.82 1773.9715 55.82}
+@innovus 403> **ERROR: (IMPFP-60):	Io Inst new lower left location is outside of headbox, it would not be moved.
+update_floorplan_obj -obj 0x7f17dc2f3960 -rects {1714.3245 -1.775 1764.3245 118.225}
+@innovus 404> update_floorplan_obj -obj 0x7f17dc2f3960 -rects {1732.076 1.775 1782.076 121.775}
+@innovus 405> gui_deselect -all 
+@innovus 406> update_floorplan_obj -obj 0x7f17dc2f3b90 -rects {2680.0 767.3375 2800.0 817.3375}
+@innovus 407> gui_deselect -all 
+@innovus 408> **ERROR: (IMPFP-60):	Io Inst new lower left location is outside of headbox, it would not be moved.
+update_floorplan_obj -obj 0x7f17dc2f38f0 -rects {-1.876 589.0005 118.124 639.0005}
+@innovus 409> gui_deselect -all 
+@innovus 410> **ERROR: (IMPFP-60):	Io Inst new lower left location is outside of headbox, it would not be moved.
+update_floorplan_obj -obj 0x7f17dc2f2af0 -rects {1831.763 -4.555 1951.763 45.445}
+@innovus 411> **ERROR: (IMPFP-60):	Io Inst new lower left location is outside of headbox, it would not be moved.
+update_floorplan_obj -obj 0x7f17dc2f2af0 -rects {2004.1285 -1.004 2124.1285 48.996}
+@innovus 412> update_floorplan_obj -obj 0x7f17dc2f2af0 -rects {1885.1945 0.7705 2005.1945 50.7705}
+@innovus 413> gui_deselect -all 
+@innovus 414> **ERROR: (IMPFP-60):	Io Inst new lower left location is outside of headbox, it would not be moved.
+update_floorplan_obj -obj 0x7f17dc2f2bd0 -rects {-3.55 622.0675 116.45 672.0675}
+@innovus 415> gui_deselect -all 
+@innovus 416> update_floorplan_obj -obj 0x7f17dc2f2c40 -rects {3.55 585.086 123.55 635.086}
+@innovus 417> gui_deselect -all 
+@innovus 418> **ERROR: (IMPFP-60):	Io Inst new lower left location is outside of headbox, it would not be moved.
+update_floorplan_obj -obj 0x7f17dc2f2cb0 -rects {-1.775 720.2925 118.225 770.2925}
+@innovus 419> gui_deselect -all 
+@innovus 420> update_floorplan_obj -obj 0x7f17dc2f2d90 -rects {1989.9275 1.5655 2109.9275 51.5655}
+@innovus 421> gui_deselect -all 
+@innovus 422> update_floorplan_obj -obj 0x7f17dc2f3500 -rects {1456.187 0.0 1506.187 120.0}
+@innovus 423> gui_deselect -all 
+@innovus 424> gui_deselect -all 
+@innovus 425> gui_deselect -all 
+@innovus 426> update_floorplan_obj -obj 0x7f17dc2f38f0 -rects {2678.225 936.04 2798.225 986.04}
+@innovus 427> gui_deselect -all 
+@innovus 428> update_floorplan_obj -obj 0x7f17dc2f3880 -rects {2665.799 565.086 2785.799 615.086}
+@innovus 429> gui_deselect -all 
+@innovus 430> gui_deselect -all 
+@innovus 431> update_floorplan_obj -obj 0x7f17dc2f2d20 -rects {1.7755 1359.638 121.7755 1409.638}
+@innovus 432> gui_deselect -all 
+@innovus 433> **ERROR: (IMPFP-60):	Io Inst new lower left location is outside of headbox, it would not be moved.
+update_floorplan_obj -obj 0x7f17dc2f2cb0 -rects {-1.775 1236.857 118.225 1286.857}
+@innovus 434> **ERROR: (IMPFP-60):	Io Inst new lower left location is outside of headbox, it would not be moved.
+update_floorplan_obj -obj 0x7f17dc2f2cb0 -rects {-1.775 1252.8335 118.225 1302.8335}
+@innovus 435> update_floorplan_obj -obj 0x7f17dc2f2cb0 -rects {0.0 1254.6085 120.0 1304.6085}
+@innovus 436> gui_deselect -all 
+@innovus 437> **ERROR: (IMPFP-60):	Io Inst new lower left location is outside of headbox, it would not be moved.
+update_floorplan_obj -obj 0x7f17dc2f3e30 -rects {-1.7755 806.6875 118.2245 856.6875}
+@innovus 438> update_floorplan_obj -obj 0x7f17dc2f3e30 -rects {0.0 764.084 120.0 814.084}
+@innovus 439> gui_select -point {59.74300 668.20200}
+@innovus 440> gui_select -point {2729.19250 945.12350}
+@innovus 441> update_floorplan_obj -obj 0x7f17dc2f38f0 -rects {0.0765 836.6325 120.0765 886.6325}
+@innovus 442> gui_deselect -all 
+@innovus 443> update_floorplan_obj -obj 0x7f17dc2f3c70 -rects {2682.457 1335.7875 2802.457 1385.7875}
+@innovus 444> gui_deselect -all 
+@innovus 445> **ERROR: (IMPFP-60):	Io Inst new lower left location is outside of headbox, it would not be moved.
+update_floorplan_obj -obj 0x7f17dc2f2b60 -rects {3050.997 1290.518 3170.997 1340.518}
+@innovus 446> update_floorplan_obj -obj 0x7f17dc2f2b60 -rects {2680.0 1231.5515 2800.0 1281.5515}
+@innovus 447> gui_deselect -all 
+@innovus 448> update_floorplan_obj -obj 0x7f17dc2f3a40 -rects {2680.0 964.059 2800.0 1014.059}
+@innovus 449> gui_deselect -all 
+@innovus 450> update_floorplan_obj -obj 0x7f17dc2f3c70 -rects {2680.0 1070.436 2800.0 1120.436}
+@innovus 451> gui_deselect -all 
+@innovus 452> gui_deselect -all 
+@innovus 453> update_floorplan_obj -obj 0x7f17dc2f3ab0 -rects {1262.3485 1751.7495 1382.3485 1801.7495}
+@innovus 454> gui_deselect -all 
+@innovus 455> update_floorplan_obj -obj 0x7f17dc2f39d0 -rects {1261.053 1675.086 1311.053 1795.086}
+@innovus 456> gui_deselect -all 
+@innovus 457> update_floorplan_obj -obj 0x7f17dc2f3ab0 -rects {935.5775 1677.543 985.5775 1797.543}
+@innovus 458> gui_deselect -all 
+@innovus 459> gui_deselect -all 
+@innovus 460> update_floorplan_obj -obj 0x7f17dc2f3880 -rects {2680.0 686.2765 2800.0 736.2765}
+@innovus 461> gui_deselect -all 
+@innovus 462> update_floorplan_obj -obj 0x7f17dc2f3810 -rects {2674.363 603.918 2794.363 653.918}
+@innovus 463> gui_deselect -all 
+@innovus 464> update_floorplan_obj -obj 0x7f17dc2f37a0 -rects {2680.0 533.9845 2800.0 583.9845}
+@innovus 465> gui_deselect -all 
+@innovus 466> update_floorplan_obj -obj 0x7f17dc2f2b60 -rects {2680.0 1141.3605 2800.0 1191.3605}
+@innovus 467> gui_deselect -all 
+@innovus 468> update_floorplan_obj -obj 0x7f17dc2f2a80 -rects {2680.3115 455.9535 2800.3115 505.9535}
+@innovus 469> gui_deselect -all 
+@innovus 470> update_floorplan_obj -obj 0x7f17dc2f2a10 -rects {2680.311 385.992 2800.311 435.992}
+@innovus 471> gui_deselect -all 
+@innovus 472> update_floorplan_obj -obj 0x7f17dc2f29a0 -rects {2680.311 321.667 2800.311 371.667}
+@innovus 473> gui_deselect -all 
+@innovus 474> update_floorplan_obj -obj 0x7f17dc2f2930 -rects {2674.6745 260.161 2794.6745 310.161}
+@innovus 475> gui_deselect -all 
+@innovus 476> update_floorplan_obj -obj 0x7f17dc2f3730 -rects {2682.8185 1306.7565 2802.8185 1356.7565}
+@innovus 477> gui_deselect -all 
+@innovus 478> update_floorplan_obj -obj 0x7f17dc2f28c0 -rects {2680.311 198.6545 2800.311 248.6545}
+@innovus 479> gui_deselect -all 
+@innovus 480> update_floorplan_obj -obj 0x7f17dc2f2850 -rects {2685.9475 537.3625 2805.9475 587.3625}
+@innovus 481> gui_deselect -all 
+@innovus 482> update_floorplan_obj -obj 0x7f17dc2f37a0 -rects {2680.0 911.952 2800.0 961.952}
+@innovus 483> gui_deselect -all 
+@innovus 484> update_floorplan_obj -obj 0x7f17dc2f2f50 -rects {1118.628 3.101 1238.628 53.101}
+@innovus 485> update_floorplan_obj -obj 0x7f17dc2f2f50 -rects {1161.988 0.0 1211.988 120.0}
+@innovus 486> gui_deselect -all 
+@innovus 487> gui_deselect -all 
+@innovus 488> update_floorplan_obj -obj 0x7f17dc2f2c40 -rects {0.0 319.158 120.0 369.158}
+@innovus 489> gui_deselect -all 
+@innovus 490> update_floorplan_obj -obj 0x7f17dc2f2bd0 -rects {0.0 441.2375 120.0 491.2375}
+@innovus 491> gui_deselect -all 
+@innovus 492> update_floorplan_obj -obj 0x7f17dc2f3e30 -rects {2.8905 550.187 122.8905 600.187}
+@innovus 493> gui_deselect -all 
+@innovus 494> update_floorplan_obj -obj 0x7f17dc2f38f0 -rects {0.0 631.404 120.0 681.404}
+@innovus 495> gui_deselect -all 
+@innovus 496> update_floorplan_obj -obj 0x7f17dc2f2e00 -rects {0.0 775.0625 120.0 825.0625}
+@innovus 497> gui_deselect -all 
+@innovus 498> update_floorplan_obj -obj 0x7f17dc2f2e70 -rects {0.0 868.42 120.0 918.42}
+@innovus 499> gui_deselect -all 
+@innovus 500> update_floorplan_obj -obj 0x7f17dc2f2ee0 -rects {0.0 961.778 120.0 1011.778}
+@innovus 501> gui_deselect -all 
+@innovus 502> update_floorplan_obj -obj 0x7f17dc2f3ce0 -rects {2.8905 1157.6865 122.8905 1207.6865}
+@innovus 503> gui_deselect -all 
+@innovus 504> update_floorplan_obj -obj 0x7f17dc2f24d0 -rects {2047.063 1680.0 2097.063 1800.0}
+@innovus 505> gui_deselect -all 
+@innovus 506> update_floorplan_obj -obj 0x7f17dc2f3570 -rects {1.489 176.3215 51.489 296.3215}
+@innovus 507> update_floorplan_obj -obj 0x7f17dc2f3570 -rects {2.8905 693.7215 122.8905 743.7215}
+@innovus 508> gui_deselect -all 
+@innovus 509> update_floorplan_obj -obj 0x7f17dc2f35e0 -rects {1424.095 1679.387 1474.095 1799.387}
+@innovus 510> gui_deselect -all 
+@innovus 511> update_floorplan_obj -obj 0x7f17dc2f3650 -rects {2751.314 1173.5475 2801.314 1293.5475}
+@innovus 512> update_floorplan_obj -obj 0x7f17dc2f3650 -rects {2677.1095 1228.4645 2797.1095 1278.4645}
+@innovus 513> gui_deselect -all 
+@innovus 514> gui_deselect -all 
+@innovus 515> update_floorplan_obj -obj 0x7f17dc2f3650 -rects {991.942 5.779 1111.942 55.779}
+@innovus 516> gui_deselect -all 
+@innovus 517> update_floorplan_obj -obj 0x7f17dc2f3180 -rects {855.7005 2.8905 905.7005 122.8905}
+@innovus 518> gui_deselect -all 
+@innovus 519> update_floorplan_obj -obj 0x7f17dc2f3110 -rects {664.4525 2.8905 714.4525 122.8905}
+@innovus 520> gui_deselect -all 
+@innovus 521> **ERROR: (IMPFP-60):	Io Inst new lower left location is outside of headbox, it would not be moved.
+update_floorplan_obj -obj 0x7f17dc2f31f0 -rects {772.3505 -2.8905 822.3505 117.1095}
+@innovus 522> update_floorplan_obj -obj 0x7f17dc2f31f0 -rects {769.46 5.781 819.46 125.781}
+@innovus 523> gui_deselect -all 
+@innovus 524> update_floorplan_obj -obj 0x7f17dc2f30a0 -rects {557.029 0.0 607.029 120.0}
+@innovus 525> gui_deselect -all 
+@innovus 526> update_floorplan_obj -obj 0x7f17dc2f3030 -rects {469.839 0.0 519.839 120.0}
+@innovus 527> gui_deselect -all 
+@innovus 528> update_floorplan_obj -obj 0x7f17dc2f2fc0 -rects {365.3065 2.8905 415.3065 122.8905}
+@innovus 529> gui_deselect -all 
+@innovus 530> update_floorplan_obj -obj 0x7f17dc2f2310 -rects {646.163 1682.8905 696.163 1802.8905}
+@innovus 531> gui_select -point {852.24800 1748.36500}
+@innovus 532> gui_select -point {2034.46700 545.91250}
+@innovus 533> @innovus 533> write_io_file -locations ../inputs/ioring.io
+Dumping IO Instances of cell lp_riscv_top
+@innovus 534> if {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
+enics_message "Defining IO Ring" medium
+# Reload the IO file after resizing the floorplan
+read_io_file $design(io_file)
+# Add IO Fillers
+add_io_fillers -cells $tech(IO_FILLERS) -prefix IOFILLER
+# Connect Pad Rings
+#route_special -connect {pad_ring} \
+#-nets "$design(digital_gnd) $design(digital_vdd) $design(io_gnd) $design(io_vdd)"
+} elseif {$design(FULLCHIP_OR_MACRO)=="MACRO"} {
+enics_message "Spreading Pins around Macro" medium
+    # Spread pins
+set pins_to_spread  [get_db ports .name] ;#[get_object_name [get_ports]]
+#edit_pin -fix_overlap 1 -spread_direction clockwise -side Bottom -layer 4 -spread_type side 
+edit_pin -spread_type start -start {0 0} -spread_direction clockwise -layer {3 4}  \
+        -pin $pins_to_spread -fix_overlap 1 -spacing 6
+
+}
+
+ENICSINFO: Defining IO Ring
+---------------------------
+Reading IO assignment file "/data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../inputs/ioring.io" ...
+Added 77 of filler cell 'PFILLER20' on top side.
+Added 10 of filler cell 'PFILLER10' on top side.
+Added 6 of filler cell 'PFILLER5' on top side.
+Added 32 of filler cell 'PFILLER1' on top side.
+Added 7 of filler cell 'PFILLER05' on top side.
+Added 900 of filler cell 'PFILLER0005' on top side.
+Added 44 of filler cell 'PFILLER20' on left side.
+Added 8 of filler cell 'PFILLER10' on left side.
+Added 5 of filler cell 'PFILLER5' on left side.
+Added 20 of filler cell 'PFILLER1' on left side.
+Added 3 of filler cell 'PFILLER05' on left side.
+Added 700 of filler cell 'PFILLER0005' on left side.
+Added 66 of filler cell 'PFILLER20' on bottom side.
+Added 12 of filler cell 'PFILLER10' on bottom side.
+Added 15 of filler cell 'PFILLER5' on bottom side.
+Added 37 of filler cell 'PFILLER1' on bottom side.
+Added 7 of filler cell 'PFILLER05' on bottom side.
+Added 900 of filler cell 'PFILLER0005' on bottom side.
+Added 28 of filler cell 'PFILLER20' on right side.
+Added 13 of filler cell 'PFILLER10' on right side.
+Added 7 of filler cell 'PFILLER5' on right side.
+Added 27 of filler cell 'PFILLER1' on right side.
+Added 9 of filler cell 'PFILLER05' on right side.
+Added 700 of filler cell 'PFILLER0005' on right side.
+@innovus 535> gui_select -point {2890.05800 956.36500}
+@innovus 536> gui_select -point {1887.05100 2040.30650}
+@innovus 537> gui_select -point {-191.22650 1771.48900}
+@innovus 538> gui_select -point {3138.64200 794.49650}
+@innovus 539> check_legacy_design -all -out_dir $design(reports_dir)/$this_run(stage)
+Creating directory /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../reports/floorplan.
+**WARN: (IMPREPO-205):	There are 44 Cells with missing PG PIN.
+**WARN: (IMPREPO-210):	There are 1 Cells PG Pins with missing geometry.
+Estimated cell power/ground rail width = 0.225 um
+
+Begin checking placement ... (start mem=8869.7M, init mem=8940.6M)
+*info: Recommended don't use cell = 0           
+IO instance overlap:5
+*info: Placed = 2              (Fixed = 2)
+*info: Unplaced = 26266       
+Placement Density:2.75%(82047/2982286)
+Placement Density (including fixed std cells):2.75%(82047/2982286)
+Finished check_place (total: cpu=0:00:00.7, real=0:00:01.0; vio checks: cpu=0:00:00.0, real=0:00:00.0; mem=8940.6M)
+Design: lp_riscv_top
+
+------ Design Summary:
+Total Standard Cell Number   (cells) : 26266
+Total Block Cell Number      (cells) : 2
+Total I/O Pad Cell Number    (cells) : 3701
+Total Standard Cell Area     ( um^2) : 82046.88
+Total Block Cell Area        ( um^2) : 763076.08
+Total I/O Pad Cell Area      ( um^2) : 1046400.00
+
+------ Design Statistics:
+
+Number of Instances            : 29969
+Number of Non-uniquified Insts : 29885
+Number of Nets                 : 27336
+Average number of Pins per Net : 3.47
+Maximum number of Pins in Net  : 2182
+
+------ I/O Port summary
+
+Number of Primary I/O Ports    : 35
+Number of Input Ports          : 34
+Number of Output Ports         : 1
+Number of Bidirectional Ports  : 0
+Number of Power/Ground Ports   : 0
+Number of Floating Ports                     *: 0
+Number of Ports Connected to Multiple Pads   *: 0
+Number of Ports Connected to Core Instances   : 0
+
+------ Design Rule Checking:
+
+Number of Output Pins connect to Power/Ground *: 0
+Number of Insts with Input Pins tied together ?: 6
+**WARN: (IMPDB-2148):	TieHi term 'IE' of Io instance 'i_ioring/i_TEST_EN' is tied to net 'vdd'.  However, none of the instance's power terms is connected to the net.  Usually an instance's tieHi/Lo term and one of the Power/Ground (P/G) terms of the instance should connect to the same P/G net.  Check the input netlist, and also make sure proper global net connections are applied to the instance's tieHi/Lo terms and P/G terms.
+Type 'man IMPDB-2148' for more detail.
+**WARN: (IMPDB-2148):	TieHi term 'PE' of Io instance 'i_ioring/i_TEST_EN' is tied to net 'vdd'.  However, none of the instance's power terms is connected to the net.  Usually an instance's tieHi/Lo term and one of the Power/Ground (P/G) terms of the instance should connect to the same P/G net.  Check the input netlist, and also make sure proper global net connections are applied to the instance's tieHi/Lo terms and P/G terms.
+Type 'man IMPDB-2148' for more detail.
+**WARN: (IMPDB-2148):	TieHi term 'OEN' of Io instance 'i_ioring/i_TEST_EN' is tied to net 'vdd'.  However, none of the instance's power terms is connected to the net.  Usually an instance's tieHi/Lo term and one of the Power/Ground (P/G) terms of the instance should connect to the same P/G net.  Check the input netlist, and also make sure proper global net connections are applied to the instance's tieHi/Lo terms and P/G terms.
+Type 'man IMPDB-2148' for more detail.
+**WARN: (IMPDB-2148):	TieHi term 'DS' of Io instance 'i_ioring/i_TEST_EN' is tied to net 'vdd'.  However, none of the instance's power terms is connected to the net.  Usually an instance's tieHi/Lo term and one of the Power/Ground (P/G) terms of the instance should connect to the same P/G net.  Check the input netlist, and also make sure proper global net connections are applied to the instance's tieHi/Lo terms and P/G terms.
+Type 'man IMPDB-2148' for more detail.
+**WARN: (IMPDB-2148):	TieLo term 'I' of Io instance 'i_ioring/i_TEST_EN' is tied to net 'gnd'.  However, none of the instance's ground terms is connected to the net.  Usually an instance's tieHi/Lo term and one of the Power/Ground (P/G) terms of the instance should connect to the same P/G net.  Check the input netlist, and also make sure proper global net connections are applied to the instance's tieHi/Lo terms and P/G terms.
+Type 'man IMPDB-2148' for more detail.
+**WARN: (IMPDB-2148):	TieHi term 'IE' of Io instance 'i_ioring/i_RST_N' is tied to net 'vdd'.  However, none of the instance's power terms is connected to the net.  Usually an instance's tieHi/Lo term and one of the Power/Ground (P/G) terms of the instance should connect to the same P/G net.  Check the input netlist, and also make sure proper global net connections are applied to the instance's tieHi/Lo terms and P/G terms.
+Type 'man IMPDB-2148' for more detail.
+**WARN: (IMPDB-2148):	TieHi term 'PE' of Io instance 'i_ioring/i_RST_N' is tied to net 'vdd'.  However, none of the instance's power terms is connected to the net.  Usually an instance's tieHi/Lo term and one of the Power/Ground (P/G) terms of the instance should connect to the same P/G net.  Check the input netlist, and also make sure proper global net connections are applied to the instance's tieHi/Lo terms and P/G terms.
+Type 'man IMPDB-2148' for more detail.
+**WARN: (IMPDB-2148):	TieHi term 'OEN' of Io instance 'i_ioring/i_RST_N' is tied to net 'vdd'.  However, none of the instance's power terms is connected to the net.  Usually an instance's tieHi/Lo term and one of the Power/Ground (P/G) terms of the instance should connect to the same P/G net.  Check the input netlist, and also make sure proper global net connections are applied to the instance's tieHi/Lo terms and P/G terms.
+Type 'man IMPDB-2148' for more detail.
+**WARN: (IMPDB-2148):	TieHi term 'DS' of Io instance 'i_ioring/i_RST_N' is tied to net 'vdd'.  However, none of the instance's power terms is connected to the net.  Usually an instance's tieHi/Lo term and one of the Power/Ground (P/G) terms of the instance should connect to the same P/G net.  Check the input netlist, and also make sure proper global net connections are applied to the instance's tieHi/Lo terms and P/G terms.
+Type 'man IMPDB-2148' for more detail.
+**WARN: (IMPDB-2148):	TieLo term 'I' of Io instance 'i_ioring/i_RST_N' is tied to net 'gnd'.  However, none of the instance's ground terms is connected to the net.  Usually an instance's tieHi/Lo term and one of the Power/Ground (P/G) terms of the instance should connect to the same P/G net.  Check the input netlist, and also make sure proper global net connections are applied to the instance's tieHi/Lo terms and P/G terms.
+Type 'man IMPDB-2148' for more detail.
+**WARN: (IMPDB-2148):	TieHi term 'IE' of Io instance 'i_ioring/i_IRAM_PROG_WR' is tied to net 'vdd'.  However, none of the instance's power terms is connected to the net.  Usually an instance's tieHi/Lo term and one of the Power/Ground (P/G) terms of the instance should connect to the same P/G net.  Check the input netlist, and also make sure proper global net connections are applied to the instance's tieHi/Lo terms and P/G terms.
+Type 'man IMPDB-2148' for more detail.
+**WARN: (IMPDB-2148):	TieHi term 'PE' of Io instance 'i_ioring/i_IRAM_PROG_WR' is tied to net 'vdd'.  However, none of the instance's power terms is connected to the net.  Usually an instance's tieHi/Lo term and one of the Power/Ground (P/G) terms of the instance should connect to the same P/G net.  Check the input netlist, and also make sure proper global net connections are applied to the instance's tieHi/Lo terms and P/G terms.
+Type 'man IMPDB-2148' for more detail.
+**WARN: (IMPDB-2148):	TieHi term 'OEN' of Io instance 'i_ioring/i_IRAM_PROG_WR' is tied to net 'vdd'.  However, none of the instance's power terms is connected to the net.  Usually an instance's tieHi/Lo term and one of the Power/Ground (P/G) terms of the instance should connect to the same P/G net.  Check the input netlist, and also make sure proper global net connections are applied to the instance's tieHi/Lo terms and P/G terms.
+Type 'man IMPDB-2148' for more detail.
+**WARN: (IMPDB-2148):	TieHi term 'DS' of Io instance 'i_ioring/i_IRAM_PROG_WR' is tied to net 'vdd'.  However, none of the instance's power terms is connected to the net.  Usually an instance's tieHi/Lo term and one of the Power/Ground (P/G) terms of the instance should connect to the same P/G net.  Check the input netlist, and also make sure proper global net connections are applied to the instance's tieHi/Lo terms and P/G terms.
+Type 'man IMPDB-2148' for more detail.
+**WARN: (IMPDB-2148):	TieLo term 'I' of Io instance 'i_ioring/i_IRAM_PROG_WR' is tied to net 'gnd'.  However, none of the instance's ground terms is connected to the net.  Usually an instance's tieHi/Lo term and one of the Power/Ground (P/G) terms of the instance should connect to the same P/G net.  Check the input netlist, and also make sure proper global net connections are applied to the instance's tieHi/Lo terms and P/G terms.
+Type 'man IMPDB-2148' for more detail.
+**WARN: (IMPDB-2148):	TieHi term 'IE' of Io instance 'i_ioring/i_IRAM_PROG_DATA_BYTE' is tied to net 'vdd'.  However, none of the instance's power terms is connected to the net.  Usually an instance's tieHi/Lo term and one of the Power/Ground (P/G) terms of the instance should connect to the same P/G net.  Check the input netlist, and also make sure proper global net connections are applied to the instance's tieHi/Lo terms and P/G terms.
+Type 'man IMPDB-2148' for more detail.
+**WARN: (IMPDB-2148):	TieHi term 'PE' of Io instance 'i_ioring/i_IRAM_PROG_DATA_BYTE' is tied to net 'vdd'.  However, none of the instance's power terms is connected to the net.  Usually an instance's tieHi/Lo term and one of the Power/Ground (P/G) terms of the instance should connect to the same P/G net.  Check the input netlist, and also make sure proper global net connections are applied to the instance's tieHi/Lo terms and P/G terms.
+Type 'man IMPDB-2148' for more detail.
+**WARN: (IMPDB-2148):	TieHi term 'OEN' of Io instance 'i_ioring/i_IRAM_PROG_DATA_BYTE' is tied to net 'vdd'.  However, none of the instance's power terms is connected to the net.  Usually an instance's tieHi/Lo term and one of the Power/Ground (P/G) terms of the instance should connect to the same P/G net.  Check the input netlist, and also make sure proper global net connections are applied to the instance's tieHi/Lo terms and P/G terms.
+Type 'man IMPDB-2148' for more detail.
+**WARN: (IMPDB-2148):	TieHi term 'DS' of Io instance 'i_ioring/i_IRAM_PROG_DATA_BYTE' is tied to net 'vdd'.  However, none of the instance's power terms is connected to the net.  Usually an instance's tieHi/Lo term and one of the Power/Ground (P/G) terms of the instance should connect to the same P/G net.  Check the input netlist, and also make sure proper global net connections are applied to the instance's tieHi/Lo terms and P/G terms.
+Type 'man IMPDB-2148' for more detail.
+**WARN: (IMPDB-2148):	TieLo term 'I' of Io instance 'i_ioring/i_IRAM_PROG_DATA_BYTE' is tied to net 'gnd'.  However, none of the instance's ground terms is connected to the net.  Usually an instance's tieHi/Lo term and one of the Power/Ground (P/G) terms of the instance should connect to the same P/G net.  Check the input netlist, and also make sure proper global net connections are applied to the instance's tieHi/Lo terms and P/G terms.
+Type 'man IMPDB-2148' for more detail.
+**WARN: (EMS-27):	Message (IMPDB-2148) has exceeded the current message display limit of 20.
+To increase the message display limit, refer to the product command reference manual.
+Number of TieHi/Lo term nets not connected to instance's PG terms ?: 199
+Number of Input/InOut Floating Pins            : 0
+Number of Output Floating Pins                 : 0
+Number of Output Term Marked TieHi/Lo         *: 0
+
+**WARN: (IMPREPO-216):	There are 6 Instances with input pins tied together.
+**WARN: (IMPREPO-217):	There are 199 TieHi/Lo term nets not connected to instance's PG terms.
+Number of nets with tri-state drivers          : 34
+Number of nets with parallel drivers           : 0
+Number of nets with multiple drivers           : 0
+Number of nets with no driver (No FanIn)       : 32
+Number of Output Floating nets (No FanOut)     : 436
+Number of High Fanout nets (>50)               : 10
+**WARN: (IMPREPO-227):	There are 10 High Fanout nets (>50).
+**WARN: (IMPREPO-231):	Input netlist has a cell 'sp_hde_16384_m32' which is marked dont_use in the library. This cell will not be used in timing optimization. Use set_dont_use command to change. Instances of this cell are : <output of [get_db insts . -if {.base_cell.name == <the cell>}]
+**WARN: (IMPREPO-231):	Input netlist has a cell 'sp_hde_16384_m32' which is marked dont_use in the library. This cell will not be used in timing optimization. Use set_dont_use command to change. Instances of this cell are : <output of [get_db insts . -if {.base_cell.name == <the cell>}]
+
+# Number of cells of input netlist marked dont_use = 2.
+
+Checking for any assigns in the netlist...
+Assigns in module hs_tiehigh
+  POWER_TAP 1b'1
+Assigns in module hs_tielow
+  GROUND_TAP 1b'0
+  No assigns found.
+Checking routing tracks.....
+Checking other grids.....
+Checking FINFET Grid is on Manufacture Grid.....
+
+Checking core/die box is on Grid.....
+
+Checking snap rule ......
+
+Checking Row is on grid......
+
+Checking AreaIO row.....
+Checking routing blockage.....
+Checking components.....
+Checking constraints (guide/region/fence).....
+**ERROR: (IMPFP-3966):	Module lp_riscv Constraint is not on manufacturing grid (LL--1342.0535 338.1865). The object must be on manufacturing grid in order to be manufactured. Move the object so it is on the manufacturing grid.
+Type 'man IMPFP-3966' for more detail.
+**ERROR: (IMPFP-3967):	Module lp_riscv Constraint is not on the manufacturing grid (UR--240.0535 1437.9865). You must move it to the manufacturing grid. For an object to be manufactured, it should be on the manufacturing grid.
+Type 'man IMPFP-3967' for more detail.
+**ERROR: (IMPFP-7400):	Module lp_riscv's lower left corner (-1342.0535000000 , 338.1865000000)  are NOT on InstanceGrid. You can use the get_db command to check the current grid settings and use the set_db command to change the grid to snap to. You can also use the set_preference SnapAllCorners 1(0) command to control if all vertexes (or corners) need to be snapped to the grid.
+**WARN: (IMPFP-7400):	Module lp_riscv's vertexes (-1342.0535000000 , 1437.9865000000) (-240.0535000000 , 1437.9865000000) (-240.0535000000 , 338.1865000000)  are NOT on InstanceGrid. You can use the get_db command to check the current grid settings and use the set_db command to change the grid to snap to. You can also use the set_preference SnapAllCorners 1(0) command to control if all vertexes (or corners) need to be snapped to the grid.
+Checking groups.....
+Checking Ptn Core Box.....
+
+Checking Preroutes.....
+No. of regular pre-routes not on tracks : 0 
+ Design check done.
+Report saved in file /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../reports/floorplan/lp_riscv_top.main.htm.ascii
+
+*** Summary of all messages that are not suppressed in this session:
+Severity  ID               Count  Summary                                  
+WARNING   IMPFP-7400           2  %s are NOT on %s. You can use the %s com...
+ERROR     IMPFP-3967           1  %s is not on the manufacturing grid (UR-...
+ERROR     IMPFP-3966           1  %s is not on manufacturing grid (LL-%.4f...
+WARNING   IMPDB-2148         199  %sterm '%s' of %sinstance '%s' is tied t...
+WARNING   IMPREPO-227          1  There are %d High Fanout nets (>50).     
+WARNING   IMPREPO-231          2  Input netlist has a cell '%s' which is m...
+WARNING   IMPREPO-205          1  There are %d Cells with missing PG PIN.  
+WARNING   IMPREPO-210          1  There are %d Cells PG Pins with missing ...
+WARNING   IMPREPO-216          1  There are %d Instances with input pins t...
+WARNING   IMPREPO-217          1  There are %d TieHi/Lo term nets not conn...
+*** Message Summary: 208 warning(s), 2 error(s)
+
+0
+@innovus 540> 
+
+@innovus 540> delete_relative_floorplan -all
+@innovus 541> 
+
+@innovus 541> set imem0_name [get_db [get_db insts $design(imem0)] .name]
+set imem0_name [get_db [get_db insts $design(imem0)] .name]
+lp_riscv/iccm_ram_wrapper_iccm_ram_0_sram_sp_16384x32
+@# Place the imem0 macro 25u from the bottom and 25u from the left of the core boundary
+innovus 542> # Place the imem0 macro 25u from the bottom and 25u from the left  [1Gof the core boundary
+@innovus 543> create_relative_floorplan -ref_type core_boundary -ref $design(TOP [1GLEVEL) -place $imem0_name \
++     -horizontal_edge_separate {0  25  0} \
++     -vertical_edge_separate {1  25  1} -orient MX
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem0_name \
+    -horizontal_edge_separate {0  25  0} \
+    -vertical_edge_separate {1  25  1} -orient MX
+@innovus 544> 
+
+@innovus 544> set imem1_name [get_db [get_db insts $design(imem1)] .name]
+set imem1_name [get_db [get_db insts $design(imem1)] .name]
+lp_riscv/iccm_ram_wrapper_iccm_ram_1_sram_sp_16384x32
+# Place the imem1 macro 25u above imem0
+@innovus 545> # Place the imem1 macro 25u above imem0
+@innovus 546> create_relative_floorplan -ref_type core_boundary -ref $design(TOP [1GLEVEL) -place $imem1_name \
++          -horizontal_edge_separate { 1 -25 1 } \
++          -vertical_edge_separate { 1 25 1 } -orient R0
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $imem1_name \
+         -horizontal_edge_separate { 1 -25 1 } \
+         -vertical_edge_separate { 1 25 1 } -orient R0
+@innovus 547> 
+
+@innovus 547> 
+
+@innovus 547> # TODO - relative fplan to dmem inst# TODO - relative fplan to dmem insts
+s
+@innovus 548> set dmem0_name [get_db [get_db insts $design(dmem0)] .name]
+set dmem0_name [get_db [get_db insts $design(dmem0)] .name]
+@innovus 549> set dmem1_name [get_db [get_db insts $design(dmem1)] .name]
+set dmem1_name [get_db [get_db insts $design(dmem1)] .name]
+can't read "design(dmem1)": no such element in array
+can't read "design(dmem1)": no such element in array
+@innovus 550> create_relative_floorplan -ref_type core_boundary -ref $design(TOP [1GLEVEL) -place $dmem0_name \
++     -horizontal_edge_separate {0  25  0} \
++     -vertical_edge_separate {2  -25  2} -orient MX
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $dmem0_name \
+    -horizontal_edge_separate {0  25  0} \
+    -vertical_edge_separate {2  -25  2} -orient MX
+**ERROR: (IMPFP-6005):	The number of inputs in options should be identical.
+
+
+@innovus 551> 
+
+@innovus 551> create_relative_floorplan -ref_type core_boundary -ref $design(TOP [1GLEVEL) -place $dmem1_name \
++     -horizontal_edge_separate {1  -25  1} \
++     -vertical_edge_separate {2  -25  2} -orient R0
+create_relative_floorplan -ref_type core_boundary -ref $design(TOPLEVEL) -place $dmem1_name \
+    -horizontal_edge_separate {1  -25  1} \
+    -vertical_edge_separate {2  -25  2} -orient R0
+can't read "dmem1_name": no such variable
+can't read "dmem1_name": no such variable
+@innovus 552> gui_select -point {1383.16950 488.74750}
+@innovus 553> gui_select -point {646.45350 1080.32550}
+@innovus 554> gui_select -point {419.55350 335.13850}
+@innovus 555> gui_select -point {581.96650 1445.75400}
+@innovus 556> Delete 1 existing relative floorplan constraints of lp_riscv/iccm_ram_wrapper_iccm_ram_1_sram_sp_16384x32 .
+Delete 1 existing relative floorplan constraints of lp_riscv/iccm_ram_wrapper_iccm_ram_1_sram_sp_16384x32 .
+Delete 1 existing relative floorplan constraints of lp_riscv/iccm_ram_wrapper_iccm_ram_0_sram_sp_16384x32 .
+Delete 1 existing relative floorplan constraints of lp_riscv/iccm_ram_wrapper_iccm_ram_0_sram_sp_16384x32 .
+gui_select -point {1105.03000 865.36800}
+@innovus 557> gui_select -point {1162.35250 1464.86150}
+@innovus 558> gui_select -point {331.18200 1302.44850}
+@innovus 559> gui_select -point {219.74900 1831.29500}
+@innovus 560> gui_select -point {227.93700 1766.35500}
+@innovus 561> gui_select -point {249.67750 1784.14300}
+@innovus 562> gui_select -point {249.96000 1691.53350}
+@innovus 563> gui_select -point {268.87700 1772.84900}
+@innovus 564> gui_select -point {225.96050 1776.51950}
+@innovus 565> gui_select -point {245.44250 1777.64900}
+@innovus 566> gui_select -point {289.20600 1754.21450}
+@innovus 567> gui_select -point {242.33650 1728.80300}
+@innovus 568> gui_select -point {331.27550 1760.70850}
+@innovus 569> gui_select -point {312.92300 1758.73200}
+@innovus 570> gui_select -point {308.40550 1757.32000}
+@innovus 571> gui_select -point {289.77050 1752.80250}
+@innovus 572> **ERROR: (IMPFP-60):	Io Inst new lower left location is outside of headbox, it would not be moved.
+Delete 1 existing relative floorplan constraints of lp_riscv/iccm_ram_wrapper_iccm_ram_0_sram_sp_16384x32 .
+Delete 1 existing relative floorplan constraints of lp_riscv/iccm_ram_wrapper_iccm_ram_0_sram_sp_16384x32 .
+Delete 1 existing relative floorplan constraints of lp_riscv/iccm_ram_wrapper_iccm_ram_1_sram_sp_16384x32 .
+Delete 1 existing relative floorplan constraints of lp_riscv/iccm_ram_wrapper_iccm_ram_1_sram_sp_16384x32 .
+Delete 1 existing relative floorplan constraints of lp_riscv/iccm_ram_wrapper_iccm_ram_0_sram_sp_16384x32 .
+Delete 1 existing relative floorplan constraints of lp_riscv/iccm_ram_wrapper_iccm_ram_0_sram_sp_16384x32 .
+gui_select -point {249.97600 1839.84300}
+@innovus 573> edit_move_routes -dx -24.556 -dy -10.464
+@innovus 574> gui_deselect -all 
+@innovus 575> edit_move_routes -dx 10.528 -dy -1.8715
+@innovus 576> gui_deselect -all 
+@innovus 577> edit_move_routes -dx -18.716 -dy -46.5565
+@innovus 578> gui_select -rect {214.66100 1810.64850 320.58200 1675.56350}
+@innovus 579> set_layer_preference violation -is_visible 1
+@innovus 580> gui_select -point {263.14750 1812.42000}
+@innovus 581> gui_select -rect {202.20750 1835.06650 343.12450 1648.76950}
+@innovus 582> gui_select -point {252.53650 1750.20500}
+@innovus 583> gui_select -point {277.28900 1762.36450}
+@innovus 584> gui_select -point {248.19400 1743.54650}
+@innovus 585> select_obj IO inst i_ioring/i_CLOCK_EN
+
+Usage: select_obj [-help] <any_object>+
+
+**ERROR: (IMPTCM-48):	"inst" is not a legal option for command "select_obj". Either the current option or an option prior to it is not specified correctly.
+@innovus 586> update_floorplan_obj -obj 0x7f1807a68200 -rects {645.142 1679.505 695.142 1799.505}
+@innovus 587> update_floorplan_obj -obj 0x7f17dc2f2310 -rects {645.142 1679.505 695.142 1799.505}
+@innovus 588> edit_move_routes -dx 412.32 -dy 0.0
+@innovus 589> update_floorplan_obj -obj 0x7f1807a68200 -rects {645.975 1680.0 695.975 1800.0}
+@innovus 590> update_floorplan_obj -obj 0x7f17dc2f2310 -rects {645.975 1680.0 695.975 1800.0}
+@innovus 591> edit_move_routes -dx 0.835 -dy 0.0
+@innovus 592> 
+@innovus 592> 
+@innovus 592> 
+
+@innovus 592> 
+@innovus 592> 
+@innovus 592> set dmem0_name [get_db [get_db insts $design(dmem0)] .name]
+@innovus 593> set dmem1_name [get_db [get_db insts $design(dmem1)] .name]set dmem1_name [get_db [get_db insts $design(dmem1)] .name]
+can't read "design(dmem1)": no such element in array
+can't read "design(dmem1)": no such element in array
+@innovus 594> gui_select -point {1023.82400 1436.20000}
+@innovus 595> gui_select -point {388.50450 1204.52350}
+@innovus 596> gui_select -point {1045.31950 1457.69600}
+@innovus 597> gui_select -point {426.71900 819.98800}
+@innovus 598> gui_select -point {1511.06150 1522.18350}
+@innovus 599> gui_select -point {352.67800 1008.67300}
+@innovus 600> gui_select -point {304.90950 951.35100}
+@innovus 601> gui_select -point {1367.75650 1548.45600}
+@innovus 602> gui_select -point {364.62000 1230.79600}
+@innovus 603> gui_select -point {1090.69950 1488.74550}
+@innovus 604> gui_select -point {433.88400 1302.44850}
+@innovus 605> gui_select -point {1546.88800 1483.96850}
+@innovus 606> gui_select -point {1119.36050 1421.86950}
+@innovus 607> gui_select -point {419.55350 1257.06900}
+@innovus 608> gui_select -point {1109.80700 1381.26650}
+@innovus 609> gui_select -point {1009.49350 1481.58000}
+@innovus 610> gui_select -point {400.44650 1190.19300}
+@innovus 611> gui_select -point {1140.85650 1409.92750}
+@innovus 612> gui_select -point {402.83500 970.45850}
+@innovus 613> gui_select -point {1181.45950 1460.08450}
+@innovus 614> gui_select -point {925.89850 1448.14250}
+@innovus 615> gui_select -point {355.06650 1097.04450}
+@innovus 616> gui_select -point {1303.26900 1421.86950}
+@innovus 617> gui_select -point {980.83250 1467.24950}
+@innovus 618> gui_select -point {402.83500 1190.19300}
+@innovus 619> gui_select -append -point {400.44650 1235.57300}
+@innovus 620> gui_select -append -point {1651.97850 1383.65500}
+@innovus 621> gui_select -append -point {949.78300 1515.01800}
+@innovus 622> gui_select -append -point {1472.84700 53.30500}
+@innovus 623> gui_select -append -point {1828.72150 1546.06750}
+@innovus 624> gui_select -point {281.02550 1512.62950}
+@innovus 625> gui_select -point {460.15700 1075.54900}
+@innovus 626> gui_select -point {1647.20150 1343.05200}
+@innovus 627> gui_select -point {1694.97000 1108.98650}
+@innovus 628> gui_select -point {331.18200 428.28700}
+@innovus 629> gui_select -point {1193.40150 540.54300}
+@innovus 630> gui_select -point {2750.65150 1620.10850}
+@innovus 631> gui_select -point {2750.65150 1574.72850}
+@innovus 632> gui_select -point {2750.65150 1414.70450}
+@innovus 633> gui_select -point {2745.87450 1233.18450}
+@innovus 634> gui_select -point {2366.11600 7.92500}
+@innovus 635> gui_select -point {2220.42200 36.58600}
+@innovus 636> gui_select -point {2318.34750 1710.86850}
+@innovus 637> gui_select -point {923.51050 1734.75250}
+@innovus 638> gui_select -point {2741.09800 554.87350}
+@innovus 639> gui_select -point {2741.09800 480.83250}
+@innovus 640> gui_select -point {2750.65150 366.18800}
+@innovus 641> gui_select -point {2753.04000 289.75850}
+@innovus 642> gui_select -point {335.95900 1751.47150}
+@innovus 643> write_def -floorplan -no_std_cells "$design(floorplan_def)"
+Writing DEF file '/data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../export/lp_riscv_top.floorplan.def', current time is Thu Jan 30 14:00:32 2025 ...
+unitPerMicron=2000, dbgMicronPerDBU=0.000500, unitPerDBU=1.000000
+DEF file '/data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../export/lp_riscv_top.floorplan.def' is written, current time is Thu Jan 30 14:00:33 2025 ...
+@innovus 658> 
+--------------------------------------------------------------------------------
+Exiting Innovus on Thu Jan 30 14:01:16 2025
+  Total CPU time:     0:20:17
+  Total real time:    48:00:21
+  Peak memory (main): 2040.18MB
+
+
+*** Memory Usage v#1 (Current mem = 9982.812M, initial mem = 2004.215M) ***
+*** Message Summary: 345 warning(s), 20 error(s)
+
+--- Ending "Innovus" (totcpu=0:20:16, real=48:00:16, mem=9982.8M) ---

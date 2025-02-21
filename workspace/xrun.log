@@ -1,0 +1,578 @@
+xrun(64): 23.09-s013: (c) Copyright 1995-2024 Cadence Design Systems, Inc.
+TOOL:	xrun(64)	23.09-s013: Started on Jan 27, 2025 at 14:58:27 UTC
+xrun
+	-f ../scripts/xrun_options.rtl
+		-sv
+		-v93
+		-debug
+		-delay_trigger
+		-timescale 1ns/1ps
+		+bus_conflict_off
+		-define RTL
+		-f ../sourcecode/tb/tb_riscv_rtl_src_list.txt
+			-f ../libraries/libraries.TSMC65_IO.f
+				/data/tsmc/65LP/dig_libs/ARM_FEONLY/TSMCHOME_fe/digital/Front_End/verilog/tpdn65lpnv2od3_140b/tpdn65lpnv2od3.v
+				../libraries/dummy_pcorner.v
+			+incdir+../sourcecode/rtl/riscv-master/include/
+			../sourcecode/rtl/riscv-master/include/riscv_defines.sv
+			../sourcecode/rtl/riscv-master/alu_div.sv
+			../sourcecode/rtl/riscv-master/alu.sv
+			../sourcecode/rtl/soc/components/cluster_clock_gating.sv
+			../sourcecode/rtl/riscv-master/compressed_decoder.sv
+			../sourcecode/rtl/riscv-master/controller.sv
+			../sourcecode/rtl/riscv-master/cs_registers.sv
+			../sourcecode/rtl/riscv-master/debug_unit.sv
+			../sourcecode/rtl/riscv-master/decoder.sv
+			../sourcecode/rtl/riscv-master/exc_controller.sv
+			../sourcecode/rtl/riscv-master/ex_stage.sv
+			../sourcecode/rtl/riscv-master/hwloop_controller.sv
+			../sourcecode/rtl/riscv-master/hwloop_regs.sv
+			../sourcecode/rtl/riscv-master/id_stage.sv
+			../sourcecode/rtl/riscv-master/if_stage.sv
+			../sourcecode/rtl/riscv-master/load_store_unit.sv
+			../sourcecode/rtl/riscv-master/mult.sv
+			../sourcecode/rtl/riscv-master/prefetch_buffer.sv
+			../sourcecode/rtl/riscv-master/prefetch_L0_buffer.sv
+			../sourcecode/rtl/riscv-master/register_file_ff.sv
+			../sourcecode/rtl/riscv-master/riscv_core.sv
+			../sourcecode/rtl/riscv-master/include/riscv_tracer_defines.sv
+			../sourcecode/rtl/riscv-master/riscv_tracer.sv
+			../sourcecode/rtl/soc/sram_sp_16384x32_m16_be_simple.v
+			../sourcecode/rtl/soc/sram_sp_16384x32_m32_be_simple.v
+			../sourcecode/rtl/soc/sram_sp_8192x32_m32_be_simple.v
+			../sourcecode/rtl/soc/sram_sp_8192x32_m16_be_simple.v
+			../sourcecode/rtl/soc/sram_sp_8192x32_m8_be_simple.v
+			../sourcecode/rtl/soc/sram_sp_32768x32_m32_be_simple.v
+			../sourcecode/rtl/soc/sp_ram_m8_be_simple.sv
+			../sourcecode/rtl/soc/sp_ram_m16_be_simple.sv
+			../sourcecode/rtl/soc/sp_ram_m32_be_simple.sv
+			../sourcecode/rtl/soc/sram_sp_instr_wrap.v
+			../sourcecode/rtl/soc/sram_sp_data_wrap.v
+			../sourcecode/rtl/soc/lp_riscv.v
+			../sourcecode/rtl/soc/ioring.v
+			../sourcecode/rtl/soc/lp_riscv_top.v
+			../sourcecode/tb/tb_lp_riscv_mem_pkg.v
+			+MEMLOAD=PRELOAD
+			../sourcecode/tb/tb_lp_riscv.v
+		-input ../scripts/simulation.tcl
+
+   User defined plus("+") options:
+	+bus_conflict_off
+	+MEMLOAD=PRELOAD
+
+SOFTINCLUDE $XPEDION/aa/cds.lib
+|
+xrun: *W,DLCVAR (/tools/rccad/RC2SKILL/1.0/cds.site.lib,12): cds.lib Invalid environment variable ''.
+SOFTINCLUDE $EMXHOME/emxinterface/cds.lib
+|
+xrun: *W,DLCVAR (/tools/rccad/RC2SKILL/1.0/cds.site.lib,14): cds.lib Invalid environment variable ''.
+SOFTINCLUDE $XPEDION/aa/cds.lib
+|
+xrun: *W,DLCVAR (/tools/rccad/RC2SKILL/1.0/cds.site.lib,12): cds.lib Invalid environment variable ''.
+SOFTINCLUDE $EMXHOME/emxinterface/cds.lib
+|
+xrun: *W,DLCVAR (/tools/rccad/RC2SKILL/1.0/cds.site.lib,14): cds.lib Invalid environment variable ''.
+SOFTINCLUDE $XPEDION/aa/cds.lib
+|
+xrun: *W,DLCVAR (/tools/rccad/RC2SKILL/1.0/cds.site.lib,12): cds.lib Invalid environment variable ''.
+SOFTINCLUDE $EMXHOME/emxinterface/cds.lib
+|
+xrun: *W,DLCVAR (/tools/rccad/RC2SKILL/1.0/cds.site.lib,14): cds.lib Invalid environment variable ''.
+SOFTINCLUDE $XPEDION/aa/cds.lib
+|
+xrun: *W,DLCVAR (/tools/rccad/RC2SKILL/1.0/cds.site.lib,12): cds.lib Invalid environment variable ''.
+SOFTINCLUDE $EMXHOME/emxinterface/cds.lib
+|
+xrun: *W,DLCVAR (/tools/rccad/RC2SKILL/1.0/cds.site.lib,14): cds.lib Invalid environment variable ''.
+SOFTINCLUDE $XPEDION/aa/cds.lib
+|
+xrun: *W,DLCVAR (/tools/rccad/RC2SKILL/1.0/cds.site.lib,12): cds.lib Invalid environment variable ''.
+SOFTINCLUDE $EMXHOME/emxinterface/cds.lib
+|
+xrun: *W,DLCVAR (/tools/rccad/RC2SKILL/1.0/cds.site.lib,14): cds.lib Invalid environment variable ''.
+Recompiling... reason: file '../sourcecode/tb/tb_lp_riscv.v' is newer than expected.
+	expected: Mon Jan 27 13:58:36 2025
+	actual:   Mon Jan 27 14:54:37 2025
+SOFTINCLUDE $XPEDION/aa/cds.lib
+|
+xrun: *W,DLCVAR (/tools/rccad/RC2SKILL/1.0/cds.site.lib,12): cds.lib Invalid environment variable ''.
+SOFTINCLUDE $EMXHOME/emxinterface/cds.lib
+|
+xrun: *W,DLCVAR (/tools/rccad/RC2SKILL/1.0/cds.site.lib,14): cds.lib Invalid environment variable ''.
+SOFTINCLUDE $XPEDION/aa/cds.lib
+|
+xmvlog: *W,DLCVAR (/tools/rccad/RC2SKILL/1.0/cds.site.lib,12): cds.lib Invalid environment variable ''.
+SOFTINCLUDE $EMXHOME/emxinterface/cds.lib
+|
+xmvlog: *W,DLCVAR (/tools/rccad/RC2SKILL/1.0/cds.site.lib,14): cds.lib Invalid environment variable ''.
+file: ../sourcecode/rtl/soc/sram_sp_instr_wrap.v
+	module worklib.sram_sp_instr_wrap:v
+		errors: 0, warnings: 0
+file: ../sourcecode/rtl/soc/sram_sp_data_wrap.v
+	module worklib.sram_sp_data_wrap:v
+		errors: 0, warnings: 0
+file: ../sourcecode/tb/tb_lp_riscv.v
+	module worklib.tb_lp_riscv:v
+		errors: 0, warnings: 0
+	Total errors/warnings found outside modules and primitives:
+		errors: 0, warnings: 2
+SOFTINCLUDE $XPEDION/aa/cds.lib
+|
+xrun: *W,DLCVAR (/tools/rccad/RC2SKILL/1.0/cds.site.lib,12): cds.lib Invalid environment variable ''.
+SOFTINCLUDE $EMXHOME/emxinterface/cds.lib
+|
+xrun: *W,DLCVAR (/tools/rccad/RC2SKILL/1.0/cds.site.lib,14): cds.lib Invalid environment variable ''.
+SOFTINCLUDE $XPEDION/aa/cds.lib
+|
+xrun: *W,DLCVAR (/tools/rccad/RC2SKILL/1.0/cds.site.lib,12): cds.lib Invalid environment variable ''.
+SOFTINCLUDE $EMXHOME/emxinterface/cds.lib
+|
+xrun: *W,DLCVAR (/tools/rccad/RC2SKILL/1.0/cds.site.lib,14): cds.lib Invalid environment variable ''.
+SOFTINCLUDE $XPEDION/aa/cds.lib
+|
+xmelab: *W,DLCVAR (/tools/rccad/RC2SKILL/1.0/cds.site.lib,12): cds.lib Invalid environment variable ''.
+SOFTINCLUDE $EMXHOME/emxinterface/cds.lib
+|
+xmelab: *W,DLCVAR (/tools/rccad/RC2SKILL/1.0/cds.site.lib,14): cds.lib Invalid environment variable ''.
+		Caching library 'worklib' ....... Done
+	Elaborating the design hierarchy:
+   PVSS3CDG     i_VSSIO_3    (); //PAD #3
+                        |
+xmelab: *W,CUVWSB (../sourcecode/rtl/soc/ioring.v,169|24): 1 inout port was not connected:
+xmelab: (/data/tsmc/65LP/dig_libs/ARM_FEONLY/TSMCHOME_fe/digital/Front_End/verilog/tpdn65lpnv2od3_140b/tpdn65lpnv2od3.v,2287): VSS
+
+   PVDD2POC     i_VDDIO_4    (); //PAD #4
+                        |
+xmelab: *W,CUVWSB (../sourcecode/rtl/soc/ioring.v,170|24): 1 inout port was not connected:
+xmelab: (/data/tsmc/65LP/dig_libs/ARM_FEONLY/TSMCHOME_fe/digital/Front_End/verilog/tpdn65lpnv2od3_140b/tpdn65lpnv2od3.v,2250): VDDPST
+
+   PVDD1CDG     i_VDDCORE_5  (); //PAD #5
+                          |
+xmelab: *W,CUVWSB (../sourcecode/rtl/soc/ioring.v,171|26): 1 inout port was not connected:
+xmelab: (/data/tsmc/65LP/dig_libs/ARM_FEONLY/TSMCHOME_fe/digital/Front_End/verilog/tpdn65lpnv2od3_140b/tpdn65lpnv2od3.v,2229): VDD
+
+   PVDD1CDG     i_VDDCORE_11 (); //PAD #11
+                           |
+xmelab: *W,CUVWSB (../sourcecode/rtl/soc/ioring.v,172|27): 1 inout port was not connected:
+xmelab: (/data/tsmc/65LP/dig_libs/ARM_FEONLY/TSMCHOME_fe/digital/Front_End/verilog/tpdn65lpnv2od3_140b/tpdn65lpnv2od3.v,2229): VDD
+
+   PVDD2CDG     i_VDDIO_12   (); //PAD #12
+                         |
+xmelab: *W,CUVWSB (../sourcecode/rtl/soc/ioring.v,173|25): 1 inout port was not connected:
+xmelab: (/data/tsmc/65LP/dig_libs/ARM_FEONLY/TSMCHOME_fe/digital/Front_End/verilog/tpdn65lpnv2od3_140b/tpdn65lpnv2od3.v,2243): VDDPST
+
+   PVSS3CDG     i_VSSIO_13   (); //PAD #13
+                         |
+xmelab: *W,CUVWSB (../sourcecode/rtl/soc/ioring.v,174|25): 1 inout port was not connected:
+xmelab: (/data/tsmc/65LP/dig_libs/ARM_FEONLY/TSMCHOME_fe/digital/Front_End/verilog/tpdn65lpnv2od3_140b/tpdn65lpnv2od3.v,2287): VSS
+
+   PVSS3CDG     i_VSSIO_19   (); //PAD #19
+                         |
+xmelab: *W,CUVWSB (../sourcecode/rtl/soc/ioring.v,175|25): 1 inout port was not connected:
+xmelab: (/data/tsmc/65LP/dig_libs/ARM_FEONLY/TSMCHOME_fe/digital/Front_End/verilog/tpdn65lpnv2od3_140b/tpdn65lpnv2od3.v,2287): VSS
+
+   PVDD2CDG     i_VDDIO_20   (); //PAD #20
+                         |
+xmelab: *W,CUVWSB (../sourcecode/rtl/soc/ioring.v,176|25): 1 inout port was not connected:
+xmelab: (/data/tsmc/65LP/dig_libs/ARM_FEONLY/TSMCHOME_fe/digital/Front_End/verilog/tpdn65lpnv2od3_140b/tpdn65lpnv2od3.v,2243): VDDPST
+
+   PVDD1CDG     i_VDDCORE_21 (); //PAD #21
+                           |
+xmelab: *W,CUVWSB (../sourcecode/rtl/soc/ioring.v,177|27): 1 inout port was not connected:
+xmelab: (/data/tsmc/65LP/dig_libs/ARM_FEONLY/TSMCHOME_fe/digital/Front_End/verilog/tpdn65lpnv2od3_140b/tpdn65lpnv2od3.v,2229): VDD
+
+   PVSS3CDG     i_VSSIO_27   (); //PAD #27
+                         |
+xmelab: *W,CUVWSB (../sourcecode/rtl/soc/ioring.v,178|25): 1 inout port was not connected:
+xmelab: (/data/tsmc/65LP/dig_libs/ARM_FEONLY/TSMCHOME_fe/digital/Front_End/verilog/tpdn65lpnv2od3_140b/tpdn65lpnv2od3.v,2287): VSS
+
+   PVDD2CDG     i_VDDIO_28   (); //PAD #28
+                         |
+xmelab: *W,CUVWSB (../sourcecode/rtl/soc/ioring.v,179|25): 1 inout port was not connected:
+xmelab: (/data/tsmc/65LP/dig_libs/ARM_FEONLY/TSMCHOME_fe/digital/Front_End/verilog/tpdn65lpnv2od3_140b/tpdn65lpnv2od3.v,2243): VDDPST
+
+   PVDD1CDG     i_VDDCORE_29 (); //PAD #29
+                           |
+xmelab: *W,CUVWSB (../sourcecode/rtl/soc/ioring.v,180|27): 1 inout port was not connected:
+xmelab: (/data/tsmc/65LP/dig_libs/ARM_FEONLY/TSMCHOME_fe/digital/Front_End/verilog/tpdn65lpnv2od3_140b/tpdn65lpnv2od3.v,2229): VDD
+
+   PVSS3CDG     i_VSSIO_35   (); //PAD #35
+                         |
+xmelab: *W,CUVWSB (../sourcecode/rtl/soc/ioring.v,181|25): 1 inout port was not connected:
+xmelab: (/data/tsmc/65LP/dig_libs/ARM_FEONLY/TSMCHOME_fe/digital/Front_End/verilog/tpdn65lpnv2od3_140b/tpdn65lpnv2od3.v,2287): VSS
+
+   PVDD2CDG     i_VDDIO_36   (); //PAD #36
+                         |
+xmelab: *W,CUVWSB (../sourcecode/rtl/soc/ioring.v,182|25): 1 inout port was not connected:
+xmelab: (/data/tsmc/65LP/dig_libs/ARM_FEONLY/TSMCHOME_fe/digital/Front_End/verilog/tpdn65lpnv2od3_140b/tpdn65lpnv2od3.v,2243): VDDPST
+
+   PVDD1CDG     i_VDDCORE_37 (); //PAD #37
+                           |
+xmelab: *W,CUVWSB (../sourcecode/rtl/soc/ioring.v,183|27): 1 inout port was not connected:
+xmelab: (/data/tsmc/65LP/dig_libs/ARM_FEONLY/TSMCHOME_fe/digital/Front_End/verilog/tpdn65lpnv2od3_140b/tpdn65lpnv2od3.v,2229): VDD
+
+   PVSS3CDG     i_VSSIO_43   (); //PAD #43
+                         |
+xmelab: *W,CUVWSB (../sourcecode/rtl/soc/ioring.v,184|25): 1 inout port was not connected:
+xmelab: (/data/tsmc/65LP/dig_libs/ARM_FEONLY/TSMCHOME_fe/digital/Front_End/verilog/tpdn65lpnv2od3_140b/tpdn65lpnv2od3.v,2287): VSS
+
+   PVDD2CDG     i_VDDIO_44   (); //PAD #44
+                         |
+xmelab: *W,CUVWSB (../sourcecode/rtl/soc/ioring.v,185|25): 1 inout port was not connected:
+xmelab: (/data/tsmc/65LP/dig_libs/ARM_FEONLY/TSMCHOME_fe/digital/Front_End/verilog/tpdn65lpnv2od3_140b/tpdn65lpnv2od3.v,2243): VDDPST
+
+   PVDD1CDG     i_VDDCORE_45 (); //PAD #45
+                           |
+xmelab: *W,CUVWSB (../sourcecode/rtl/soc/ioring.v,186|27): 1 inout port was not connected:
+xmelab: (/data/tsmc/65LP/dig_libs/ARM_FEONLY/TSMCHOME_fe/digital/Front_End/verilog/tpdn65lpnv2od3_140b/tpdn65lpnv2od3.v,2229): VDD
+
+   PVSS3CDG     i_VSSIO_51   (); //PAD #51
+                         |
+xmelab: *W,CUVWSB (../sourcecode/rtl/soc/ioring.v,187|25): 1 inout port was not connected:
+xmelab: (/data/tsmc/65LP/dig_libs/ARM_FEONLY/TSMCHOME_fe/digital/Front_End/verilog/tpdn65lpnv2od3_140b/tpdn65lpnv2od3.v,2287): VSS
+
+   PVDD2CDG     i_VDDIO_52   (); //PAD #52
+                         |
+xmelab: *W,CUVWSB (../sourcecode/rtl/soc/ioring.v,188|25): 1 inout port was not connected:
+xmelab: (/data/tsmc/65LP/dig_libs/ARM_FEONLY/TSMCHOME_fe/digital/Front_End/verilog/tpdn65lpnv2od3_140b/tpdn65lpnv2od3.v,2243): VDDPST
+
+   PVDD1CDG     i_VDDCORE_53 (); //PAD #53
+                           |
+xmelab: *W,CUVWSB (../sourcecode/rtl/soc/ioring.v,189|27): 1 inout port was not connected:
+xmelab: (/data/tsmc/65LP/dig_libs/ARM_FEONLY/TSMCHOME_fe/digital/Front_End/verilog/tpdn65lpnv2od3_140b/tpdn65lpnv2od3.v,2229): VDD
+
+   PVSS3CDG     i_VSSIO_59   (); //PAD #59
+                         |
+xmelab: *W,CUVWSB (../sourcecode/rtl/soc/ioring.v,190|25): 1 inout port was not connected:
+xmelab: (/data/tsmc/65LP/dig_libs/ARM_FEONLY/TSMCHOME_fe/digital/Front_End/verilog/tpdn65lpnv2od3_140b/tpdn65lpnv2od3.v,2287): VSS
+
+   PVDD2CDG     i_VDDIO_60   (); //PAD #60
+                         |
+xmelab: *W,CUVWSB (../sourcecode/rtl/soc/ioring.v,191|25): 1 inout port was not connected:
+xmelab: (/data/tsmc/65LP/dig_libs/ARM_FEONLY/TSMCHOME_fe/digital/Front_End/verilog/tpdn65lpnv2od3_140b/tpdn65lpnv2od3.v,2243): VDDPST
+
+   PVDD1CDG     i_VDDCORE_61 (); //PAD #61
+                           |
+xmelab: *W,CUVWSB (../sourcecode/rtl/soc/ioring.v,192|27): 1 inout port was not connected:
+xmelab: (/data/tsmc/65LP/dig_libs/ARM_FEONLY/TSMCHOME_fe/digital/Front_End/verilog/tpdn65lpnv2od3_140b/tpdn65lpnv2od3.v,2229): VDD
+
+	Top level design units:
+		riscv_defines
+		riscv_tracer_defines
+		$unit_0x4bd32656
+		PCLAMP1ANA
+		PCLAMP2ANA
+		PDDW0204CDG
+		PDDW0204SCDG
+		PDDW0408CDG
+		PDDW0408SCDG
+		PDDW0812CDG
+		PDDW0812SCDG
+		PDUW0204CDG
+		PDUW0204SCDG
+		PDUW0408CDG
+		PDUW0408SCDG
+		PDUW0812CDG
+		PDUW0812SCDG
+		PDUW1216CDG
+		PRCUT
+		PRDW0204CDG
+		PRDW0204SCDG
+		PRDW0408CDG
+		PRDW0408SCDG
+		PRDW0812CDG
+		PRDW0812SCDG
+		PRDW1216CDG
+		PRDW1216SCDG
+		PRUW0204CDG
+		PRUW0204SCDG
+		PRUW0408CDG
+		PRUW0408SCDG
+		PRUW0812CDG
+		PRUW0812SCDG
+		PRUW1216CDG
+		PRUW1216SCDG
+		PVDD1ANA
+		PVDD2ANA
+		PVSS1ANA
+		PVSS1CDG
+		PVSS2ANA
+		PVSS2CDG
+		PXOE1CDG
+		PXOE2CDG
+		sram_sp_16384x32_m16_be_wrap
+		sram_sp_8192x32_m32_be_wrap
+		sram_sp_8192x32_m16_be_wrap
+		sram_sp_8192x32_m8_be_wrap
+		tb_lp_riscv
+	Building instance overlay tables: .................... Done
+	Generating native compiled code:
+SOFTINCLUDE $XPEDION/aa/cds.lib
+|
+xmvlog_cg: *W,DLCVAR (/tools/rccad/RC2SKILL/1.0/cds.site.lib,12): cds.lib Invalid environment variable ''.
+SOFTINCLUDE $EMXHOME/emxinterface/cds.lib
+|
+xmvlog_cg: *W,DLCVAR (/tools/rccad/RC2SKILL/1.0/cds.site.lib,14): cds.lib Invalid environment variable ''.
+		worklib.sram_sp_data_wrap:v <0x043a700b>
+			streams:   4, words:   594
+		worklib.sram_sp_16384x32_m32_be_wrap:v <0x210c60c4>
+			streams:   3, words:   427
+		worklib.sram_sp_instr_wrap:v <0x3f709f1f>
+			streams:   4, words:  1079
+		worklib.riscv_debug_unit:sv <0x6d3e5984>
+			streams:  31, words: 33820
+		worklib.riscv_load_store_unit:sv <0x073c9b61>
+			streams:  37, words: 27938
+		worklib.riscv_mult:sv <0x78432d60>
+			streams:  46, words: 46651
+		worklib.riscv_alu_div:sv <0x2db3d8f3>
+			streams:  23, words: 18439
+		worklib.riscv_exc_controller:sv <0x098618f0>
+			streams:  13, words: 12537
+		worklib.riscv_decoder:sv <0x4019fd01>
+			streams:  11, words: 81082
+		worklib.riscv_fetch_fifo:sv <0x2cc97cc9>
+			streams:  25, words: 19518
+		worklib.riscv_prefetch_buffer:sv <0x79f18305>
+			streams:  18, words: 18815
+		worklib.riscv_if_stage:sv <0x33c8ca76>
+			streams:  46, words: 24715
+		worklib.cluster_clock_gating:sv <0x405d0c50>
+			streams:   3, words:   846
+		worklib.lp_riscv:v <0x4b633bf2>
+			streams:  20, words:  8985
+		worklib.PDUW1216SCDG:v <0x123b003d>
+			streams:   7, words:  5151
+		worklib.PDUW1216SCDG:v <0x3e0acd8c>
+			streams:   7, words:  5151
+		worklib.PDDW1216SCDG:v <0x4de46939>
+			streams:   7, words:  5136
+		worklib.PDDW1216SCDG:v <0x6010813b>
+			streams:   7, words:  5136
+		worklib.PDDW1216SCDG:v <0x4c214c8a>
+			streams:   7, words:  5136
+		worklib.PDDW1216CDG:v <0x75ca7539>
+			streams:   7, words:  5136
+		worklib.hs_tiehigh:v <0x3fdc71b9>
+			streams:   1, words:   185
+		worklib.hs_tielow:v <0x6e7e6596>
+			streams:   1, words:   171
+		worklib.tb_lp_riscv:v <0x207792b0>
+			streams:   6, words: 10061
+		worklib.sram_sp_8192x32_m8_be_wrap:v <0x7140fda1>
+			streams:   3, words:   427
+		worklib.sram_sp_8192x32_m16_be_wrap:v <0x732bfbc1>
+			streams:   3, words:   427
+		worklib.sram_sp_8192x32_m32_be_wrap:v <0x2be91350>
+			streams:   3, words:   427
+		worklib.sram_sp_16384x32_m16_be_wrap:v <0x562fa7b1>
+			streams:   3, words:   427
+		worklib.PRUW1216SCDG:v <0x4bee3cd4>
+			streams:   7, words:  5151
+		worklib.PRUW1216CDG:v <0x0e1e648b>
+			streams:   7, words:  5151
+		worklib.PRUW0812SCDG:v <0x612f7888>
+			streams:   7, words:  5151
+		worklib.PRUW0812CDG:v <0x22460c98>
+			streams:   7, words:  5151
+		worklib.PRUW0408SCDG:v <0x6d8fcfd5>
+			streams:   7, words:  5151
+		worklib.PRUW0408CDG:v <0x4301a50c>
+			streams:   7, words:  5151
+		worklib.PRUW0204SCDG:v <0x75c9252f>
+			streams:   7, words:  5151
+		worklib.PRUW0204CDG:v <0x226d3acc>
+			streams:   7, words:  5151
+		worklib.PRDW1216SCDG:v <0x15f47063>
+			streams:   7, words:  5136
+		worklib.PRDW1216CDG:v <0x55b0d3e4>
+			streams:   7, words:  5136
+		worklib.PRDW0812SCDG:v <0x3f35343f>
+			streams:   7, words:  5136
+		worklib.PRDW0812CDG:v <0x79e8bbf7>
+			streams:   7, words:  5136
+		worklib.PRDW0408SCDG:v <0x33958362>
+			streams:   7, words:  5136
+		worklib.PRDW0408CDG:v <0x18af1263>
+			streams:   7, words:  5136
+		worklib.PRDW0204SCDG:v <0x2bd36998>
+			streams:   7, words:  5136
+		worklib.PRDW0204CDG:v <0x79c38da3>
+			streams:   7, words:  5136
+		worklib.PDUW1216CDG:v <0x1dd8c996>
+			streams:   7, words:  5151
+		worklib.PDUW0812SCDG:v <0x0b464fa1>
+			streams:   7, words:  5151
+		worklib.PDUW0812CDG:v <0x3180a185>
+			streams:   7, words:  5151
+		worklib.PDUW0408SCDG:v <0x07e6f8fc>
+			streams:   7, words:  5151
+		worklib.PDUW0408CDG:v <0x50c70811>
+			streams:   7, words:  5151
+		worklib.PDUW0204SCDG:v <0x1fa01206>
+			streams:   7, words:  5151
+		worklib.PDUW0204CDG:v <0x31ab97d1>
+			streams:   7, words:  5151
+		worklib.PDDW0812SCDG:v <0x555c0316>
+			streams:   7, words:  5136
+		worklib.PDDW0812CDG:v <0x6a2e16ea>
+			streams:   7, words:  5136
+		worklib.PDDW0408SCDG:v <0x59fcb44b>
+			streams:   7, words:  5136
+		worklib.PDDW0408CDG:v <0x0b69bf7e>
+			streams:   7, words:  5136
+		worklib.PDDW0204SCDG:v <0x41ba5eb1>
+			streams:   7, words:  5136
+		worklib.PDDW0204CDG:v <0x6a0520be>
+			streams:   7, words:  5136
+		worklib.riscv_tracer:sv <0x78ef9d50>
+			streams:  38, words: 141460
+		worklib.sp_ram_m16:sv <0x11822458>
+			streams:   8, words:  3532
+		worklib.sp_ram_m32:sv <0x5f64d787>
+			streams:   8, words:  3532
+		worklib.sp_ram_m16:sv <0x5fa5c787>
+			streams:   8, words:  3532
+		worklib.sp_ram_m8:sv <0x30cb8de7>
+			streams:   8, words:  3532
+		worklib.riscv_hwloop_controller:sv <0x16896fb9>
+			streams:   3, words:  3590
+		worklib.riscv_register_file:sv <0x0e60dd19>
+			streams:  10, words:  7261
+		worklib.riscv_hwloop_regs:sv <0x5f2e09a9>
+			streams:  17, words: 13120
+		worklib.alu_popcnt:sv <0x14f01f0d>
+			streams:   5, words:  2440
+		worklib.alu_ff:sv <0x08c31033>
+			streams:  13, words: 13861
+		worklib.riscv_alu:sv <0x42bd6d00>
+			streams:  75, words: 93960
+		worklib.riscv_cs_registers:sv <0x6ef6a5e6>
+			streams:  34, words: 73450
+		worklib.sp_ram_m32:sv <0x315e7a3c>
+			streams:   8, words:  3591
+		worklib.riscv_core:sv <0x278b2875>
+			streams: 286, words: 93990
+		worklib.riscv_ex_stage:sv <0x1ceff9fe>
+			streams:  18, words:  6448
+		worklib.riscv_id_stage:sv <0x46667c9b>
+			streams: 199, words: 87434
+		worklib.sram_sp_32768x32_m32_be_wrap:v <0x50851839>
+			streams:  23, words: 23646
+	Building instance specific data structures.
+	Loading native compiled code:     .................... Done
+	Design hierarchy summary:
+		                      Instances  Unique
+		Modules:                    152      90
+		Verilog packages:             2       2
+		Primitives:                 970       7
+		Resolved nets:                2       1
+		Timing outputs:             142      74
+		Registers:                 1252    1163
+		Scalar wires:              1505       -
+		Expanded wires:              70       3
+		Vectored wires:             673       -
+		Named events:                 7      10
+		Always blocks:              319     226
+		Initial blocks:              92      58
+		Final blocks:                 1       1
+		Cont. assignments:          510     365
+		Pseudo assignments:         601       -
+		Assertions:                  17      20
+		Compilation units:            1       1
+		SV Class declarations:        1       1
+		SV Class specializations:     1       1
+		Process Clocks:             223     156
+		Simulation timescale:      10ps
+	Writing initial simulation snapshot: worklib.PCLAMP1ANA:v
+SOFTINCLUDE $XPEDION/aa/cds.lib
+|
+xmsim: *W,DLCVAR (/tools/rccad/RC2SKILL/1.0/cds.site.lib,12): cds.lib Invalid environment variable ''.
+SOFTINCLUDE $EMXHOME/emxinterface/cds.lib
+|
+xmsim: *W,DLCVAR (/tools/rccad/RC2SKILL/1.0/cds.site.lib,14): cds.lib Invalid environment variable ''.
+Loading snapshot worklib.PCLAMP1ANA:v .................... Done
+xcelium> source /tools/cadence/XCELIUM/23.09.013/tools/xcelium/files/xmsimrc
+xcelium> database -open -event waves -into waves.shm -default
+Created default SHM database waves
+xcelium> probe -create tb_lp_riscv  -depth all -tasks -functions -uvm -packed 16k -unpacked 64k -all -dynamic -memories -database waves
+xmsim: *W,MTDYNUSE: SHM probe is configured with dynamic object dumping enabled. This is likely to degrade probing performance.
+xmsim: *W,PRHOPT: The design contains optimized signals. To improve simulation performance these signals are excluded.
+Created probe 1
+xcelium> run
+Using MEMLOAD method: PRELOAD
+
+
+Preloading memory
+Preloading instruction memory from ../sourcecode/tb/slm_files/l2_stim.slm
+Preloading data memory from ../sourcecode/tb/slm_files/tcdm_bank0.slm
+
+
+pre-sorted Vector
+
+mem[h00000800] = 2083895770
+mem[h00000801] = 2387275518
+mem[h00000802] = 1019156571
+mem[h00000803] =   12226531
+mem[h00000804] =  774246461
+mem[h00000805] = 2196714727
+mem[h00000806] = 3272954727
+mem[h00000807] =  788020799
+mem[h00000808] =   91032556
+mem[h00000809] = 2099879131
+mem[h0000080a] = 2198701799
+mem[h0000080b] = 3076107088
+mem[h0000080c] = 2596505367
+mem[h0000080d] = 4077523399
+mem[h0000080e] = 3261313382
+mem[h0000080f] = 4180911059
+mem[h00000810] = 1600970400
+mem[h00000811] = 1596800671
+mem[h00000812] = 1363774596
+mem[h00000813] = 4008030655
+mem[h00000814] =  940059729
+mem[h00000815] =   90738668
+mem[h00000816] = 3290600809
+mem[h00000817] = 4117111756
+
+
+[TRACER] Output filename is: trace_core_00_0.log
+
+
+post-sorted Vector
+
+mem[h00000800] =   12226531
+mem[h00000801] =   90738668
+mem[h00000802] =   91032556
+mem[h00000803] =  774246461
+mem[h00000804] =  788020799
+mem[h00000805] =  940059729
+mem[h00000806] = 1019156571
+mem[h00000807] = 1363774596
+mem[h00000808] = 1596800671
+mem[h00000809] = 1600970400
+mem[h0000080a] = 2083895770
+mem[h0000080b] = 2099879131
+mem[h0000080c] = 2196714727
+mem[h0000080d] = 2198701799
+mem[h0000080e] = 2387275518
+mem[h0000080f] = 2596505367
+mem[h00000810] = 3076107088
+mem[h00000811] = 3261313382
+mem[h00000812] = 3272954727
+mem[h00000813] = 3290600809
+mem[h00000814] = 4008030655
+mem[h00000815] = 4077523399
+mem[h00000816] = 4117111756
+mem[h00000817] = 4180911059
+
+
+
+Look, Ma! The numbers are sorted!
+And my ID is at index number: 10
+
+
+Simulation complete via $finish(1) at time 125390 NS + 15
+../sourcecode/tb/tb_lp_riscv.v:184        $finish() ;
+xcelium> exit
+TOOL:	xrun(64)	23.09-s013: Exiting on Jan 27, 2025 at 14:58:36 UTC  (total: 00:00:09)

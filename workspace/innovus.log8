@@ -1,0 +1,1043 @@
+
+Cadence Innovus(TM) Implementation System.
+Copyright 2021 Cadence Design Systems, Inc. All rights reserved worldwide.
+
+Version:	v21.15-s110_1, built Fri Sep 23 13:08:12 PDT 2022
+Options:	-stylus 
+Date:		Wed Feb  5 13:01:26 2025
+Host:		ip-10-70-130-117.il-central-1.compute.internal (x86_64 w/Linux 4.14.355-275.570.amzn2.x86_64) (1core*2cpus*Intel(R) Xeon(R) Platinum 8375C CPU @ 2.90GHz 55296KB)
+OS:		CentOS Linux release 7.9.2009 (Core)
+
+License:
+		[13:01:26.019817] Configured Lic search path (21.01-s002): 5280@ip-10-70-133-150.il-central-1.compute.internal
+
+		invs	Innovus Implementation System	21.1	checkout succeeded
+		8 CPU jobs allowed with the current license(s). Use set_multi_cpu_usage to set your required CPU count.
+
+
+Create and set the environment variable TMPDIR to /tmp/innovus_temp_14317_ip-10-70-130-117.il-central-1.compute.internal_saridav_rnZhCc.
+
+The soft stacksize limit is either up to the hard limit or larger than 0.2% of RAM. No change is needed.
+[INFO] Loading PVS 23.11 fill procedures
+
+**INFO:  MMMC transition support version v31-84 
+
+@innovus 1> set design(TOPLEVEL) "lp_riscv_top"
+lp_riscv_top
+@innovus 2> set runtype "pnr"
+set runtype "pnr"
+pnr
+@innovus 3> set debug_file "debug.txt"
+set debug_file "debug.txt"
+debug.txt
+@innovus 4> 
+
+@innovus 4> # Load general procedures
+# Load general procedures
+@innovus 5> source ../scripts/procedures.tcl -quiet
+source ../scripts/procedures.tcl -quiet
+@innovus 6> 
+
+@innovus 6> ###############################################
+###############################################
+@innovus 7> # Starting Stage - Load defines and technology
+# Starting Stage - Load defines and technology
+@innovus 8> ###############################################
+###############################################
+@innovus 9> enics_start_stage "start"
+enics_start_stage "start"
+*****************************************
+*****************************************
+**   ENICSINFO: Starting stage start   **
+*****************************************
+*****************************************
+ENICSINFO: Current time is: 05/02/2025 13:02
+ENICSINFO: This session is running on Hostname : ip-10-70-130-117.il-central-1.compute.internal
+ENICSINFO: The log file is innovus.log8 and the command file is innovus.cmd8
+ENICSINFO: ----------------------------------
+@innovus 10> 
+
+@innovus 10> 
+
+@# Load the specific definitions for this project
+innovus 10> # Load the specific definitions for this project
+@innovus 11> source ../inputs/$design(TOPLEVEL).defines -quiet
+source ../inputs/$design(TOPLEVEL).defines -quiet
+@innovus 12> 
+
+@innovus 12> 
+
+@innovus 12> 
+
+@innovus 12> # Load the library paths and definitions for this technology
+# Load the library paths and definitions for this technology
+@innovus 13> source $design(libraries_dir)/libraries.$TECHNOLOGY.tcl -quiet
+source $design(libraries_dir)/libraries.$TECHNOLOGY.tcl -quiet
+##  Process: 65            (User Set)               
+##     Node: (not set)                           
+
+##  Check design process and node:  
+##  Design tech node is not set.
+
+Applying the recommended capacitance filtering threshold values for 65nm process node: total_c_th=0, relative_c_th=1 and coupling_c_th=0.1.
+	These values will be used by all post-route extraction engines, including TQuantus, IQuantus and Quantus QRC extraction.
+	Capacitance filtering mode(extract_rc_cap_filter_mode option of the set_db) is 'relative_and_coupling' for all engines.
+	The accuracy mode for post_route extract_rc_effort_level low extraction will be set to 'high'.
+	Default value for EffortLevel(extract_rc_effort_level option of the set_db) in post_route extraction mode will be 'medium' if Quantus QRC technology file is specified else 'low'.
+@innovus 14> source $design(libraries_dir)/libraries.$SC_TECHNOLOGY.tcl -quiet
+source $design(libraries_dir)/libraries.$SC_TECHNOLOGY.tcl -quiet
+@isource $design(libraries_dir)/libraries.$SRAM_TECHNOLOGY.tcl -quiet
+nnovus 15> source $design(libraries_dir)/libraries.$SRAM_TECHNOLOGY.tcl -quiet [1G
+@innovus 16> if {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
++     source $design(libraries_dir)/libraries.$IO_TECHNOLOGY.tcl -quiet
++ }
+if {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
+    source $design(libraries_dir)/libraries.$IO_TECHNOLOGY.tcl -quiet
+}
+@innovus 17> set_library_unit -time 1ns -cap 1pf
+set_library_unit -time 1ns -cap 1pf
+@innovus 18> 
+
+@innovus 18> #############################################
+#############################################
+@innovus 19> #       Print values to deb#       Print values to debug file
+ug file
+@innovus 20> ###################################################################################
+#######
+@innovus 21> set var_list {runtypeset var_list {runtype}
+}
+runtype
+@innovus 22> set dic_list {paths tech tech_files design}
+set dic_list {paths tech tech_files design}
+paths tech tech_files design
+@innovus 23> enics_prinenics_print_debug_data w $debug_file "after everything was loaded" $var_list $dic_list
+t_debug_data w $debug_file "after everything was loaded"  [1G$var_list $dic_list
+@innovus 
+24> 
+
+@innovus 24> 
+@innovus 24> ############################################
+############################################
+@innovus 25> # Init Design
+# Init Design
+@innovus 26> ############################################
+############################################
+@inenable_metrics -on
+novus 27> enable_metrics -on
+@innovus 28> enics_start_stage "init_designenics_start_stage "init_design"
+"
+***********************************************
+***********************************************
+**   ENICSINFO: Starting stage init_design   **
+***********************************************
+***********************************************
+ENICSINFO: Current time is: 05/02/2025 13:02
+ENICSINFO: ----------------------------------
+@innovus 29> 
+
+@in# Global Nets
+novus 29> # Global Nets
+@innovus 30> set_db init_ground_nets $design(all_ground_nets)
+set_db init_ground_nets $design(all_ground_nets)
+1 gnd
+@innovus 31> set_db init_power_nets $design(all_power_nets)
+set_db init_power_nets $design(all_power_nets)
+1 {vdd vddio}
+@innovus 32> 
+
+@innovus 32> # MMMC
+# MMMC
+@innovus 33> enics_message "Suppressing the following messages that are reported [1G due to the LIB definitions:" 
+enics_message "Suppressing the following messages that are reported due to the LIB definitions:" 
+ENICSINFO: Suppressing the following messages that are reported due to the LIB definitions:
+@innovus 34> enics_message "$tech(LIB_SUPPRESS_MESSAGES_INNOVUS)"
+enics_message "$tech(LIB_SUPPRESS_MESSAGES_INNOVUS)"
+ENICSINFO: TECHLIB-436 TECHLIB-1318 TECHLIB-302 IMPCTE-337 IMPTS-282
+@innovus 35> set_message -suppress -id $tech(LIB_SUPPRESS_MESSAGES_INNOVUS) 
+set_message -suppress -id $tech(LIB_SUPPRESS_MESSAGES_INNOVUS) 
+@innovus 36> enics_message "Reading MMMC File" medium
+enics_message "Reading MMMC File" medium
+
+ENICSINFO: Reading MMMC File
+----------------------------
+@innovus 37> read_mmmc $design(mmmc_view_file) 
+read_mmmc $design(mmmc_view_file) 
+#@ Begin verbose source (pre): 
+@file 1: #  Version:1.0 MMMC View Definition File
+@file 2: # Do Not Remove Above Line
+@file 3:
+@file 4: ############# MMMC Hierarchy ########################################################################################
+@file 5: #                                                                                                                   #
+@file 6: #   Setup Analysis View |                   |--> Constraint Corner --> SDC File                                     #
+@file 7: #                       |--> Analysis View  |                                                                       #
+@file 8: #    Hold Analysis View |                   |                 |--> Timing Condition --> Library Set --> LIB File    #
+@file 9: #                                           |--> Delay Corner |                                                     #
+@file 10: #                                                             |--> RC Corner --> QRCTech File                       #
+@file 11: #####################################################################################################################
+@file 12:
+@file 13: # Constraint Modes #
+@file 14: # ---------------- #
+@@file 15: create_constraint_mode \
+	-name functional_mode \
+	-sdc_files $design(functional_sdc)
+@file 18:
+@file 19: # RC Corners #
+@file 20: # ---------- #
+@file 21: if {$runtype=="synthesis"} {...
+@file 24: } else {
+@@file 25: set_message -suppress -id ENCEXT-6202 ;
+@file 25: # In addition to the technology file, capacitance table file is specified for all RC corners.
+@file 26: }
+@file 27:
+@@file 28: create_rc_corner \
+	-name bc_rc_corner \
+	-temperature $tech(TEMPERATURE_BC) \
+    -qrc_tech $tech_files(QRCTECH_FILE_BC)
+@file 32: #	-cap_table $tech_files(CAPTABLE_BC) \
+@file 33:
+@@file 34: create_rc_corner \
+	-name tc_rc_corner \
+	-temperature $tech(TEMPERATURE_TC) \
+	-qrc_tech $tech_files(QRCTECH_FILE_TC)
+@file 38: #	-cap_table $tech_files(CAPTABLE_TC) \
+@file 39:
+@@file 40: create_rc_corner \
+	-name wc_rc_corner \
+	-temperature $tech(TEMPERATURE_WC) \
+    -qrc_tech $tech_files(QRCTECH_FILE_WC)
+@file 44: #	-cap_table $tech_files(CAPTABLE_WC) \
+@file 45:
+@file 46: # Library Sets #
+@file 47: # ------------ #
+@@file 48: create_library_set \
+	-name bc_libset \
+	-timing $tech_files(ALL_BC_LIBS)  
+@file 51: # -aocv $tech_files(ALL_BC_AOCV_LIBS)
+@file 52:
+@@file 53: create_library_set \
+	-name tc_libset \
+	-timing $tech_files(ALL_TC_LIBS)  
+@file 56: # -aocv $tech_files(ALL_TC_AOCV_LIBS)
+@file 57:     
+@@file 58: create_library_set \
+	-name wc_libset \
+	-timing $tech_files(ALL_WC_LIBS)  
+@file 61: # -aocv $tech_files(ALL_WC_AOCV_LIBS)
+@file 62:
+@file 63: # Timing Conditions #
+@file 64: # ----------------- #
+@@file 65: create_timing_condition \
+   -name         bc_timing_condition \
+   -library_sets bc_libset
+@file 68:
+@@file 69: create_timing_condition \
+   -name         tc_timing_condition \
+   -library_sets tc_libset
+@file 72:
+@@file 73: create_timing_condition \
+   -name         wc_timing_condition \
+   -library_sets wc_libset
+@file 76:
+@file 77: # Delay Corners #
+@file 78: # ------------- #
+@@file 79: create_delay_corner \
+	-name bc_dly_corner \
+	-timing_condition bc_timing_condition \
+	-rc_corner bc_rc_corner
+@file 83:
+@@file 84: create_delay_corner \
+	-name tc_dly_corner \
+	-timing_condition tc_timing_condition \
+	-rc_corner tc_rc_corner
+@file 88:
+@@file 89: create_delay_corner \
+	-name wc_dly_corner \
+	-timing_condition wc_timing_condition \
+	-rc_corner wc_rc_corner
+@file 93:
+@file 94: # Analysis Views #
+@file 95: # -------------- #
+@@file 96: create_analysis_view \
+	-name bc_analysis_view \
+	-constraint_mode functional_mode \
+	-delay_corner bc_dly_corner
+@file 100:
+@@file 101: create_analysis_view \
+    -name tc_analysis_view \
+	-constraint_mode functional_mode \
+	-delay_corner tc_dly_corner
+@file 105:
+@@file 106: create_analysis_view \
+	-name wc_analysis_view \
+	-constraint_mode functional_mode \
+	-delay_corner wc_dly_corner
+@file 110:
+@file 111: # Selected Analysis Views #
+@file 112: # ----------------------- #
+@@file 113: set_analysis_view \
+	-setup $design(selected_setup_analysis_views) \
+	-hold  $design(selected_hold_analysis_views)
+@file 116: # -leakage $design(selected_leakage_analysis_views)
+@file 117:     # -dynamic $design(selected_dynamic_power_analysis_views)
+@file 118:
+@file 119:
+#@ End verbose source: /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../inputs/lp_riscv_top.mmmc
+Reading wc_libset timing library '/tech/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp/sc9_base_rvt/r0p0/lib/sc9_cln65lp_base_rvt_ss_typical_max_0p90v_125c.lib' ...
+Read 949 cells in library 'sc9_cln65lp_base_rvt_ss_typical_max_0p90v_125c' 
+Reading wc_libset timing library '/tech/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp/sc9_base_lvt/r0p0/lib/sc9_cln65lp_base_lvt_ss_typical_max_0p90v_125c.lib' ...
+Read 949 cells in library 'sc9_cln65lp_base_lvt_ss_typical_max_0p90v_125c' 
+Reading wc_libset timing library '/tech/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp/sc9_base_hvt/r0p0/lib/sc9_cln65lp_base_hvt_ss_typical_max_0p90v_125c.lib' ...
+Read 949 cells in library 'sc9_cln65lp_base_hvt_ss_typical_max_0p90v_125c' 
+Reading wc_libset timing library '/project/tsmc65/users/saridav/ws/DVD25/hw7/mem_gen/SP_32768X32/M32/sp_hde_32768_m32_ss_1p08v_1p08v_125c.lib' ...
+Read 1 cells in library 'USERLIB_ss_1p08v_1p08v_125c' 
+Reading wc_libset timing library '/project/tsmc65/users/saridav/ws/DVD25/hw7/mem_gen/SP_16384X32/M32/sp_hde_16384_m32_ss_1p08v_1p08v_125c.lib' ...
+**WARN: (TECHLIB-459):	Appending library 'USERLIB_ss_1p08v_1p08v_125c' to the previously read library of the same name and nominal PVT. Cell definitions from the previously read library will not be overridden. (File /project/tsmc65/users/saridav/ws/DVD25/hw7/mem_gen/SP_16384X32/M32/sp_hde_16384_m32_ss_1p08v_1p08v_125c.lib)
+Read 1 cells in library 'USERLIB_ss_1p08v_1p08v_125c' 
+Reading wc_libset timing library '/tech/tsmc/65LP/dig_libs/ARM_FEONLY/TSMCHOME_fe/digital/Front_End/timing_power_noise/NLDM/tpdn65lpnv2od3_200a/tpdn65lpnv2od3wc.lib' ...
+Read 47 cells in library 'tpdn65lpnv2od3wc' 
+Reading bc_libset timing library '/tech/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp/sc9_base_rvt/r0p0/lib/sc9_cln65lp_base_rvt_ff_typical_min_1p32v_m40c.lib' ...
+Read 949 cells in library 'sc9_cln65lp_base_rvt_ff_typical_min_1p32v_m40c' 
+Reading bc_libset timing library '/tech/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp/sc9_base_lvt/r0p0/lib/sc9_cln65lp_base_lvt_ff_typical_min_1p32v_m40c.lib' ...
+Read 949 cells in library 'sc9_cln65lp_base_lvt_ff_typical_min_1p32v_m40c' 
+Reading bc_libset timing library '/tech/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp/sc9_base_hvt/r0p0/lib/sc9_cln65lp_base_hvt_ff_typical_min_1p32v_m40c.lib' ...
+Read 949 cells in library 'sc9_cln65lp_base_hvt_ff_typical_min_1p32v_m40c' 
+Reading bc_libset timing library '/project/tsmc65/users/saridav/ws/DVD25/hw7/mem_gen/SP_32768X32/M32/sp_hde_32768_m32_ff_1p32v_1p32v_m40c.lib' ...
+Read 1 cells in library 'USERLIB_ff_1p32v_1p32v_m40c' 
+Reading bc_libset timing library '/project/tsmc65/users/saridav/ws/DVD25/hw7/mem_gen/SP_16384X32/M32/sp_hde_16384_m32_ff_1p32v_1p32v_m40c.lib' ...
+**WARN: (TECHLIB-459):	Appending library 'USERLIB_ff_1p32v_1p32v_m40c' to the previously read library of the same name and nominal PVT. Cell definitions from the previously read library will not be overridden. (File /project/tsmc65/users/saridav/ws/DVD25/hw7/mem_gen/SP_16384X32/M32/sp_hde_16384_m32_ff_1p32v_1p32v_m40c.lib)
+Read 1 cells in library 'USERLIB_ff_1p32v_1p32v_m40c' 
+Reading bc_libset timing library '/tech/tsmc/65LP/dig_libs/ARM_FEONLY/TSMCHOME_fe/digital/Front_End/timing_power_noise/NLDM/tpdn65lpnv2od3_200a/tpdn65lpnv2od3bc.lib' ...
+Read 47 cells in library 'tpdn65lpnv2od3bc' 
+timing_initialized
+
+@innovus 38> 
+@innovus 38> # LEFs
+# LEFs
+@innovus 39> enics_message "Suppressing the following messages that are reported [1G due to the LEF definitions:" 
+enics_message "Suppressing the following messages that are reported due to the LEF definitions:" 
+ENICSINFO: Suppressing the following messages that are reported due to the LEF definitions:
+@innovus 40> enics_message "$tech(LEF_SUPPRESS_MESSAGES_INNOVUS)"
+enics_message "$tech(LEF_SUPPRESS_MESSAGES_INNOVUS)"
+ENICSINFO: ENCEXT-6202 IMPLF-200 LEFPARS-2001 LEFPARS-2065 LEFPARS-2076 IMPLF-58 IMPFP-3961 IMPSR-4302
+@innovus 41> set_message -suppress -id $tech(LEF_SUPPRESS_MESSAGES_INNOVUS) 
+set_message -suppress -id $tech(LEF_SUPPRESS_MESSAGES_INNOVUS) 
+@innovus 42> enics_message "Reading LEF abstractsenics_message "Reading LEF abstracts"
+"
+ENICSINFO: Reading LEF abstracts
+@innovus 43> read_phread_physical -lef $tech_files(ALL_LEFS)
+ysical -lef $tech_files(ALL_LEFS)
+
+Loading LEF file /data/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp//arm_tech/r2p0/lef/1p9m_6x2z/sc9_tech.lef ...
+
+Loading LEF file /data/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp//sc9_base_rvt/r0p0/lef/sc9_cln65lp_base_rvt.lef ...
+Set DBUPerIGU to M2 pitch 400.
+
+Loading LEF file /data/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp//sc9_base_lvt/r0p0/lef/sc9_cln65lp_base_lvt.lef ...
+
+Loading LEF file /data/tsmc/65LP/dig_libs/ARM_FEONLY/arm/tsmc/cln65lp//sc9_base_hvt/r0p0/lef/sc9_cln65lp_base_hvt.lef ...
+
+Loading LEF file ../mem_gen/SP_32768X32/M32/sp_hde_32768_m32.lef ...
+
+Loading LEF file ../mem_gen/SP_16384X32/M32/sp_hde_16384_m32.lef ...
+
+Loading LEF file /data/project/tsmc65/shared/modified_libraries/tpdn65lpnv2od3_9lm.lef ...
+WARNING (LEFPARS-2502): Message (LEFPARS-2065) has been suppressed from output. See file /data/project/tsmc65/shared/modified_libraries/tpdn65lpnv2od3_9lm.lef at line 12683.
+WARNING (LEFPARS-2502): Message (LEFPARS-2076) has been suppressed from output. See file /data/project/tsmc65/shared/modified_libraries/tpdn65lpnv2od3_9lm.lef at line 12686.
+WARNING (LEFPARS-2502): Message (LEFPARS-2001) has been suppressed from output. See file /data/project/tsmc65/shared/modified_libraries/tpdn65lpnv2od3_9lm.lef at line 13714.
+
+Loading LEF file /data/tsmc/65LP/dig_libs/ARM_FEONLY/TSMCHOME_fe/digital/Back_End/lef/tpdn65lpnv2od3_140b/mt/9lm/lef//antenna_9lm.lef ...
+**WARN: (IMPLF-61):	43 duplicated MACRO definitions have been found in the LEF file(s). Their content except DENSITY and PIN ANTENNA* data, and certain properties, have been ignored.
+Review the LEF files specified in the init_lef_files variable and remove redundant definitions.
+Type 'man IMPLF-61' for more detail.
+
+##  Check design process and node:  
+##  Design tech node is not set.
+
+0
+@innovus 44> 
+
+@innovus 44> # Post Synthesis Netlist
+# Post Synthesis Netlist
+@innovus 45> enics_message "Reading the Post Synthesis netlist at $design(postsy [1Gn_netlist)" medium
+enics_message "Reading the Post Synthesis netlist at $design(postsyn_netlist)" medium
+
+ENICSINFO: Reading the Post Synthesis netlist at /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../export/lp_riscv_top.postsyn.v
+-------------------------------------------------------------------------------------------------------------------------------------------
+@innovus 46> read_netlist $design(postsyn_netlist)
+read_netlist $design(postsyn_netlist)
+#% Begin Load netlist data ... (date=02/05 13:02:53, mem=1029.7M)
+*** Begin netlist parsing (mem=7327.8M) ***
+Pin 'VSS' of cell 'PVSS3CDG' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+Pin 'VSSPST' of cell 'PVSS2CDG' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+Pin 'AVSS' of cell 'PVSS2ANA' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+Pin 'VSS' of cell 'PVSS1CDG' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+Pin 'AVSS' of cell 'PVSS1ANA' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+Pin 'VDDPST' of cell 'PVDD2POC' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+Pin 'VDDPST' of cell 'PVDD2CDG' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+Pin 'AVDD' of cell 'PVDD2ANA' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+Pin 'VDD' of cell 'PVDD1CDG' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+Pin 'AVDD' of cell 'PVDD1ANA' is declared as power/ground in LEF but as signal in timing library.  Treat it as power/ground.
+Created 2896 new cells from 10 timing libraries.
+Reading netlist ...
+Backslashed names will retain backslash and a trailing blank character.
+Reading verilog netlist '/data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../export/lp_riscv_top.postsyn.v'
+
+*** Memory Usage v#1 (Current mem = 7335.797M, initial mem = 2004.215M) ***
+*** End netlist parsing (cpu=0:00:00.3, real=0:00:00.0, mem=7335.8M) ***
+#% End Load netlist data ... (date=02/05 13:02:53, total cpu=0:00:00.3, real=0:00:00.0, peak res=1182.1M, current mem=1182.1M)
+Top level cell is lp_riscv_top.
+Hooked 5792 DB cells to tlib cells.
+Starting recursive module instantiation check.
+No recursion found.
+Building hierarchical netlist for Cell lp_riscv_top ...
+*** Netlist is unique.
+** info: there are 5914 modules.
+** info: there are 26117 stdCell insts.
+** info: there are 68 Pad insts.
+** info: there are 3 macros.
+
+*** Memory Usage v#1 (Current mem = 7452.211M, initial mem = 2004.215M) ***
+0
+@innovus 47> 
+
+@innovus 47> # Import and initialize design
+# Import and initialize design
+@innovus 48> enics_message "Running init_design command" medium
+enics_message "Running init_design command" medium
+
+ENICSINFO: Running init_design command
+--------------------------------------
+@innovus 49> init_design
+init_design
+Pre-connect netlist-defined P/G connections...
+  Updated 24 instances.
+Initializing I/O assignment ...
+Start create_tracks
+Extraction setup Started 
+Initializing multi-corner RC extraction with 2 active RC Corners ...
+Captable file(s) not specified in multi-corner setup. PreRoute extraction will use technology file. For post_route extraction, default value for effort level would be 'medium' and effort level 'low' would not be allowed.
+Generating auto layer map file.
+Importing multi-corner technology file(s) for preRoute extraction...
+/data/tsmc/65LP/QRC/1.3a//rcworst/qrcTechFile
+Generating auto layer map file.
+/data/tsmc/65LP/QRC/1.3a//rcbest/qrcTechFile
+Generating auto layer map file.
+Completed (cpu: 0:00:04.5 real: 0:00:05.0)
+Set Shrink Factor to 1.00000
+Summary of Active RC-Corners : 
+ 
+ Analysis View: wc_analysis_view
+    RC-Corner Name        : wc_rc_corner
+    RC-Corner Index       : 0
+    RC-Corner Temperature : 125 Celsius
+    RC-Corner Cap Table   : ''
+    RC-Corner PreRoute Res Factor         : 1
+    RC-Corner PreRoute Cap Factor         : 1
+    RC-Corner PostRoute Res Factor        : 1 {1 1 1}
+    RC-Corner PostRoute Cap Factor        : 1 {1 1 1}
+    RC-Corner PostRoute XCap Factor       : 1 {1 1 1}
+    RC-Corner PreRoute Clock Res Factor   : 1	[Derived from postRoute_res (effortLevel low)]
+    RC-Corner PreRoute Clock Cap Factor   : 1	[Derived from postRoute_cap (effortLevel low)]
+    RC-Corner PostRoute Clock Cap Factor  : 1 {1 1 1} 	[Derived from postRoute_cap (effortLevel low)]
+    RC-Corner PostRoute Clock Res Factor  : 1 {1 1 1} 	[Derived from postRoute_res (effortLevel low)]
+    RC-Corner PostRoute Clock coupling capacitance Factor : 1 {1 1 1} 
+    RC-Corner Technology file: '/data/tsmc/65LP/QRC/1.3a//rcworst/qrcTechFile'
+ 
+ Analysis View: bc_analysis_view
+    RC-Corner Name        : bc_rc_corner
+    RC-Corner Index       : 1
+    RC-Corner Temperature : -40 Celsius
+    RC-Corner Cap Table   : ''
+    RC-Corner PreRoute Res Factor         : 1
+    RC-Corner PreRoute Cap Factor         : 1
+    RC-Corner PostRoute Res Factor        : 1 {1 1 1}
+    RC-Corner PostRoute Cap Factor        : 1 {1 1 1}
+    RC-Corner PostRoute XCap Factor       : 1 {1 1 1}
+    RC-Corner PreRoute Clock Res Factor   : 1	[Derived from postRoute_res (effortLevel low)]
+    RC-Corner PreRoute Clock Cap Factor   : 1	[Derived from postRoute_cap (effortLevel low)]
+    RC-Corner PostRoute Clock Cap Factor  : 1 {1 1 1} 	[Derived from postRoute_cap (effortLevel low)]
+    RC-Corner PostRoute Clock Res Factor  : 1 {1 1 1} 	[Derived from postRoute_res (effortLevel low)]
+    RC-Corner PostRoute Clock coupling capacitance Factor : 1 {1 1 1} 
+    RC-Corner Technology file: '/data/tsmc/65LP/QRC/1.3a//rcbest/qrcTechFile'
+Updating RC grid for preRoute extraction ...
+Initializing multi-corner resistance tables ...
+Default value for post_route extraction mode's extract_rc_effort_level (extract_rc_effort_level option of set_db) changed to 'medium'.
+*Info: initialize multi-corner CTS.
+Reading timing constraints file '/data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../inputs/lp_riscv_top.sdc' ...
+Current (total cpu=0:00:41.8, real=0:01:34, peak res=1704.7M, current mem=1704.7M)
+INFO (CTE): Constraints read successfully.
+Ending "Constraint file reading stats" (total cpu=0:00:00.1, real=0:00:00.0, peak res=1747.9M, current mem=1747.9M)
+Current (total cpu=0:00:41.9, real=0:01:34, peak res=1747.9M, current mem=1747.9M)
+Total number of combinational cells: 2058
+Total number of sequential cells: 762
+Total number of tristate cells: 27
+Total number of level shifter cells: 0
+Total number of power gating cells: 0
+Total number of isolation cells: 0
+Total number of power switch cells: 0
+Total number of pulse generator cells: 0
+Total number of always on buffers: 0
+Total number of retention cells: 0
+List of usable buffers: BUFH_X11M_A9TH BUFH_X13M_A9TH BUFH_X16M_A9TH BUFH_X2M_A9TH BUFH_X1P7M_A9TH BUFH_X4M_A9TH BUFH_X5M_A9TH BUFH_X6M_A9TH BUFH_X7P5M_A9TH BUFH_X9M_A9TH BUFH_X0P8M_A9TL BUFH_X0P7M_A9TL BUFH_X11M_A9TL BUFH_X13M_A9TL BUFH_X16M_A9TL BUFH_X1M_A9TL BUFH_X1P4M_A9TL BUFH_X1P2M_A9TL BUFH_X2M_A9TL BUFH_X1P7M_A9TL BUFH_X3M_A9TL BUFH_X2P5M_A9TL BUFH_X4M_A9TL BUFH_X3P5M_A9TL BUFH_X5M_A9TL BUFH_X6M_A9TL BUFH_X7P5M_A9TL BUFH_X9M_A9TL BUF_X0P7B_A9TL BUF_X0P7M_A9TL BUF_X0P8M_A9TL BUF_X0P8B_A9TL BUF_X11M_A9TL BUF_X11B_A9TL BUF_X13M_A9TL BUF_X13B_A9TL BUF_X16B_A9TL BUF_X16M_A9TL BUF_X1M_A9TL BUF_X1B_A9TL BUF_X1P2B_A9TL BUF_X1P2M_A9TL BUF_X1P4B_A9TL BUF_X1P4M_A9TL BUF_X1P7B_A9TL BUF_X1P7M_A9TL BUF_X2M_A9TL BUF_X2B_A9TL BUF_X2P5B_A9TL BUF_X2P5M_A9TL BUF_X3M_A9TL BUF_X3B_A9TL BUF_X3P5M_A9TL BUF_X3P5B_A9TL BUF_X4M_A9TL BUF_X4B_A9TL BUF_X5M_A9TL BUF_X5B_A9TL BUF_X6M_A9TL BUF_X6B_A9TL BUF_X7P5M_A9TL BUF_X7P5B_A9TL BUF_X9B_A9TL BUF_X9M_A9TL DLY2_X0P5M_A9TL DLY2_X1M_A9TL DLY2_X2M_A9TL DLY2_X4M_A9TL BUFH_X0P8M_A9TR BUFH_X0P7M_A9TR BUFH_X11M_A9TR BUFH_X13M_A9TR BUFH_X16M_A9TR BUFH_X1M_A9TR BUFH_X1P4M_A9TR BUFH_X1P2M_A9TR BUFH_X2M_A9TR BUFH_X1P7M_A9TR BUFH_X3M_A9TR BUFH_X2P5M_A9TR BUFH_X4M_A9TR BUFH_X3P5M_A9TR BUFH_X5M_A9TR BUFH_X6M_A9TR BUFH_X7P5M_A9TR BUFH_X9M_A9TR BUF_X0P7B_A9TR BUF_X0P7M_A9TR BUF_X0P8M_A9TR BUF_X0P8B_A9TR BUF_X11M_A9TR BUF_X11B_A9TR BUF_X13M_A9TR BUF_X13B_A9TR BUF_X16B_A9TR BUF_X16M_A9TR BUF_X1M_A9TR BUF_X1B_A9TR BUF_X1P2B_A9TR BUF_X1P2M_A9TR BUF_X1P4B_A9TR BUF_X1P4M_A9TR BUF_X1P7B_A9TR BUF_X1P7M_A9TR BUF_X2M_A9TR BUF_X2B_A9TR BUF_X2P5B_A9TR BUF_X2P5M_A9TR BUF_X3M_A9TR BUF_X3B_A9TR BUF_X3P5M_A9TR BUF_X3P5B_A9TR BUF_X4M_A9TR BUF_X4B_A9TR BUF_X5M_A9TR BUF_X5B_A9TR BUF_X6M_A9TR BUF_X6B_A9TR BUF_X7P5M_A9TR BUF_X7P5B_A9TR BUF_X9B_A9TR BUF_X9M_A9TR
+Total number of usable buffers: 122
+List of unusable buffers: FRICG_X0P5B_A9TL FRICG_X0P6B_A9TL FRICG_X0P8B_A9TL FRICG_X0P7B_A9TL FRICG_X11B_A9TL FRICG_X13B_A9TL FRICG_X16B_A9TL FRICG_X1B_A9TL FRICG_X1P2B_A9TL FRICG_X1P4B_A9TL FRICG_X2B_A9TL FRICG_X1P7B_A9TL FRICG_X3B_A9TL FRICG_X2P5B_A9TL FRICG_X4B_A9TL FRICG_X3P5B_A9TL FRICG_X5B_A9TL FRICG_X6B_A9TL FRICG_X7P5B_A9TL FRICG_X9B_A9TL FRICG_X0P5B_A9TR FRICG_X0P6B_A9TR FRICG_X0P8B_A9TR FRICG_X0P7B_A9TR FRICG_X11B_A9TR FRICG_X13B_A9TR FRICG_X16B_A9TR FRICG_X1B_A9TR FRICG_X1P2B_A9TR FRICG_X1P4B_A9TR FRICG_X2B_A9TR FRICG_X1P7B_A9TR FRICG_X3B_A9TR FRICG_X2P5B_A9TR FRICG_X4B_A9TR FRICG_X3P5B_A9TR FRICG_X5B_A9TR FRICG_X6B_A9TR FRICG_X7P5B_A9TR FRICG_X9B_A9TR
+Total number of unusable buffers: 40
+List of usable inverters: INV_X0P5B_A9TH INV_X0P5M_A9TH INV_X0P6B_A9TH INV_X0P6M_A9TH INV_X0P7B_A9TH INV_X0P7M_A9TH INV_X0P8M_A9TH INV_X0P8B_A9TH INV_X11M_A9TH INV_X11B_A9TH INV_X13M_A9TH INV_X13B_A9TH INV_X16B_A9TH INV_X16M_A9TH INV_X1M_A9TH INV_X1B_A9TH INV_X1P2B_A9TH INV_X1P2M_A9TH INV_X1P4B_A9TH INV_X1P4M_A9TH INV_X1P7B_A9TH INV_X1P7M_A9TH INV_X2M_A9TH INV_X2B_A9TH INV_X2P5B_A9TH INV_X2P5M_A9TH INV_X3M_A9TH INV_X3B_A9TH INV_X3P5B_A9TH INV_X3P5M_A9TH INV_X4M_A9TH INV_X4B_A9TH INV_X5M_A9TH INV_X5B_A9TH INV_X6M_A9TH INV_X6B_A9TH INV_X7P5M_A9TH INV_X7P5B_A9TH INV_X9B_A9TH INV_X9M_A9TH INV_X0P5B_A9TL INV_X0P5M_A9TL INV_X0P6B_A9TL INV_X0P6M_A9TL INV_X0P7B_A9TL INV_X0P7M_A9TL INV_X0P8M_A9TL INV_X0P8B_A9TL INV_X11M_A9TL INV_X11B_A9TL INV_X13M_A9TL INV_X13B_A9TL INV_X16B_A9TL INV_X16M_A9TL INV_X1M_A9TL INV_X1B_A9TL INV_X1P2B_A9TL INV_X1P2M_A9TL INV_X1P4B_A9TL INV_X1P4M_A9TL INV_X1P7B_A9TL INV_X1P7M_A9TL INV_X2M_A9TL INV_X2B_A9TL INV_X2P5B_A9TL INV_X2P5M_A9TL INV_X3M_A9TL INV_X3B_A9TL INV_X3P5B_A9TL INV_X3P5M_A9TL INV_X4M_A9TL INV_X4B_A9TL INV_X5M_A9TL INV_X5B_A9TL INV_X6M_A9TL INV_X6B_A9TL INV_X7P5M_A9TL INV_X7P5B_A9TL INV_X9B_A9TL INV_X9M_A9TL INV_X0P5B_A9TR INV_X0P5M_A9TR INV_X0P6B_A9TR INV_X0P6M_A9TR INV_X0P7B_A9TR INV_X0P7M_A9TR INV_X0P8M_A9TR INV_X0P8B_A9TR INV_X11M_A9TR INV_X11B_A9TR INV_X13M_A9TR INV_X13B_A9TR INV_X16B_A9TR INV_X16M_A9TR INV_X1M_A9TR INV_X1B_A9TR INV_X1P2B_A9TR INV_X1P2M_A9TR INV_X1P4B_A9TR INV_X1P4M_A9TR INV_X1P7B_A9TR INV_X1P7M_A9TR INV_X2M_A9TR INV_X2B_A9TR INV_X2P5B_A9TR INV_X2P5M_A9TR INV_X3M_A9TR INV_X3B_A9TR INV_X3P5B_A9TR INV_X3P5M_A9TR INV_X4M_A9TR INV_X4B_A9TR INV_X5M_A9TR INV_X5B_A9TR INV_X6M_A9TR INV_X6B_A9TR INV_X7P5M_A9TR INV_X7P5B_A9TR INV_X9M_A9TR INV_X9B_A9TR
+Total number of usable inverters: 120
+List of unusable inverters:
+Total number of unusable inverters: 0
+List of identified usable delay cells: BUFH_X0P8M_A9TH BUFH_X0P7M_A9TH BUFH_X1M_A9TH BUFH_X1P4M_A9TH BUFH_X1P2M_A9TH BUFH_X3M_A9TH BUFH_X2P5M_A9TH BUFH_X3P5M_A9TH BUF_X0P7B_A9TH BUF_X0P7M_A9TH BUF_X0P8M_A9TH BUF_X0P8B_A9TH BUF_X11M_A9TH BUF_X11B_A9TH BUF_X13M_A9TH BUF_X13B_A9TH BUF_X16B_A9TH BUF_X16M_A9TH BUF_X1M_A9TH BUF_X1B_A9TH BUF_X1P2B_A9TH BUF_X1P2M_A9TH BUF_X1P4B_A9TH BUF_X1P4M_A9TH BUF_X1P7B_A9TH BUF_X1P7M_A9TH BUF_X2M_A9TH BUF_X2B_A9TH BUF_X2P5B_A9TH BUF_X2P5M_A9TH BUF_X3M_A9TH BUF_X3B_A9TH BUF_X3P5M_A9TH BUF_X3P5B_A9TH BUF_X4M_A9TH BUF_X4B_A9TH BUF_X5M_A9TH BUF_X5B_A9TH BUF_X6M_A9TH BUF_X6B_A9TH BUF_X7P5M_A9TH BUF_X7P5B_A9TH BUF_X9B_A9TH BUF_X9M_A9TH DLY2_X0P5M_A9TH DLY2_X1M_A9TH DLY2_X2M_A9TH DLY2_X4M_A9TH DLY4_X1M_A9TH DLY4_X0P5M_A9TH DLY4_X2M_A9TH DLY4_X4M_A9TH DLY4_X1M_A9TL DLY4_X0P5M_A9TL DLY4_X2M_A9TL DLY4_X4M_A9TL DLY2_X0P5M_A9TR DLY2_X1M_A9TR DLY2_X2M_A9TR DLY2_X4M_A9TR DLY4_X1M_A9TR DLY4_X0P5M_A9TR DLY4_X2M_A9TR DLY4_X4M_A9TR
+Total number of identified usable delay cells: 64
+List of identified unusable delay cells: FRICG_X0P5B_A9TH FRICG_X0P6B_A9TH FRICG_X0P8B_A9TH FRICG_X0P7B_A9TH FRICG_X11B_A9TH FRICG_X13B_A9TH FRICG_X16B_A9TH FRICG_X1B_A9TH FRICG_X1P2B_A9TH FRICG_X1P4B_A9TH FRICG_X2B_A9TH FRICG_X1P7B_A9TH FRICG_X3B_A9TH FRICG_X2P5B_A9TH FRICG_X4B_A9TH FRICG_X3P5B_A9TH FRICG_X5B_A9TH FRICG_X6B_A9TH FRICG_X7P5B_A9TH FRICG_X9B_A9TH
+Total number of identified unusable delay cells: 20
+@innovus 50> 
+
+@innovus 50> # Load general settings
+# Load general settings
+@innovus 51> source ../scripts/settings.tcl -quiet
+source ../scripts/settings.tcl -quiet
+AAE_INFO: switching -siAware from false to true ...
+AAE_INFO: The setting is changed from false to true in setDelayCalMode -SIAware
+1 true
+@innovus 52> 
+
+@innovus 52> # Create cost groups
+# Create cost groups
+@innovus 53> enics_default_cost_groups
+enics_default_cost_groups
+Created reg2reg path group
+Effort level <high> specified for reg2reg path_group
+Created reg2cgate path group
+Effort level <high> specified for reg2cgate path_group
+@innovus 54> 
+
+@innovus 54> # Connect Global Nets
+# Connect Global Nets
+@innovus 55> enics_message "Connecting Global Nets" medium
+enics_message "Connecting Global Nets" medium
+
+ENICSINFO: Connecting Global Nets
+---------------------------------
+@innovus 56> # Connect standard cells to VDD and GND
+# Connect standard cells to VDD and GND
+@innovus 57> connect_global_net $design(digital_gnd) -pin $tech(STANDARD_CELL_GN [1GD) -all -verbose
+connect_global_net $design(digital_gnd) -pin $tech(STANDARD_CELL_GND) -all -verbose
+26117 new gnd-pin connections were made to global net 'gnd'.
+@innovus 58> connect_global_net $design(digital_vdd) -pin $tech(STANDARD_CELL_VD [1GD) -all -verbose
+connect_global_net $design(digital_vdd) -pin $tech(STANDARD_CELL_VDD) -all -verbose
+26117 new pwr-pin connections were made to global net 'vdd'.
+# Connect tie cells
+@innovus 59> # Connect tie cells
+@innovus 60> connect_global_net $design(digital_vdd) -type tiehi -all -verbose 
+connect_global_net $design(digital_vdd) -type tiehi -all -verbose 
+@innovus 61> connect_global_net $design(digitalconnect_global_net $design(digital_gnd) -type tielo -all -verbose 
+_gnd) -type tielo -all -verbose 
+# connect_global_net $design(digital_vdd) -type tiehi -pin $tech(STANDARD_CELL_VDD) -all -verbose 
+@innovus 62> # connect_global_net $design(digital_vdd) -type tiehi -pin $tech(ST [1GANDARD_CELL_VDD) -all -verbose 
+@innovus 63> # connect_global_net $design(digital_gnd) -type tielo -pin $tech(ST [1GANDARD_CELL_GND) -all -verbose 
+# connect_global_net $design(digital_gnd) -type tielo -pin $tech(STANDARD_CELL_GND) -all -verbose 
+@innovus 64> 
+
+@innovus 64> # Connect SRAM PG Pins
+# Connect SRAM PG Pins
+@innovus 65> connect_global_net $design(digital_vdd) -pin $tech(SRAM_VDDCORE_PIN [1G)      -all -verbose 
+connect_global_net $design(digital_vdd) -pin $tech(SRAM_VDDCORE_PIN)      -all -verbose 
+3 new pwr-pin connections were made to global net 'vdd'.
+@innovus 66> connect_global_net $design(digital_vdd) -pin $tech(SRAM_VDDPERIPHER [1GY_PIN) -all -verbose 
+connect_global_net $design(digital_vdd) -pin $tech(SRAM_VDDPERIPHERY_PIN) -all -verbose 
+3 new pwr-pin connections were made to global net 'vdd'.
+@innovus 67> connect_global_net $design(digital_gnd) -pin $tech(SRAM_GND_PIN)    [1G       -all -verbose 
+connect_global_net $design(digital_gnd) -pin $tech(SRAM_GND_PIN)          -all -verbose 
+3 new gnd-pin connections were made to global net 'gnd'.
+@innovus 68> 
+
+@innovus 68> if {$design(FULLCHIP_OR_MACRO)=="FULLif {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
+    # Connect pads to IO and CORE voltages
+    #    -netlist_override is needed, since GENUS connects these pins to UNCONNECTED during synthesis
+    connect_global_net $design(io_vdd)      -pin $tech(IO_VDDIO)   -hinst i_${design(IO_MODULE)} -netlist_override -verbose
+    connect_global_net $design(io_gnd)      -pin $tech(IO_GNDIO)   -hinst i_${design(IO_MODULE)} -netlist_override -verbose
+    connect_global_net $design(digital_vdd) -pin $tech(IO_VDDCORE) -hinst i_${design(IO_MODULE)} -netlist_override -verbose
+    connect_global_net $design(digital_gnd) -pin $tech(IO_GNDCORE) -hinst i_${design(IO_MODULE)} -netlist_override -verbose
+}
+CHIP"} {
++     # Connect pads to IO and CORE voltages
++     #    -netlist_override is needed, since GENUS connects these pins to UNCON [1GNECTED during synthesis
++     connect_global_net $design(io_vdd)      -pin $tech(IO_VDDIO)   -hinst i_${ [1Gdesign(IO_MODULE)} -netlist_override -verbose
++     connect_global_net $design(io_gnd)      -pin $tech(IO_GNDIO)   -hinst i_${ [1Gdesign(IO_MODULE)} -netlist_override -verbose
++     connect_global_net $design(digital_vdd) -pin $tech(IO_VDDCORE) -hinst i_${ [1Gdesign(IO_MODULE)} -netlist_override -verbose
++     connect_global_net $design(digital_gnd) -pin $tech(IO_GNDCORE) -hinst i_${ [1Gdesign(IO_MODULE)} -netlist_override -verbose
++ }
+Override Verilog-defined PG connection...  Connect pwr pin VDDPST of i_ioring/i_VDDIO_4 to global net vddio.
+Override Verilog-defined PG connection...  Connect pwr pin VDDPST of i_ioring/i_VDDIO_12 to global net vddio.
+
+Override Verilog-defined PG connection...  Connect pwr pin VDDPST of i_ioring/i_VDDIO_20 to global net vddio.
+Override Verilog-defined PG connection...  Connect pwr pin VDDPST of i_ioring/i_VDDIO_28 to global net vddio.
+Override Verilog-defined PG connection...  Connect pwr pin VDDPST of i_ioring/i_VDDIO_36 to global net vddio.
+Override Verilog-defined PG connection...  Connect pwr pin VDDPST of i_ioring/i_VDDIO_44 to global net vddio.
+Override Verilog-defined PG connection...  Connect pwr pin VDDPST of i_ioring/i_VDDIO_52 to global net vddio.
+Override Verilog-defined PG connection...  Connect pwr pin VDDPST of i_ioring/i_VDDIO_60 to global net vddio.
+8 new pwr-pin connections were made to global net 'vddio'.
+Override Verilog-defined PG connection...  Connect gnd pin VSS of i_ioring/i_VSSIO_3 to global net gnd.
+Override Verilog-defined PG connection...  Connect gnd pin VSS of i_ioring/i_VSSIO_13 to global net gnd.
+Override Verilog-defined PG connection...  Connect gnd pin VSS of i_ioring/i_VSSIO_19 to global net gnd.
+Override Verilog-defined PG connection...  Connect gnd pin VSS of i_ioring/i_VSSIO_27 to global net gnd.
+Override Verilog-defined PG connection...  Connect gnd pin VSS of i_ioring/i_VSSIO_35 to global net gnd.
+Override Verilog-defined PG connection...  Connect gnd pin VSS of i_ioring/i_VSSIO_43 to global net gnd.
+Override Verilog-defined PG connection...  Connect gnd pin VSS of i_ioring/i_VSSIO_51 to global net gnd.
+Override Verilog-defined PG connection...  Connect gnd pin VSS of i_ioring/i_VSSIO_59 to global net gnd.
+8 new gnd-pin connections were made to global net 'gnd'.
+Override Verilog-defined PG connection...  Connect pwr pin VDD of i_ioring/i_VDDCORE_5 to global net vdd.
+Override Verilog-defined PG connection...  Connect pwr pin VDD of i_ioring/i_VDDCORE_11 to global net vdd.
+Override Verilog-defined PG connection...  Connect pwr pin VDD of i_ioring/i_VDDCORE_21 to global net vdd.
+Override Verilog-defined PG connection...  Connect pwr pin VDD of i_ioring/i_VDDCORE_29 to global net vdd.
+Override Verilog-defined PG connection...  Connect pwr pin VDD of i_ioring/i_VDDCORE_37 to global net vdd.
+Override Verilog-defined PG connection...  Connect pwr pin VDD of i_ioring/i_VDDCORE_45 to global net vdd.
+Override Verilog-defined PG connection...  Connect pwr pin VDD of i_ioring/i_VDDCORE_53 to global net vdd.
+Override Verilog-defined PG connection...  Connect pwr pin VDD of i_ioring/i_VDDCORE_61 to global net vdd.
+8 new pwr-pin connections were made to global net 'vdd'.
+0 new gnd-pin connection was made to global net 'gnd'.
+@innovus 69> 
+@innovus 69> # Power Intent
+# Power Intent
+@innovus 70> # read_power_intent -1801 $design(UPF_file)
+# read_power_intent -1801 $design(UPF_file)
+@innovus 71> # read_power_intent $design(CPF_file)
+# read_power_intent $design(CPF_file)
+@innovus 72> # commit_power_intent -verbose
+# commit_power_intent -verbose
+@innovus 73> 
+
+@innovus 73> # Don't Use and Size Only files
+# Don't Use and Size Only files
+@innovus 74> #    If Don't Use file exists
+#    If Don't Use file exists
+@# source $design(dont_use_file)
+innovus 75> # source $design(dont_use_file)
+@innovus 76> #    If Size Only file exists
+#    If Size Only file exists
+@innovus 77> # source $design(size_only_file)
+# source $design(size_only_file)
+
+@innovus 78> 
+@innovus 78> enics_create_stage_reports -save_db no -report_timing no -pop_snaps [1Ghot yes
+enics_create_stage_reports -save_db no -report_timing no -pop_snapshot yes
+
+ENICSINFO: Starting to create reports for stage: init_design
+------------------------------------------------------------
+ENICSINFO: Reports directory is: /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../reports/init_design/ 
+ENICSINFO: Export directory is: /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../export/init_design/ 
+ENICSINFO: Export directory is: /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../export/init_design/ 
+ENICSINFO: Reporting Timing
+AAE_INFO: opIsDesignInPostRouteState() is 0
+AAE_WARNING: Waveform propagation feature is not supported in pre-route stage, it is turned off.
+**WARN: (IMPESI-3478):	Simulation based Equivalent Waveform Model without waveform propagation setting is not properly supported, using moment based EWM instead.
+AAE DB initialization (MEM=7939.18 CPU=0:00:00.0 REAL=0:00:00.0) 
+#################################################################################
+# Design Stage: PreRoute
+# Design Name: lp_riscv_top
+# Design Mode: 65nm
+# Analysis Mode: MMMC OCV 
+# Parasitics Mode: No SPEF/RCDB 
+# Signoff Settings: SI On (EWM)
+#################################################################################
+Start delay calculation (fullDC) (1 T). (MEM=8018.21)
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[7], driver i_ioring/i_IRAM_PROG_BYTE_7/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/g119685/A0 (cell AO22_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[7], driver i_ioring/i_IRAM_PROG_BYTE_7/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[3][7]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[7], driver i_ioring/i_IRAM_PROG_BYTE_7/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[2][7]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[7], driver i_ioring/i_IRAM_PROG_BYTE_7/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[1][7]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[7], driver i_ioring/i_IRAM_PROG_BYTE_7/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[0][7]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[7], driver i_ioring/i_IRAM_PROG_BYTE_7/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_addr_reg[1][7]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[6], driver i_ioring/i_IRAM_PROG_BYTE_6/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/g119682/A0 (cell AO22_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[6], driver i_ioring/i_IRAM_PROG_BYTE_6/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[3][6]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[6], driver i_ioring/i_IRAM_PROG_BYTE_6/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[2][6]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[6], driver i_ioring/i_IRAM_PROG_BYTE_6/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[1][6]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[6], driver i_ioring/i_IRAM_PROG_BYTE_6/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[0][6]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[6], driver i_ioring/i_IRAM_PROG_BYTE_6/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_addr_reg[1][6]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[5], driver i_ioring/i_IRAM_PROG_BYTE_5/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/g119687/A0 (cell AO22_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[5], driver i_ioring/i_IRAM_PROG_BYTE_5/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[3][5]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[5], driver i_ioring/i_IRAM_PROG_BYTE_5/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[2][5]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[5], driver i_ioring/i_IRAM_PROG_BYTE_5/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[1][5]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[5], driver i_ioring/i_IRAM_PROG_BYTE_5/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[0][5]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[5], driver i_ioring/i_IRAM_PROG_BYTE_5/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_addr_reg[1][5]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[4], driver i_ioring/i_IRAM_PROG_BYTE_4/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/g119684/A0 (cell AO22_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (IMPMSMV-1810):	Net iram_prog_byte_to_core[4], driver i_ioring/i_IRAM_PROG_BYTE_4/C (cell PDDW1216SCDG) voltage 1.08 does not match receiver lp_riscv/iram_prog_data_reg[3][4]/D (cell DFFRPQ_X1M_A9TL) voltage 0.9 for view wc_analysis_view.
+Type 'man IMPMSMV-1810' for more detail.
+**WARN: (EMS-27):	Message (IMPMSMV-1810) has exceeded the current message display limit of 20.
+To increase the message display limit, refer to the product command reference manual.
+Total number of fetched objects 26904
+AAE_INFO: Total number of nets for which stage creation was skipped for all views 0
+End delay calculation. (MEM=8312.98 CPU=0:00:04.4 REAL=0:00:05.0)
+End delay calculation (fullDC). (MEM=8312.98 CPU=0:00:05.2 REAL=0:00:05.0)
+ENICSINFO: Writing out Database
+wc_timing_condition bc_timing_condition tc_timing_condition
+#% Begin save design ... (date=02/05 13:03:09, mem=1945.2M)
+% Begin Save ccopt configuration ... (date=02/05 13:03:09, mem=1945.2M)
+% End Save ccopt configuration ... (date=02/05 13:03:09, total cpu=0:00:00.0, real=0:00:00.0, peak res=1946.4M, current mem=1946.4M)
+% Begin Save netlist data ... (date=02/05 13:03:09, mem=1946.9M)
+Writing Binary DB to /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../dbs/init_design.tmp/lp_riscv_top.v.bin in single-threaded mode...
+% End Save netlist data ... (date=02/05 13:03:09, total cpu=0:00:00.1, real=0:00:00.0, peak res=1947.0M, current mem=1947.0M)
+Writing Netlist "/data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../dbs/init_design.tmp/lp_riscv_top.v.gz" ...
+Saving symbol-table file ...
+Saving congestion map file /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../dbs/init_design.tmp/lp_riscv_top.route.congmap.gz ...
+% Begin Save AAE data ... (date=02/05 13:03:09, mem=1947.9M)
+Saving AAE Data ...
+% End Save AAE data ... (date=02/05 13:03:09, total cpu=0:00:00.0, real=0:00:00.0, peak res=1947.9M, current mem=1947.9M)
+Saving preference file /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../dbs/init_design.tmp/gui.pref.tcl ...
+Saving mode setting ...
+Saving root attributes to be loaded post write_db ...
+Saving global file ...
+Saving root attributes to be loaded previous write_db ...
+% Begin Save floorplan data ... (date=02/05 13:03:10, mem=1950.3M)
+Saving floorplan file ...
+% End Save floorplan data ... (date=02/05 13:03:10, total cpu=0:00:00.0, real=0:00:00.0, peak res=1952.5M, current mem=1952.5M)
+Saving PG file /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../dbs/init_design.tmp/lp_riscv_top.pg.gz, version#2, (Created by Innovus v21.15-s110_1 on Wed Feb  5 13:03:10 2025)
+*** Completed savePGFile (cpu=0:00:00.0 real=0:00:01.0 mem=8233.5M) ***
+Saving Drc markers ...
+... No Drc file written since there is no markers found.
+% Begin Save placement data ... (date=02/05 13:03:11, mem=1952.7M)
+** Saving stdCellPlacement_binary (version# 2) ...
+Save Adaptive View Pruning View Names to Binary file
+% End Save placement data ... (date=02/05 13:03:11, total cpu=0:00:00.0, real=0:00:00.0, peak res=1952.9M, current mem=1952.9M)
+% Begin Save routing data ... (date=02/05 13:03:11, mem=1952.9M)
+Saving route file ...
+*** Completed saveRoute (cpu=0:00:00.0 real=0:00:00.0 mem=8233.5M) ***
+% End Save routing data ... (date=02/05 13:03:11, total cpu=0:00:00.0, real=0:00:00.0, peak res=1953.1M, current mem=1953.1M)
+Saving property file /data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../dbs/init_design.tmp/lp_riscv_top.prop
+*** Completed saveProperty (cpu=0:00:00.0 real=0:00:00.0 mem=8236.5M) ***
+Saving preRoute extracted patterns in file '/data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../dbs/init_design.tmp/lp_riscv_top.techData.gz' ...
+Saving preRoute extraction data in directory '/data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../dbs/init_design.tmp/extraction/' ...
+% Begin Save power constraints data ... (date=02/05 13:03:11, mem=1954.6M)
+% End Save power constraints data ... (date=02/05 13:03:11, total cpu=0:00:00.0, real=0:00:00.0, peak res=1954.7M, current mem=1954.7M)
+tc_rc_corner bc_rc_corner wc_rc_corner
+tc_rc_corner bc_rc_corner wc_rc_corner
+tc_rc_corner bc_rc_corner wc_rc_corner
+tc_rc_corner bc_rc_corner wc_rc_corner
+tc_rc_corner bc_rc_corner wc_rc_corner
+tc_rc_corner bc_rc_corner wc_rc_corner
+tc_rc_corner bc_rc_corner wc_rc_corner
+Generated self-contained design init_design.tmp
+#% End save design ... (date=02/05 13:03:12, total cpu=0:00:01.5, real=0:00:03.0, peak res=1956.8M, current mem=1956.8M)
+*** Message Summary: 0 warning(s), 0 error(s)
+
+@innovus 79> 
+
+@innovus 79> ############################################
+############################################
+@innovus 80> # Floorplan
+# Floorplan
+@innovus 81> ############################################
+############################################
+enics_start_stage "floorplan"
+@innovus 82> enics_start_stage "floorplan"
+*********************************************
+*********************************************
+**   ENICSINFO: Starting stage floorplan   **
+*********************************************
+*********************************************
+ENICSINFO: Current time is: 05/02/2025 13:03
+ENICSINFO: ----------------------------------
+@innovus 83> source ../inputs/$design(TOPLEVEL).floorplan.defines -quiet
+source ../inputs/$design(TOPLEVEL).floorplan.defines -quiet
+gnd vdd
+@innovus 84> 
+
+@innovus 84> # If Floorplan DEF is available:
+# If Floorplan DEF is available:
+@innovus 85> # read_def $design(floorplan_def)
+# read_def $design(floorplan_def)
+@innovus 86> 
+
+@# If SCAN DEF is available
+innovus 86> # If SCAN DEF is available
+@innovus 87> # read_def $design(scan_def)
+# read_def $design(scan_def)
+@innovus 88> 
+
+@innovus 88> gui_select -point {0.04750 0.04650}
+@innovus 89> gui_select -point {0.03700 0.04000}
+@innovus 90> 
+@innovus 90> # Specify Floorpan
+# Specify Floorpan
+@innovus 91> create_floorplan \
++     -core_size [list 2000.0 1250.0 150.0 150.0 150.0 150.0] \
++     -core_margins_by die \
++     -flip s \
++     -match_to_site
+create_floorplan \
+    -core_size [list 2000.0 1250.0 150.0 150.0 150.0 150.0] \
+    -core_margins_by die \
+    -flip s \
+    -match_to_site
+Start create_tracks
+**WARN: (IMPFP-325):	Floorplan of the design is resized. All current create_floorplan objects are automatically derived based on specified new create_floorplan. This may change blocks, fixed standard cells, existing routes and blockages.
+@innovus 92> 
+
+@innovus 92> # create_floorplan -site $tech(STANDARD_CELL_SITE) -match_to_site \ [1G
++ #     -core_density_size $design(floorplan_ratio) $design(floorplan_utilizatio [1Gn) {*}$design(floorplan_space_to_core)
+# create_floorplan -site $tech(STANDARD_CELL_SITE) -match_to_site \
+#     -core_density_size $design(floorplan_ratio) $design(floorplan_utilization) {*}$design(floorplan_space_to_core)
+@innovus 93> guigui_fit
+_fit
+@innovus 94> gui_fit
+@innovus 95> 
+
+@innovus 95> # Set up pads (for fullchip) or pins (for macro)
+# Set up pads (for fullchip) or pins (for macro)
+
+.
+CompStatus_RegisterPct
+Debug_RegisterChkStop
+Debug_UnregisterChkStop
+_close.pre_expect
+_report_partition_info
+_tixDeleteFlags
+_tixRecordFlags
+add_area_io_fillers
+add_area_io_rows
+add_clock_tree_exclusion_drivers
+add_clock_tree_source_group_roots
+add_connection_to_neighbor_partition
+add_decap_cell_candidates
+add_decaps
+add_decomp_filler
+add_dummy_boundary_wires
+add_endcaps
+add_fences
+add_filler_gaps
+add_fillers
+add_gate_array_filler
+add_io_buffers
+add_io_fillers[14D[23A[14C[23B
+@innovus 96> if {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
++ enics_message "Defining IO Ring" medium
++ # Reload the IO file after resizing the floorplan
++ read_io_file $design(io_file)if {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
+enics_message "Defining IO Ring" medium
+# Reload the IO file after resizing the floorplan
+read_io_file $design(io_file)# Add IO Fillers
+add_io_fillers -cells $tech(IO_FILLERS) -prefix IOFILLER
+# Connect Pad Rings
+#route_special -connect {pad_ring} \
+#-nets "$design(digital_gnd) $design(digital_vdd) $design(io_gnd) $design(io_vdd)"
+} elseif {$design(FULLCHIP_OR_MACRO)=="MACRO"} {
+enics_message "Spreading Pins around Macro" medium
+    # Spread pins
+set pins_to_spread  [get_db ports .name] ;#[get_object_name [get_ports]]
+#edit_pin -fix_overlap 1 -spread_direction clockwise -side Bottom -layer 4 -spread_type side 
+edit_pin -spread_type start -start {0 0} -spread_direction clockwise -layer {3 4}  \
+        -pin $pins_to_spread -fix_overlap 1 -spacing 6
+
+}
+
+
+ENICSINFO: Defining IO Ring
+---------------------------
+
+Usage: read_io_file [-help] <file_name> [-no_die_size_adjust]
+                    [-specified_ios_only] [-eco  [-pads_only  | -bumps_only ]]
+
+**ERROR: (IMPTCM-48):	"Add" is not a legal option for command "read_io_file". Either the current option or an option prior to it is not specified correctly.
+
+gui_redraw
+@innovus 97> gui_redraw
+@innovus 98> 
+@innovus 98> # Set up pads (for fullchip) or pins (for macro)
+# Set up pads (for fullchip) or pins (for macro)
+
+.
+CompStatus_RegisterPct
+Debug_RegisterChkStop
+Debug_UnregisterChkStop
+_close.pre_expect
+_report_partition_info
+_tixDeleteFlags
+_tixRecordFlags
+add_area_io_fillers
+add_area_io_rows
+add_clock_tree_exclusion_drivers
+add_clock_tree_source_group_roots
+add_connection_to_neighbor_partition
+add_decap_cell_candidates
+add_decaps
+add_decomp_filler
+add_dummy_boundary_wires
+add_endcaps
+add_fences
+add_filler_gaps
+add_fillers
+add_gate_array_filler
+add_io_buffers
+add_io_fillers[14D[23A[14C[23B
+
+README         debug.txt      fv/                    genus.cmd
+genus.cmd1     genus.log      genus.log1             innovus.cmd
+innovus.cmd1   innovus.cmd2   innovus.cmd3           innovus.cmd4
+innovus.cmd5   innovus.cmd6   innovus.cmd7           innovus.cmd8
+innovus.log    innovus.log1   innovus.log2           innovus.log3
+innovus.log4   innovus.log5   innovus.log6           innovus.log7
+innovus.log8   innovus.logv   innovus.logv1          innovus.logv2
+innovus.logv3  innovus.logv4  innovus.logv5          innovus.logv6
+innovus.logv7  innovus.logv8  lp_riscv_top.geom.rpt  pvsUI_ipvs.log
+sroute.log     sroute.log1    sroute.log2            trace_core_00_0.log
+waves.shm/     xcelium.d/     xrun.history           xrun.log[61D[10A[61C[10B
+
+README         debug.txt      fv/                    genus.cmd
+genus.cmd1     genus.log      genus.log1             innovus.cmd
+innovus.cmd1   innovus.cmd2   innovus.cmd3           innovus.cmd4
+innovus.cmd5   innovus.cmd6   innovus.cmd7           innovus.cmd8
+innovus.log    innovus.log1   innovus.log2           innovus.log3
+innovus.log4   innovus.log5   innovus.log6           innovus.log7
+innovus.log8   innovus.logv   innovus.logv1          innovus.logv2
+innovus.logv3  innovus.logv4  innovus.logv5          innovus.logv6
+innovus.logv7  innovus.logv8  lp_riscv_top.geom.rpt  pvsUI_ipvs.log
+sroute.log     sroute.log1    sroute.log2            trace_core_00_0.log
+waves.shm/     xcelium.d/     xrun.history           xrun.log[61D[10A[61C[10B
+
+README         debug.txt      fv/                    genus.cmd
+genus.cmd1     genus.log      genus.log1             innovus.cmd
+innovus.cmd1   innovus.cmd2   innovus.cmd3           innovus.cmd4
+innovus.cmd5   innovus.cmd6   innovus.cmd7           innovus.cmd8
+innovus.log    innovus.log1   innovus.log2           innovus.log3
+innovus.log4   innovus.log5   innovus.log6           innovus.log7
+innovus.log8   innovus.logv   innovus.logv1          innovus.logv2
+innovus.logv3  innovus.logv4  innovus.logv5          innovus.logv6
+innovus.logv7  innovus.logv8  lp_riscv_top.geom.rpt  pvsUI_ipvs.log
+sroute.log     sroute.log1    sroute.log2            trace_core_00_0.log
+waves.shm/     xcelium.d/     xrun.history           xrun.log[61D[10A[61C[10B
+
+.
+CompStatus_RegisterPct
+Debug_RegisterChkStop
+Debug_UnregisterChkStop
+_close.pre_expect
+_report_partition_info
+_tixDeleteFlags
+_tixRecordFlags
+add_area_io_fillers
+add_area_io_rows
+add_clock_tree_exclusion_drivers
+add_clock_tree_source_group_roots
+add_connection_to_neighbor_partition
+add_decap_cell_candidates
+add_decaps
+add_decomp_filler
+add_dummy_boundary_wires
+add_endcaps
+add_fences
+add_filler_gaps
+add_fillers
+add_gate_array_filler
+add_io_buffers
+add_io_fillers[14D[23A[14C[23B
+
+README         debug.txt      fv/                    genus.cmd
+genus.cmd1     genus.log      genus.log1             innovus.cmd
+innovus.cmd1   innovus.cmd2   innovus.cmd3           innovus.cmd4
+innovus.cmd5   innovus.cmd6   innovus.cmd7           innovus.cmd8
+innovus.log    innovus.log1   innovus.log2           innovus.log3
+innovus.log4   innovus.log5   innovus.log6           innovus.log7
+innovus.log8   innovus.logv   innovus.logv1          innovus.logv2
+innovus.logv3  innovus.logv4  innovus.logv5          innovus.logv6
+innovus.logv7  innovus.logv8  lp_riscv_top.geom.rpt  pvsUI_ipvs.log
+sroute.log     sroute.log1    sroute.log2            trace_core_00_0.log
+waves.shm/     xcelium.d/     xrun.history           xrun.log[61D[10A[61C[10B
+@innovus 99> if {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
++ enics_message "Defining IO Ring" medium
++ # Reload the IO file after resizing the floorplan
++ read_io_file $design(io_file)
++ # Add IO Fillers
++ add_io_fillers -cells $tech(IO_FILLERS) -prefix IOFILLER
++ # Connect Pad Rings
++ #route_special -connect {pad_ring} \
++ #-nets "$design(digital_gnd) $design(digital_vdd) $design(io_gnd) $design(io_v [1Gdd)"
++ } elseif {$design(FULLCHIP_OR_MACRO)=="MACRO"} {
++ enics_message "Spreading Pins around Macro" medium
++     # Spread pins
++ set pins_to_spread  [get_db ports .name] ;#[get_object_name [get_ports]]
++ #edit_pin -fix_overlap 1 -spread_direction clockwise -side Bottom -layer 4 -sp [1Gread_type side 
++ edit_pin -spread_type start -start {0 0} -spread_direction clockwise -layer {3 [1G 4}  \
++         -pin $pins_to_spread -fix_overlap 1 -spacing 6
++ 
++ }
+if {$design(FULLCHIP_OR_MACRO)=="FULLCHIP"} {
+enics_message "Defining IO Ring" medium
+# Reload the IO file after resizing the floorplan
+read_io_file $design(io_file)
+# Add IO Fillers
+add_io_fillers -cells $tech(IO_FILLERS) -prefix IOFILLER
+# Connect Pad Rings
+#route_special -connect {pad_ring} \
+#-nets "$design(digital_gnd) $design(digital_vdd) $design(io_gnd) $design(io_vdd)"
+} elseif {$design(FULLCHIP_OR_MACRO)=="MACRO"} {
+enics_message "Spreading Pins around Macro" medium
+    # Spread pins
+set pins_to_spread  [get_db ports .name] ;#[get_object_name [get_ports]]
+#edit_pin -fix_overlap 1 -spread_direction clockwise -side Bottom -layer 4 -spread_type side 
+edit_pin -spread_type start -start {0 0} -spread_direction clockwise -layer {3 4}  \
+        -pin $pins_to_spread -fix_overlap 1 -spacing 6
+
+}
+
+ENICSINFO: Defining IO Ring
+---------------------------
+Reading IO assignment file "/data/project/tsmc65/users/saridav/ws/DVD25/hw7/workspace/../inputs/ioring.io" ...
+WARNING (IMPFP-3997): The Floorplan box has been changed from {(0.0000000000 , 0.0000000000) (2300.0000000000 , 1550.0000000000)} to {(-250.0000000000 , -125.0000000000) (2550.0000000000 , 1675.0000000000)}.
+Start create_tracks
+Added 0 of filler cell 'PFILLER20' on top side.
+Added 0 of filler cell 'PFILLER10' on top side.
+Added 0 of filler cell 'PFILLER5' on top side.
+Added 0 of filler cell 'PFILLER1' on top side.
+Added 0 of filler cell 'PFILLER05' on top side.
+Added 38 of filler cell 'PFILLER0005' on top side.
+Added 0 of filler cell 'PFILLER20' on left side.
+Added 0 of filler cell 'PFILLER10' on left side.
+Added 0 of filler cell 'PFILLER5' on left side.
+Added 0 of filler cell 'PFILLER1' on left side.
+Added 0 of filler cell 'PFILLER05' on left side.
+Added 0 of filler cell 'PFILLER0005' on left side.
+Added 0 of filler cell 'PFILLER20' on bottom side.
+Added 0 of filler cell 'PFILLER10' on bottom side.
+Added 0 of filler cell 'PFILLER5' on bottom side.
+Added 0 of filler cell 'PFILLER1' on bottom side.
+Added 0 of filler cell 'PFILLER05' on bottom side.
+Added 0 of filler cell 'PFILLER0005' on bottom side.
+Added 0 of filler cell 'PFILLER20' on right side.
+Added 0 of filler cell 'PFILLER10' on right side.
+Added 0 of filler cell 'PFILLER5' on right side.
+Added 0 of filler cell 'PFILLER1' on right side.
+Added 0 of filler cell 'PFILLER05' on right side.
+Added 0 of filler cell 'PFILLER0005' on right side.
+@innovus 100> gui_redraw
+gui_redraw
+@innovus 101> gui_select -point {429.52900 1606.04700}
+@innovus 102> gui_select -point {1200.10500 1609.50250}
+@innovus 103> gui_select -point {1144.81700 1592.22500}
+@innovus 104> gui_select -point {1058.42950 1592.22500}
+@innovus 105> 
+--------------------------------------------------------------------------------
+Exiting Innovus on Wed Feb  5 13:15:26 2025
+  Total CPU time:     0:01:29
+  Total real time:    0:14:02
+  Peak memory (main): 2005.92MB
+
+
+*** Memory Usage v#1 (Current mem = 8307.250M, initial mem = 2004.215M) ***
